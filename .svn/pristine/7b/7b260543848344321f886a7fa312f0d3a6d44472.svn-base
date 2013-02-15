@@ -1,0 +1,24 @@
+<% provide(:title, 'Faculty Whose Credentialing is Not Completed') %>
+
+<% if !@results.nil? && @results.count > 0 %>
+	Total: <%=@results.count %><br/>
+	<table class="info round no-zebra">
+		<tr>
+			<th>Last Name</th><th>First Name</th><th>Department (College)</th><th>Z Number</th><th>Degree</th><th>Qualification Reason</th><th>Course</th><th>Semester</th>
+		</tr> 
+		<% @results.each do |r|%>
+  			<tr onclick="window.location.href='<%= url_for :action => 'show_courses_for', :controller => 'wizard', :faculty_id => r.faculty.id %>'">    
+				<td><%=r.faculty.last_name%></td>
+				<td><%=r.faculty.first_name%></td>
+	    		<td><%=r.faculty.department.name_and_school %></td>
+				<td><%=r.faculty.znumber%></td>
+	    		<td><%=r.faculty.qualification.name %></td>
+	    		<td><%=r.qualificationreason.name %></td>
+	    		<td><%=r.course.name%></td>
+	    		<td><%=@semester_name%></td>
+			</tr>
+		<% end %>
+	</table>
+	<a href=<%=url_for :action => 'report_credentialing', :controller => 'report', :csv => 'yes', :search_by => @search_by, :search_id => @search_id, :semester_id => @semester_id, :qualificationreason_ids => @qualificationreason_ids %>>Download CSV File</a>
+<% end %>
+<%= "<br/>No Records Found<br/>".html_safe if !@results.nil? && @results.count == 0 %>

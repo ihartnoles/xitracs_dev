@@ -1,0 +1,57 @@
+<% provide :title, "Justify Course Start" %>
+
+
+<script type="text/javascript">
+
+	function do_inst() {
+		// placeholder in case we need to disable the selection of institutions in the future.
+	}
+	
+</script>
+
+
+<%= render 'wizard/faculty_and_course'%>
+<% if !current_user.ro %>
+	<%= render 'wizard/review_results'%>
+<% end %>
+<br/>
+<% if !current_user.ro %>
+	<%= form_for @reason, :url => '/wizard/process_justification' do |f| %>
+		<%= hidden_field  :reason, :faculty_id %>
+		<%= hidden_field  :reason, :course_id %>
+		<%= hidden_field  :reason, :id %>
+	
+		<div class="info round">
+			<p>
+				<label> Reason: </label>
+				<% Qualificationreason.all.each do |qr| %>
+	    			<br><%= radio_button_tag  'qualificationreason_name', qr.name, @reason.qualificationreason_id == qr.id, {:onclick => "do_inst();"} %>
+	 				<%=  qr.name.humanize %>
+	  			<% end %>				
+			</p>
+			<br/>
+			<p>
+				<label>Institution: 	</label>
+				<%= collection_select(:reason, 
+										    :facultycredential_id, 
+										    Facultycredential.where(:faculty_id => @faculty.id), 
+										    :id, 
+										    :full_details) %>		
+			</p>	 	
+		</div> 	
+
+		<% if current_user.ro %>
+			<%= hidden_field_tag 'qualificationreason_name', @reason.qualificationreason.name %>
+		<% end %>
+		
+		<%= f.submit  "Next>", :id => "Next", :disabled => (current_user.ro && @new_reason) %>
+	<% end %>
+	<br/>
+<% else %>
+	<div class="info round">
+		<label> Reason: </label> <%= @reason.nil? ? "Not Credentialed" : @reason.qualificationreason.name %>
+	</div> 	
+<% end %>
+<%= link_to "Return to Courses", '/wizard/show_courses_for', :class => 'xbutton'%>
+
+

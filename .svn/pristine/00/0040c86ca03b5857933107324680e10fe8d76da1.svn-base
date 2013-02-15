@@ -1,0 +1,28 @@
+<% provide :title, "Justify Course Done" %>
+
+<%= render 'wizard/faculty_and_course'%>
+<%= render 'wizard/reason_basic'%>
+<%= render 'wizard/review_results'%>
+
+<br/>
+
+<div class="info round">
+	<% if (@course_justification_completed) %>
+		<p>Course Justification Completed.</p> 
+	<% else %>
+		<p>Course Justification has <strong>NOT</strong> been completed.</p> 
+	<% end %>	 	
+	<% if (@faculty_completed) %>
+		<p>All Courses for this Faculty have been Completed.</p> 
+	<% else %>
+		<p>All Courses for this Faculty have <strong>NOT</strong> been completed.</p> 
+	<% end %>	
+   <% if (session[:group_name] == "dean" || session[:group_name] == "admin") %>
+   	<p>Dean Signed Off? <strong><%= @reason.dean_signoff? ? "Yes" : "No" %></strong> </p>
+   <% end %> 
+ 					
+</div>
+
+<%= link_to "Return to Courses", '/wizard/show_courses_for', :class => 'xbutton'%>
+<%= link_to "Return to My Faculty", '/wizard/faculty', :class => 'xbutton'%>
+

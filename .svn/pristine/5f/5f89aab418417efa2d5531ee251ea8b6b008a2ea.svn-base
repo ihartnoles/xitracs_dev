@@ -1,0 +1,35 @@
+
+<%= render_chart @chart_complete, 'chart_complete' %>
+<%= render_chart @chart_reviewed, 'chart_reviewed' %>
+
+ <table class="profile">
+  <tr>
+  		<td class="success round">
+ 			<div id='chart_complete'></div>
+			<%= render 'wizard/color_codes_status'%>
+  		</td>
+	 	<% if session[:group_name] == "admin" || session[:group_name] == "dean" %>
+  			<td class="success round">
+	 			<div id='chart_reviewed'></div>
+  				<%= render 'wizard/color_codes_review'%>
+  			</td>
+		<% end %>
+  		<td class="notice round">
+			<center>
+				<% if current_user.group.name == "admin" || current_user.group.name == "dean" %>
+					<%= School.find(session[:school_id]).description%><br>
+				<% else %>
+					<%= Department.find(current_user.department_id).description%><br>
+				<% end %>
+				<br/>
+				Completed: (<%= "#{@faculties_completed} of  #{@faculties_completed + @faculties_not_completed} = #{@percent_complete}%" %> )
+				<br/>
+		 	 	<% if session[:group_name] == "admin" || session[:group_name] == "dean" %>
+					Reviewed: (<%= "#{@faculties_reviewed} of  #{@faculties_reviewed + @faculties_not_reviewed} = #{@percent_reviewed}%" %> )
+				<% end %>
+			</center>
+		</td>
+  </tr>
+</table>
+
+ 

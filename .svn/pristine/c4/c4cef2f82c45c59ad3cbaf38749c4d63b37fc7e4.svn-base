@@ -1,0 +1,86 @@
+<% provide(:title, 'Search Criteria') %>
+
+<%= form_tag("/report/#{@report_name}", :method => "get") do %>
+	
+	<% if @ask_semester %>
+		Semester :	
+		<%= select_tag "semester_id", options_from_collection_for_select(Semester.find(:all), "id", "name") %>
+		(Warning: This will change your active Semester)
+		<br/>
+		<br/>
+	<% end %>		
+	
+	<% if @ask_group && session[:group_name] == "admin"%>
+		<fieldset>
+			<%= radio_button_tag 'search_by', 'all', true , {:onclick => "update_select();"} %> Search All
+			<br/>
+			<%= radio_button_tag 'search_by', 'school', false , {:onclick => "update_select();"} %> Search by College
+			<%= select_tag "school_id", options_from_collection_for_select(School.where(:enabled => true).order(:name), "id", "name_and_description"), :prompt => "Select College"	%>
+			<br/>	
+			<%= radio_button_tag 'search_by', 'department', false, {:onclick => "update_select();"} %> Search by Department
+			<%= select_tag "department_id", options_from_collection_for_select(Department.order(:name), "id", "name"), :prompt => "Select Department"	%>
+		</fieldset>
+	<% elsif @ask_group && session[:group_name] == "dean"%>	
+		<fieldset>
+			<%= radio_button_tag 'search_by', 'all', true, {:onclick => "update_select();"} %> Search Entire College
+			<br/>
+			<%= radio_button_tag 'search_by', 'department', false, {:onclick => "update_select();"} %> Search by Department
+			<%= select_tag "department_id", options_from_collection_for_select(Department.where(:school_id => session[:school_id]), "id", "name"), :prompt => "Select Department"%>
+		</fieldset>
+	<% elsif @ask_group %>
+		<fieldset>
+			Find faculty in: <%= Department.find(session[:department_id]).name %>
+			<%= hidden_field_tag 'search_by', 'chair'%>
+			<%= hidden_field_tag 'search_id', session[:department_id]%>
+			<br/>
+		</fieldset>
+	<% end %>
+
+	<% if @ask_review_reasons %>
+		<br/>
+		<fieldset>
+			<% Reviewreason.all.each do |reviewreason| -%>
+				<%= check_box_tag "reviewreason_ids[]", reviewreason.id %> <%= reviewreason.name %><br/>
+			<% end -%>
+		</fieldset>
+	<% end %>
+
+	<% if @ask_qualificationreasons %>	
+		<br/>
+		<fieldset>
+			<% Qualificationreason.all.each do |qr| %>
+				<%= check_box_tag  'qualificationreason_ids[]', qr.id %> <%= qr.name %><br/>
+			<% end %>			
+		</fieldset>
+	<% end %>
+	
+	<% if @ask_reviewstate %>	
+		<br/>
+		<fieldset>
+			<%= radio_button_tag  'review_state', Reason.review_pending %> Review Pending<br/>
+			<%= radio_button_tag  'review_state', Reason.review_passed %> Review Passed<br/>
+			<%= radio_button_tag  'review_state', Reason.review_failed %> Review Not Passed<br/>
+			<%= radio_button_tag  'review_state', Reason.review_alert %> Review Alert<br/>
+			<%= radio_button_tag  'review_state', Reason.review_justdocs %> Justification Docs<br/>
+		</fieldset>
+	<% end %>
+	
+	<% if @ask_deansignoff %>	
+		<br/>
+		<fieldset>
+			<%= check_box_tag  'dean_signoff', "true" %> Dean Signoff (Checked = Those that have been signed off by dean. Unchecked = Those that have not yet been signed off by Dean)<br/>
+		</fieldset>
+	<% end %>
+	
+	<% if @ask_faculty_or_course %>	
+		<br/>
+		<fieldset>
+			<%= radio_button_tag  'faculty_or_course', "faculty" %> List of faculty and the courses they are credentialed to teach<br/>
+			<%= radio_button_tag  'faculty_or_course', "course"  %> List of Courses and the faculty who are credentialed to teach those courses<br/>
+		</fieldset>
+	<% end %>	
+	
+	<br/>
+  	<%= submit_tag "Search" %>
+<% end %>
+<br/>

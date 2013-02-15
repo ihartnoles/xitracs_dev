@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  title: MyString
+  description: MyString
+  department_id: 1
+  level_description: MyString
+  credit: 1
+  rules: MyString
+  cip_codes: MyString
+
+two:
+  name: MyString
+  title: MyString
+  description: MyString
+  department_id: 1
+  level_description: MyString
+  credit: 1
+  rules: MyString
+  cip_codes: MyString

@@ -1,0 +1,54 @@
+
+<table class="profile">
+<% if current_user.group.name == "admin" %>
+	<tr>
+	<% School.where(:enabled => true).each do |school| %>
+		<td class="info round">
+			<center><%= link_to "#{school.description}", "/wizard/department?school_id=#{school.id}", :class => "a" %> </center>
+		</td>
+	<%end%>
+	</tr>
+<% end %>
+</table>
+<br/>
+
+<table class="profile">
+	<% if current_user.group.name != "admin" %>
+	<tr>
+		<td class="success round" colspan=2>
+			<% if current_user.group.name == "dean" %>
+				<center>Click <%= link_to "My Departments", '/wizard/department', :class => "xbutton" %> to view your faculty by department</center>
+			<% end %>
+			<center>Click <%= link_to "My Faculty", '/wizard/faculty', :class => "xbutton" %> to view all your faculty at once</center>
+		</td>
+	</tr>
+	<% end %>
+	<% if current_user.group.name == "admin" %>
+	  	<tr>	
+			<td class="success round" colspan=2>
+				<strong>Search By</strong><br/>
+				<%= form_tag("/wizard/find", :method => "get") do %>
+			  		ZNumber <%= text_field_tag :znumber  %>
+	  				<%= submit_tag "Search by ZNumber" %>
+				<% end %>	
+			</td>
+	  	</tr>
+	<% end%>
+  	<tr>
+		<td class="success round" colspan=2>
+			<strong>Search By</strong> (must specify all 3 fields)<br/>
+			<%= form_tag("/wizard/find", :method => "get") do %>
+			  	Last Name: <%= text_field_tag :last_name  %>
+			 	First Name: <%= text_field_tag :first_name  %>
+			 	<% if current_user.group.name == "admin"%>
+					<%= select_tag "department_id", options_from_collection_for_select(Department.order(:name), "id", "name"), :disabled => false	%>
+				<% elsif current_user.group.name == "dean" %>
+					<%= select_tag "department_id", options_from_collection_for_select(Department.where(:school_id => current_user.school_id), "id", "name"), :disabled => false	%>
+			  	<% else %>
+					<%= select_tag "department_id", options_from_collection_for_select(Department.where(:id => current_user.department_id), "id", "name"), :disabled => false	%>
+			  	<% end %>
+			  <%= submit_tag "Search by Name" %>
+			<% end %>				
+		</td>
+	</tr>
+</table>

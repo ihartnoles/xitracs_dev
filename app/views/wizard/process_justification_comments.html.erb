@@ -1,0 +1,21 @@
+<% provide :title, "Justify Course - Comments" %>
+
+<%= render 'wizard/faculty_and_course'%>
+<%= render 'wizard/reason_basic'%>
+<%= render 'wizard/review_results'%>
+<%= render 'wizard/existing_comments'%>
+
+<%= form_for @reason,  :url => '/wizard/process_justification_comments'  do |f| %>
+		<div class="info round">
+		<p>
+			<label> Comments: </label>				
+			<%= f.text_area :comments, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications (Optional if the reason for the credential is '#{Qualificationreason.find(:first).name}')" %> 	
+		</p>	 	
+	</div> 	
+	<%= f.submit  "Next>", :id => "Next>", :disabled => current_user.ro %>
+
+<% end %>
+<br/>
+
+<%= link_to "Return to Courses", '/wizard/show_courses_for', :class => 'xbutton'%>
+<%= link_to "Return to My Faculty", '/wizard/faculty', :class => 'xbutton'%>

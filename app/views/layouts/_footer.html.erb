@@ -1,0 +1,9 @@
+<footer>
+  <nav class="round">
+    <ul>
+		<% if signed_in? %>
+    	<li>User: <font color=red><%= current_user.name %></font> Permission: <font color=red><%= current_user.group.name %></font> Semester: <font color=red><%=  Semester.find(session[:semester_id]).name if !session[:semester_id].nil? %></font> Review Mode: <font color=red><%= session[:review]%></font></li>
+    	<% end %>
+    </ul>
+  </nav>
+</footer>

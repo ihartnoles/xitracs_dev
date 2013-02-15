@@ -1,0 +1,34 @@
+<% provide(:title, 'Summary') %>
+
+<center><h2>Summary for <%= Semester.find(@semester_id).name %></h2></center><br/>
+<table class="info round no-zebra">
+	<th>Department</th><th>College</th><th>Completed / Not Completed (%)</th><th>Reviewed / Not Reviewed (%)</th>
+	<% if current_user.group.name == "admin" %>
+		<% department_list = Department.order(:school_id, :name) %>
+	<% elsif current_user.group.name == "dean"  %>
+		<% department_list = Department.where(:school_id => current_user.school_id).order(:school_id, :name) %>
+	<% else %>
+		<% department_list = Department.where(:id => current_user.department_id) %>
+	<% end %>
+	<% semester_section_ids = Section.where(:semester_id => @semester_id).map { |s| s.id }%>
+	<% semester_faculty_ids = Sectionenrollment.where(:section_id => semester_section_ids).map { |s| s.faculty_id}.uniq %>
+	<% department_list.each do |department|%>
+		<% result_c = ActiveRecord::Base.connection.select_one("select count(distinct f.id) count from faculties f, departments d, donesemesters ds, sectionenrollments se, sections s where ds.faculty_id = f.id and f.department_id = d.id  and se.faculty_id = f.id and se.section_id = s.id and s.semester_id = ds.semester_id and d.id = #{department.id} and ds.semester_id = #{@semester_id} and ds.completed=1")%>
+		<% c = result_c["count"].to_i%>
+		<% result_nc = ActiveRecord::Base.connection.select_one("select count(distinct f.id) count from faculties f, departments d, donesemesters ds, sectionenrollments se, sections s where ds.faculty_id = f.id and f.department_id = d.id  and se.faculty_id = f.id and se.section_id = s.id and s.semester_id = ds.semester_id and d.id = #{department.id} and ds.semester_id = #{@semester_id} and ds.completed=0")%>
+		<% nc = result_nc["count"].to_i%>
+		<% result_r = ActiveRecord::Base.connection.select_one("select count(distinct f.id) count from faculties f, departments d, donesemesters ds, sectionenrollments se, sections s where ds.faculty_id = f.id and f.department_id = d.id  and se.faculty_id = f.id and se.section_id = s.id and s.semester_id = ds.semester_id and d.id = #{department.id} and ds.semester_id = #{@semester_id} and ds.reviewed=1")%>
+		<% r = result_r["count"].to_i%>
+		<% result_nr = ActiveRecord::Base.connection.select_one("select count(distinct f.id) count from faculties f, departments d, donesemesters ds, sectionenrollments se, sections s where ds.faculty_id = f.id and f.department_id = d.id  and se.faculty_id = f.id and se.section_id = s.id and s.semester_id = ds.semester_id and d.id = #{department.id} and ds.semester_id = #{@semester_id} and ds.reviewed=0")%>
+		<% nr = result_nr["count"].to_i%>		
+		<% if (c > 0 || nc > 0) %>
+			<tr>
+				<td><%= department.name %> </td>
+				<td><%= department.school.name %> </td>
+				<td><%= c %>  / <%= nc %> (<%= p = (c+nc) == 0 ? 0 : 100 * c / (c+nc) %>%) </td> 
+				<td><%= r %> / <%= nr %> (<%= p = (r+nr) == 0 ? 0 : 100 * r / (r+nr) %>%)</td>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+		

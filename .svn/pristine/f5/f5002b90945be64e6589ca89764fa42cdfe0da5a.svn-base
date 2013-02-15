@@ -1,0 +1,15 @@
+<% reasons = Reason.where(:faculty_id => @faculty.id) %>
+<% has_comments = false%>
+<% reasons.each { |r| has_comments ||= (!r.comments.nil? && r.comments.length > 0) }%>
+<% if has_comments %>
+	<table class="profile">
+	  <tr>
+	  		<td class="success round" colspan=2>
+	  			<strong>Previously Used Comments (Please copy and paste below as appropriate):</strong><br/><hr>
+	  			<% reasons.each do |r|  %>
+	  				<%= "#{r.comments} <br/> <hr>".html_safe if (!r.comments.nil? && r.comments.length > 0)%>
+	  			<% end %>
+	  		</td>
+	  </tr>
+	</table>
+<% end %>

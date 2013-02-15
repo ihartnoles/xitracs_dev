@@ -1,0 +1,18 @@
+<h1>Faculty and Course Summary for <%= Semester.find(@semester_id).name %></h1>
+<table class="profile">
+  </tr>
+  		<td class="success round " colspan=2>
+  			<strong>Faculty Done:</strong> <%= @faculty_done %><br/>
+  			<strong>Faculty Not Done:</strong> <%=  @faculty_notdone  %><br/>
+  			<strong>Sections Done:</strong> <%= @sections_done %><br/>
+  			<strong>Sections Not Done:</strong> <%= @sections_notdone %><br/>
+  			<strong>Courses Done:</strong> <%= @courses_done %><br/>
+  			<strong>Courses Not Done:</strong> <%=  @courses_notdone  %><br/>
+  		</td>
+  		<td class="success round " colspan=2>
+  			<% @reason_list_notdone.each do |key,value| %>
+	  			<strong><%= Reason.review_state_to_s(key) %></strong> <%=  value  %><br/>
+  			<% end %>
+		</td>
+  </tr>
+</table>  

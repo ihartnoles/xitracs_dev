@@ -1,0 +1,21 @@
+<% if session[:group_name] == "admin" || session[:group_name] == "dean" || session[:read_only]  %>
+	<table class="profile">
+		<tr>
+			<td class="notice round" colspan=2>
+				<strong>Reviewed By:</strong> <%= @reason.reviewer %><br/>
+				<strong>Review Status:</strong> <%= @reason.review_state_to_s %><br/>
+				<strong>Review Reasons:</strong> 
+	  			<%= @reason.reviewreasons.map{|rr| rr.name}.join("; ") %>
+	  			<br/>
+				<strong>Review Comments:</strong> <%= @reason.review_comments_to_s.html_safe %><br/>
+	  		</td>
+		</tr>	
+	<tr>
+		<td class="notice round" colspan=2>
+			<strong>Dean Signoff By:</strong> <%= @reason.dean %><br/>
+			<strong>Deans Comments:</strong> <%= @reason.dean_comments_to_s.html_safe %><br/>
+  		</td>
+	</tr>	
+	</table>  
+<% end%>
+

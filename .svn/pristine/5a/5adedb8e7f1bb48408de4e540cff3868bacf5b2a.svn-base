@@ -1,0 +1,39 @@
+<table class="profile">
+  <tr>
+    <td class="main round">
+      <strong>Name:</strong> <%= @faculty.title.name.to_s + ' ' + @faculty.first_name.to_s + ' ' + @faculty.middle_name.to_s + ' ' + @faculty.last_name.to_s %><br/>
+  		<strong>Znumber:</strong> <%= @faculty.znumber %><br/>
+  		<strong>Email:</strong> <%= @faculty.email %><br/>
+  		<strong>Department:</strong> <%= @faculty.department.description %><br/>
+ 		<strong>Rank:</strong> <%= @faculty.rank.name %><br/>
+  		<strong>Employment Status:</strong> <%= @faculty.employmentstatus.name %><br/>
+  		<strong>Tenure Status:</strong> <%= @faculty.tenurestatus.name %><br/>
+  		<strong>Qualification:</strong> <%= @faculty.qualification.name %><br/>
+  		<strong>CV On File:</strong> <%= @faculty.cv_onfile ? "YES" : "NO"%><br/>      
+    </td>
+    <td class="sidebar round">
+  		<strong>Name:</strong> <%= @course.name %> <strong>Title:</strong> <%= @course.title %>  <strong>Credits</strong> <%= @course.credit %> <br/>
+	  	<% t_section_ids = Section.where(:course_id => @course.id, :semester_id => session[:semester_id]).map  {|row| row.id} %>
+  		<% t_section_ids_subset = Sectionenrollment.where(:section_id => t_section_ids, :faculty_id => @faculty.id).map  {|row| row.section_id} %>
+  		<% t_section_titles = Section.where(:id => t_section_ids_subset).map  {|row| row.title} %>
+  		<% t_section_names = Section.where(:id => t_section_ids_subset).map  {|row| row.name} %>
+  		<strong>Number of Sections:</strong> <%= t_section_titles.count %> <br/>
+  		<strong>Unique Section Titles: </strong><%= t_section_titles.uniq.map { |i| i.to_s }.join(",")%> <br/>
+  		<strong>Section Numbers: </strong><%= t_section_names.map { |i| i.to_s }.join(", ")%> <br/>
+  		<strong>Department:</strong> <%= @course.department.description %><br/>
+		<strong>Description:</strong> <%= strip_tags @course.description %><br/>
+  		<strong>Level description:</strong> <%= @course.level_description %><br/>
+  		<strong>Rules:</strong> <%= @course.rules %> <strong>Cip codes:</strong> <%= @course.cip_codes %>
+    </td>
+
+  </tr>
+  <tr>
+  		<td class="success round" colspan=2>
+  			<strong>Institutions:</strong><br/>
+  			<% Facultycredential.where(:faculty_id => @faculty.id).each do |fc|  %>
+  				<%= fc.full_details %><br/>
+  			<% end %>
+  		</td>
+  </tr>
+</table>
+

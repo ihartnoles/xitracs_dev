@@ -1,0 +1,55 @@
+<% provide(:title, 'Register') %>
+
+
+<script type="text/javascript">
+	function update_select() {
+
+		st_chair = document.getElementById('status_chair').checked;
+		// alert (st_chair);
+		// alert(document.getElementById("school").disabled)
+ 		if (st_chair == true) {
+			document.getElementById("school").disabled = true;
+			document.getElementById("department").disabled = false;
+		} else {
+			document.getElementById("school").disabled = false;
+			document.getElementById("department").disabled = true;			
+		}
+
+   }
+  
+</script>
+
+<% if @user == nil%>
+		Please Select your Status, College or Department and click on 'Request Login Access'.<br/>We will email you back once your account is active
+<br/>
+<br/>
+	
+	<%= form_tag("/register", :method => "post") do %>
+	
+		FAU Username: <%= text_field_tag 'fauid' %><br/>
+	
+		<%= radio_button_tag 'status', 'chair', true, {:onclick => "update_select();"} %> Department Level Access
+		<%= select_tag "department", options_from_collection_for_select(Department.order(:name), "id", "name"), :disabled => false	%>
+		<br/>	
+	
+		<%= radio_button_tag 'status', 'dean', false, {:onclick => "update_select();"} %> College Level Access
+		<%= select_tag "school", options_from_collection_for_select(School.where(:enabled => true).order(:name), "id", "name_and_description"), :disabled => true	%>
+		
+		<br/><br/>	
+	
+	  	<%= submit_tag "Request Login Access" %>
+	
+	<% end %>
+<% else %>
+		Thank you for your request for access. Your request has been emailed to mahesh@fau.edu 
+		and you should hear back within 1 business day. Should you have any questions, please
+		feel free to send an email.
+		
+		<br/>
+		Your information:
+		<br/>
+		 User ID: <%= @user.name %><br/>
+	    Access Level: <%= @user.group.name %><br/>
+	    College: <%= @user.school.name_and_description %><br/>
+			<%= "Department: #{@user.department.name}" if @user.group.name == 'chair' %><br/>
+<% end%>

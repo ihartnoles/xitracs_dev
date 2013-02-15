@@ -1,0 +1,26 @@
+<% provide :title, "Justify Course - Exception" %>
+
+<%= render 'wizard/faculty_and_course'%>
+<%= render 'wizard/reason_basic'%>
+<%= render 'wizard/review_results'%>
+
+<%= form_for @reason,  :url => '/wizard/process_justification_exception'  do |f| %>
+	<div class="info round">
+		<p>
+			When requesting an exception or submitting a terminal justification, the documents below should be used.  
+			"Instructions" are to assist you in preparing a compelling case for exception.  
+			<br><br>
+			The two documents titled "Narrative Justification" and "Course Qualifying Matrix" must be filled out and 
+			submitted to the Provost’s office immediately.  Until these documents are received, your roster 
+			will be considered incomplete.	
+		</p>	 	
+		<br/>
+		Please click on any of the following links below to download the appropriate documents:
+		<br/><br/>
+		<a href="/assets/Instructions and Sample Justification Documents.pdf">Instructions</a><br/>
+		<a href="/assets/Narrative Justification.docx">Narrative Justification</a><br/>
+		<a href="/assets/Course Qualifying Matrix.docx">Course Qualifying Matrix</a><br/>	
+	</div> 	
+	<%= f.submit  "Done", :id => "Done" %>
+
+<% end %>

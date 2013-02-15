@@ -1,0 +1,51 @@
+<% provide(:title, 'Credentialed Faculty and Courses That Have Not Been Signed Off') %>
+
+<script type="text/javascript">
+function popup(mylink,windowname,width,height)
+{
+	if (! window.focus)	return true;
+	var href;
+	if (typeof(mylink) == 'string')
+   	href=mylink;
+	else
+   	href=mylink.href;
+	window.open(href, windowname, 'width=' + width + ',height=' + height + ',scrollbars=yes');
+	return false;
+}
+</script>
+
+<center><h2>Credentialed Faculty and Courses That Have Not Been Signed Off for <%= Semester.find(@semester_id).name %></h2></center><br/>
+
+<% if !@results.nil? && @results.size > 0 %>
+	<table class="info round no-zebra">
+		<tr>
+			<th>Last Name</th><th>First Name</th><th>Department (College)</th><th>Z Number</th><th>Degree</th><th>Course ID</th><th>Course Title</th>
+			<th>Reason</th>
+			<th>Details</th>
+			<th>Sign Off</th>
+		</tr> 
+		<% @results.each do |r|%>
+	  		<tr>    
+				<td><%=r.faculty.last_name%></td>
+				<td><%=r.faculty.first_name%></td>
+				<td><%=r.faculty.department.name_and_school%></td>
+				<td><%=r.faculty.znumber%></td>
+	    		<td><%=r.faculty.qualification.name %></td>
+				<td><%=r.course.name%></td>
+				<td><%=r.course.title%></td>
+				<td><%=r.qualificationreason.name%></td>
+				<td>
+			 		<%= link_to "Click for Details", 
+			 						{:controller => 'wizard', :action => 'show_course_summary', :faculty_id => r.faculty.id, :course_id => r.course.id}, 
+        							:onClick=>"window.open(this.href,'Details','height=800, width=600'); return false;" 
+					%>
+				</td>
+				<td>
+			 		<%= button_to "Sign Off", {:action => 'mark_signed_off', :id => r.id},  :method => :get, :remote => true %>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+	<%= "Total Records : #{@results.size}" %><br/>
+<% end %>
+<%= "<br/>No Records Found<br/>".html_safe if !@results.nil? && @results.size == 0 %>

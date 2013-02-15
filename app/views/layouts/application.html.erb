@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= full_title(yield(:title)) %></title>
+    <%= render 'layouts/stylesheets' %>
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag :defaults %>
+    <%= csrf_meta_tag %>
+    <script src='https://www.google.com/jsapi'></script>
+  </head>
+  <body>
+    <div class="container">
+      <%= render 'layouts/header' %>
+      <%= render 'layouts/show_flash'%>
+      <section class="round">
+        <%= yield %>
+      </section>
+      <%= render 'layouts/footer' %>
+      <%# debug(params) %>
+      <%# debug(session) %>
+      <!--  if Rails.env.development? -->
+    </div>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<% provide :title, "Course List" %>
+
+<%= render 'wizard/faculty_details'%>
+
+<br/>
+<%= paginate @courses %>
+<table class="no-zebra box round">
+	<tr>
+		<th>Name</th>
+    	<th>Title</th>
+    	<th># Sections</th>
+    	<th>Unique Section Title(s)</th>
+    	<th>Department</th>
+    	<th>Level</th>
+ 	 	<th>Credits</th>
+ 	 	<th>Credential Completed</th> 	 	
+ 	 	<% if session[:group_name] == "admin" || session[:group_name] == "dean" || session[:read_only] %>
+	 	 	<th>Review Team Reviewed</th>
+			<th>Review Results</th>
+ 	 		<th>Dean Signoff</th>
+	 		<th>Reviewed By</th>
+ 		<% end %>
+	</tr>
+	<% @courses.each do |course| %>
+	  <% t_section_ids = Section.where(:course_id => course.id, :semester_id => session[:semester_id]).map  {|row| row.id} %>
+	  <% t_section_ids_subset = Sectionenrollment.where(:section_id => t_section_ids, :faculty_id => @faculty.id).map  {|row| row.section_id} %>
+	  <% t_section_enrollments_completed = Sectionenrollment.where(:section_id => t_section_ids, :faculty_id => @faculty.id).map  {|row| row.completed} %>
+	  <% t_section_titles = Section.where(:id => t_section_ids_subset).map  {|row| row.title} %>
+	  <% if session[:read_only] || session[:review] %>
+	  <tr onclick="window.location.href='<%= url_for :action => 'approve_course_for', :course_id => course.id, :faculty_id => session[:faculty_id]%>'">    
+	  <% else %>
+	  <tr onclick="window.location.href='<%= url_for :action => 'justify_course_for', :course_id => course.id, :faculty_id => session[:faculty_id]%>'">    
+	  <% end %>
+	    <td><%= course.name %></td>
+	    <td><%= course.title %></td>
+	    <td><%= t_section_titles.count %></td>
+	    <td><%= (t_section_titles.uniq.map { |i| i.to_s }.join(";</br>")).html_safe %></td>
+	    <td><%= course.department.name %></td>
+	    <td><%= course.level_description %></td>
+	    <td><%= course.credit %></td>
+	    <td><img src="<%= t_section_enrollments_completed.index(false).nil? ? '/assets/check.png' : '/assets/x.png' %>" width='20'/></td>
+  	 	 <% if session[:group_name] == "admin" || session[:group_name] == "dean" || session[:read_only] %>
+		  	 <td><img src="<%= Reason.is_review_done?(@faculty, course) ? '/assets/check.png' : '/assets/x.png' %>" width='20'/></td>
+			 <td><img src="<%= Reason.faculty_review_state_course_icon(@faculty, course) %>" width='20'/></td>
+		  	 <td><img src="<%= Reason.is_deansignedoff?(@faculty, course) ? '/assets/check.png' : '/assets/x.png' %>" width='20'/></td>
+		    <td> <%= Reason.reviewer(@faculty, course) %> </td>
+	    <% end %>    	
+	  </tr>
+	<% end %>
+</table>
+
+<%= link_to "Return to My Faculty", '/wizard/faculty', :class => 'xbutton'%>

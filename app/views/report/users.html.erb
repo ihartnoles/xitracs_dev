@@ -1,0 +1,17 @@
+<% provide(:title, 'User List') %>
+
+<% if !@users.nil? && @users.count > 0 %>
+	Total Users: <%=@users.count %><br/>
+	<table class="info round no-zebra">
+		<tr>
+			<th>Username</th><th>Group</th><th>Department/College</th>
+		</tr> 
+		<% @users.each do |user|%>
+			<tr>
+				<td><%=user.name%></td>
+				<td><%=user.group.name%></td>
+				<td><%=user.group.name == "dean" ? user.school.name_and_description : user.group.name == "chair" ? user.school.name + " : " + user.department.name : "N/A" %></td>
+			</tr>
+		<% end %>
+	</table>
+<% end %>

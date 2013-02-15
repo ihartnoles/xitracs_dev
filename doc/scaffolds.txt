@@ -1,0 +1,301 @@
+Miscellaneous
+=============
+
+# Download latest prod db:
+rm -f ~/Downloads/*.sql
+scp sacs:/backup/mysql/`date +"xitracs_prod.%Y-%m-%d.%H"`.sql.gz ~/Downloads/
+gzip -d ~/Downloads/*.sql.gz
+echo "drop database xitracs; create database xitracs; " | mysql -u root -p
+mysql -u root -p xitracs < ~/Downloads/xitracs_prod.*.sql
+
+# Download Extracts
+cd ~/Downloads
+mv xitracs-* old-xitracs
+mkdir `date +"xitracs-%m-%d-%Y"`
+rm xitracs ; ln -s `date +"xitracs-%m-%d-%Y"` xitracs ;  cd xitracs
+mkdir notused
+mv -f ../XITRACS_PERCENT_RESPONSIBLE.txt ../XITRACS_COURSE_SECTION_CREDENTIALS.txt notused
+mv -f ../XITRACS_DEPARTMENTS.txt ../XITRACS_SCHOOLS.txt  notused
+mv -f ../XITRACS_QUALIFICATIONS_AWARD.txt ../XITRACS_QUALIFICATIONS_TYPE.txt notused
+mv ../XITRACS_* .
+ls XITRACS_* | wc -l
+
+
+# Daily Update
+# Run these from the xitracs rails root directory
+xt
+rake db:migrate
+rake update_faculty[/Users/mahesh/Downloads/xitracs/XITRACS_FACULTY_MEMBERS.txt,update,nodebug] 
+rake update_facultycredentials[/Users/mahesh/Downloads/xitracs/XITRACS_FACULTY_CREDENTIALS.txt,update,nodebug] 
+rake update_courses[/Users/mahesh/Downloads/xitracs/XITRACS_COURSES.txt,ignore,update,nodebug]
+rake update_sections[/Users/mahesh/Downloads/xitracs/XITRACS_COURSE_SECTIONS.txt,update,nodebug] 
+rake update_sectionenrollments[/Users/mahesh/Downloads/xitracs/XITRACS_COURSE_SECTION_ENROLLMENTS.txt,update,nodebug]  
+
+# Update the Section Enrollments to "complete" any ones which were already completed before (i.e. another semester) 
+rake update_statuses[rebuild]
+ 
+# Update the Per-Semester 'Completed' Status
+rake update_semesters
+
+# Run Sanity Check 
+rake sanity_check
+
+# Rebuild Diagrams:
+rake diagram:all
+
+
+# Upload to SACS Production
+DIR=`basename ~/Downloads/xitracs*2013`
+ssh sacs "mv ~/Downloads/xitracs-* ~/Downloads/old ; mkdir ~/Downloads/$DIR ; rm ~/Downloads/xitracs ; ln -s ~/Downloads/$DIR ~/Downloads/xitracs"
+
+cd ~/Downloads/$DIR
+scp -r * sacs:~/Downloads/$DIR
+
+# Dump/Reload To Debug:
+# mysqldump -u root xitracs > /tmp/x.sql
+# echo "drop database xitracs; create database xitracs; " | mysql -u root 
+# mysql -u root xitracs < /tmp/x.sql
+
+# Prod -> Demo DB Transfer
+mysqldump -u root xitracs_prod > /tmp/x.sql
+echo "drop database xitracs; create database xitracs; " | mysql -u root
+mysql -u root xitracs < /tmp/x.sql
+rm -f /tmp/x.sql
+
+
+# Check record counts
+for i in *.txt ; do echo -n $i : ; echo -n " Before: " `wc -l < ../xitracs-03-24-2012/$i`; echo  " After : " `wc -l < $i`; done
+
+for i in *.txt ; do echo -n $i : ; diff   ../xitracs-03-21-2012/$i  $i | wc -l ; done
+
+Subversion
+==========
+
+-- Check in for first time
+svn import . https://visualsvn.irm.ad.fau.edu/svn/xitracs/trunk/xitracs_roster
+cd .. 
+mv xitracs_roster xitracs_roster.old
+svn co  https://visualsvn.irm.ad.fau.edu/svn/xitracs/trunk/xitracs_roster
+cd xitracs_roster
+bundle update
+
+
+-- SQL
+
+
+# Courses and sections for a specific instructor
+
+select c.name "Course ID", c.title "Course Title", s.title "Section Title", s.name "Section ID", f.last_name "Last Name", 
+f.first_name "First Name", se.completed "Completed", sem.name "Semester"
+from faculties f, courses c, sections s, sectionenrollments se,  semesters sem
+where se.faculty_id = f.id and se.section_id = s.id and s.course_id = c.id and s.semester_id = sem.id
+and f.znumber='Z00013434' 
+order by section_id;
+
+
+# Updating Course for a Faculty
+select c.id, c.facultycredential_id "FC.id"  from credits c, faculties f where c.faculty_id = f.id and f.znumber='Z00013434' ;
+select fc.id, fc.qualification_institution, fc.qualification_field from facultycredentials fc, faculties f where 
+fc.faculty_id = f.id and f.znumber='Z00013434' ;
+
+update credits set  facultycredential_id = 5377 where facultycredential_id = 789;
+
+
+
+# Table Row count 
+SELECT table_name "Table Name", table_rows "Rows" FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'xitracs' ORDER by table_name; 
+
+# List of departments
+select d.id,d.name,d.school_id,s.name from departments d, schools s where d.school_id = s.id  order by d.name;
+
+# List multi-professor sections
+
+select s.name "Section ID", s.description "Course Name", c.name "Course ID", d.name "Department", sch.name "College", f.last_name "Last Name", f.znumber "Z Number"  
+from sectionenrollments se, sections s, courses c, departments d, faculties f, schools sch  
+where se.section_id = s.id and s.course_id = c.id and c.department_id = d.id and d.school_id = sch.id  and se.faculty_id = f.id  
+and se.section_id in (select se.section_id from sectionenrollments se group by se.section_id having count(se.section_id) > 1)
+order by sch.name, s.description;
+
+#Summary of reasons
+select f.last_name "Last Name", f.first_name "First Name", d.name "Department", c.name "Course ID", q.name "Qualification Reason" from reasons r,faculties f, courses c, departments d, qualificationreasons q  where r.faculty_id = f.id and r.course_id = c.id and r.qualificationreason_id = q.id and f.department_id = d.id order by d.id;
+
+
+# Faculty Credentials that were updated for a specific college
+
+select fc.email "Email", f.znumber "ZNumber", d.name "Department", s.name "College", qa.name "Qualification Award", fc.qualification_institution "Institution", fc.qualification_field "Field", fc.qualification_year "Year" from facultycredentials fc, qualificationawards qa, faculties f, departments d, schools s where fc.faculty_id = f.id and fc.qualificationaward_id = qa.id and f.department_id = d.id and d.school_id = s.id and (date(fc.updated_at) = '2012-03-18' or date(fc.created_at) ='2012-03-19') and s.name='SC' order by f.znumber;
+
+
+#  Instructors for a course and it's sections
+
+select c.name "Course ID", c.title "Course Title", s.name "Section ID", f.last_name "Last Name", f.first_name "First Name"
+from faculties f, courses c, sections s, sectionenrollments se,
+where se.faculty_id = f.id and se.section_id = s.id and s.course_id = c.id and c.name='ACG 2021' 
+order by section_id;
+
+
+# Show faculty who have not passed review
+
+
+select f.last_name "Last Name", f.first_name "First Name", c.name "Course ID", c.title "Course Title" ,r.review_comments "Reviewer Comments" 
+from reasons r, faculties f, courses c
+where r.faculty_id = f.id and r.course_id = c.id 
+and f.department_id in (select id from departments where school_id = 17)
+and r.review_state = 2;
+
+
+# Find Faculty that belong to a certain credit
+
+select  c.course_name "Course Name", substr(c.course_description,1,30) "Course Description", f.first_name "First Name", 
+f.last_name "Last Name", f.znumber "Z Number" from credits c, faculties f where c.faculty_id=f.id 
+and course_name like '%6905%' 
+group by faculty_id;
+
+
+# List of users and permissions
+
+select u.name, g.name, d.name, s.name 
+from users u, groups g, departments d, schools s 
+where u.group_id = g.id and u.department_id = d.id and u.school_id = s.id;
+ 		
+   
+# MISC
+
+select s.* from sections s, sectionenrollments se, faculties f where  s.id = se.section_id and f.id = se.faculty_id and f.znumber='Z00008499';
+
+select count(distinct f.id) count
+from faculties f, departments d, donesemesters ds, sectionenrollments se, sections s
+where ds.faculty_id = f.id
+and f.department_id = d.id 
+and se.faculty_id = f.id
+and se.section_id = s.id
+and s.semester_id = ds.semester_id
+and d.id = 26 and ds.semester_id = 3 and ds.completed=1;
+ 
+# Switching Faculty Credits to a new Credential
+ 
+select c.facultycredential_id "Faculty Credential ID", c.course_name,  fc.qualification_name, fc.qualification_institution, fc.qualification_field
+	from credits c, faculties f, facultycredentials fc
+	where c.faculty_id = f.id and c.facultycredential_id = fc.id  and f.znumber = 'Z15248853';
+select fc.id, fc.qualification_name, fc.qualification_institution, fc.qualification_field  from facultycredentials fc, faculties f 
+	where fc.faculty_id =  f.id and f.znumber = 'Z15248853';
+update credits c, faculties f set c.facultycredential_id = 5180 
+	where  c.faculty_id = f.id and f.znumber = 'Z15248853';
+ 
+OLD Stuff
+=========
+
+For Importing Fall 2011:
+========================
+1) Load DB Dump
+echo "drop database xitracs; create database xitracs; " | mysql -u root 
+mysql -u root xitracs < ~/Downloads/xitracs_prod.2012-04-14.16.sql
+
+2) Rails Migration
+rake db:migrate
+
+4) Cleanup semester field in Section table (Move from name:string to semester_id)
+rake update_semesters[move]
+
+3) Import Data (merged files of Spring2012 and Fall2011)
+rake update_courses[/Users/mahesh/Downloads/xitracs/XITRACS_COURSES.txt,onlycreate]
+rake update_sections[/Users/mahesh/Downloads/xitracs/XITRACS_COURSE_SECTIONS.txt] 
+rake update_sectionenrollments[/Users/mahesh/Downloads/xitracs/XITRACS_COURSE_SECTION_ENROLLMENTS.txt]  
+
+4) Cleanup Data
+rake update_statuses[rebuild]    # Auto-credential faculty for same courses in a new semester
+rake update_semesters            # Update faculty donesemester status
+
+
+
+
+Create ORM
+==========
+
+rails generate controller StaticPages home help --no-test-framework
+rails generate scaffold Group name:string 
+rails generate scaffold User name:string remember_token:string group_id:integer department_id:integer --no-test-framework
+rails generate migration AddGroups
+rails generate migration AddDefaultUsers
+rails generate controller Sessions --no-test-framework
+
+rails generate scaffold keyvalue key:string value:string 
+rails generate scaffold title name:string
+rails generate scaffold rank name:string
+rails generate scaffold employmentstatus name:string
+rails generate scaffold tenurestatus name:string
+
+rails generate scaffold school name:string description:string
+rails generate scaffold department name:string description:string school_id:integer
+rails generate scaffold qualification name:string level:integer
+rails generate scaffold qualificationaward name:string qualification_id:integer 
+rails generate scaffold course name:string title:string description:string department_id:integer level_description:string credit:integer rules:string cip_codes:string
+rails generate scaffold section name:string title:string description:string semester:string course_id:integer 
+rails generate scaffold faculty znumber:string email:string first_name:string middle_name:string last_name:string title_id:integer department_id:integer rank_id:integer employmentstatus_id:integer tenurestatus_id:integer qualification_id:integer cv_onfile:string
+rails generate scaffold sectionenrollment section_id:integer faculty_id:integer email:string section_role:string
+rails generate scaffold facultycredential faculty_id:integer email:string qualificationaward_id:integer qualification_name:string qualification_institution:string qualification_field:string qualification_year:string transcript_on_file:string cip_codes:string
+rails generate scaffold sectioncredential faculty_id:integer email:string qualificationaward_id:string qualification_name:string qualification_institution:string qualification_year:string  section_id:integer
+rails generate scaffold Qualificationreason name:string description:string details:boolean
+rails generate scaffold Reason faculty_id:integer course_id:integer qualificationreason_id:integer comments:string    --no-test-framework
+rails generate scaffold Credit faculty_id:integer course_id:integer facultycredential_id:integer course_name:string course_description:string course_year:string course_credits:float  --no-test-framework
+
+rails generate controller StaticPages home help --no-test-framework
+rails generate scaffold Group name:string 
+rails generate scaffold User name:string remember_token:string group_id:integer department_id:integer --no-test-framework
+rails generate migration AddGroups
+rails generate migration AddDefaultUsers
+rails generate controller Sessions --no-test-framework
+rails generate scaffold Semester name:string --no-test-framework
+rails generate scaffold Reviewreason name:string review_ok:boolean --no-test-framework
+
+rails generate migration AddReviewFields
+rails generate migration AddSemesterToSections
+rails generate migration AddReviewReasons
+rails generate migration AddFall2011andSpring2012Semesters
+rails generate scaffold Donesemester faculty_id:integer semester_id:integer completed:boolean --no-test-framework
+rails generate controller Report --no-test-framework
+rails generate controller Quick --no-test-framework
+
+rails generate migration AddReviewedStatus
+
+rails generate model ReviewreasonsReasons reason_id:integer reasonreview_id:integer --no-test-framework
+
+rails generate migration AddReasonsReviewreasonsJoinTable --no-test-framework
+
+rails generate migration AddFall2012andMed2012Med2013Semesters
+rails generate migration AddSummer2012Spring2013Semesters
+
+-- Build DB
+
+rake db:migrate
+
+-- Build Indexes
+
+rails generate migration Index01
+
+rake db:migrate
+
+-- Additional controllers
+
+
+
+-- Data Import
+
+rake csv_model_update[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_SCHOOLS.txt,School]  
+rake csv_model_update[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_DEPARTMENTS.txt,Department]
+rake csv_model_update[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_QUALIFICATIONS_TYPE.txt,Qualification]
+rake csv_model_update[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_QUALIFICATIONS_AWARD.txt,Qualificationaward] 
+rake update_faculty[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_FACULTY_MEMBERS.txt,update] 
+rake update_courses[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_COURSES.txt]
+rake update_sections[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_COURSE_SECTIONS.txt] 
+rake update_sectionenrollments[/Users/mahesh/Downloads/XITRACS-2012-03-02/XITRACS_COURSE_SECTION_ENROLLMENTS.txt]  
+
+# Full Data Update
+rake csv_model_update[/Users/mahesh/Downloads/xitracs/XITRACS_SCHOOLS.txt,School]  
+rake csv_model_update[/Users/mahesh/Downloads/xitracs/XITRACS_DEPARTMENTS.txt,Department]
+rake csv_model_update[/Users/mahesh/Downloads/xitracs/XITRACS_QUALIFICATIONS_TYPE.txt,Qualification]
+rake csv_model_update[/Users/mahesh/Downloads/xitracs/XITRACS_QUALIFICATIONS_AWARD.txt,Qualificationaward] 
+echo "update qualificationawards set name='Unearned Degree' where name='Unknown Degree'; " | mysql -u root xitracs 
+echo "Rank.create(:name => 'Assistant University Librarian')" | rails console
+
+
+

@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  znumber: MyString
+  email: MyString
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  title_id: 1
+  department_id: 1
+  rank_id: 1
+  employmentstatus_id: 1
+  tenurestatus_id: 1
+  qualification_id: 1
+  cv_onfile: MyString
+
+two:
+  znumber: MyString
+  email: MyString
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  title_id: 1
+  department_id: 1
+  rank_id: 1
+  employmentstatus_id: 1
+  tenurestatus_id: 1
+  qualification_id: 1
+  cv_onfile: MyString

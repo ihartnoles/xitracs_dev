@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Faculty:</b>
+  <%= @donesemester.faculty_id %>
+</p>
+
+<p>
+  <b>Semester:</b>
+  <%= @donesemester.semester_id %>
+</p>
+
+<p>
+  <b>Completed:</b>
+  <%= @donesemester.completed %>
+</p>
+
+
+<%= link_to 'Edit', edit_donesemester_path(@donesemester) %> |
+<%= link_to 'Back', donesemesters_path %>

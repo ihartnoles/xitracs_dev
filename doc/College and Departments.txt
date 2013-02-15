@@ -1,0 +1,77 @@
++----+------+--------------------------------+
+| id | name | description                    |
++----+------+--------------------------------+
+|  1 | UP   | Coll Design and Social Inquiry | 
+|  3 | UL   | University Libraries           | 
+|  4 | HC   | H.L. Wilkes Honors College     | 
+|  8 | NU   | C.E. Lynn Coll of Nursing      | 
+| 11 | 00   | No College Designated          | 
+| 13 | BA   | College of Business            | 
+| 14 | ED   | College of Education           | 
+| 15 | AL   | D. F. Schmidt Col Arts Letters | 
+| 16 | EG   | Coll Engineering Computer Sci  | 
+| 17 | SC   | C.E. Schmidt Coll of Science   | 
+| 21 | BI   | C.E. Schmidt Coll  Med         | 
++----+------+--------------------------------+
++----+----------------------------------------------+-----------+------+
+| id | name                                         | school_id | name |
++----+----------------------------------------------+-----------+------+
+| 17 | Accounting                                   |        13 | BA   | 
+|  3 | Anthropology                                 |        15 | AL   | 
+| 53 | Architecture                                 |         1 | UP   | 
+|  4 | Arts & Letters Dean's Office                 |        15 | AL   | 
+| 44 | Biological Sciences                          |        17 | SC   | 
+| 25 | Biomedical Science                           |        21 | BI   | 
+| 18 | Business Dean's Office                       |        13 | BA   | 
+| 45 | Chemistry & Biochemistry                     |        17 | SC   | 
+| 35 | Civil, Environmental & Geomatics Engineering |        16 | EG   | 
+|  5 | Communication & Multimedia Studies           |        15 | AL   | 
+| 27 | Communication Science & Disorders            |        14 | ED   | 
+| 36 | Computer & Electrical Eng & Comp Science     |        16 | EG   | 
+| 28 | Counselor Education                          |        14 | ED   | 
+| 54 | Criminology & Criminal Justice               |         1 | UP   | 
+| 46 | Ctr for Complex Systems & Brain Sciences     |        17 | SC   | 
+|  6 | Ctr for Women Gender & Sexuality Studies     |        15 | AL   | 
+| 29 | Curriculum, Culture & Educ Inquiry           |        14 | ED   | 
+| 55 | Design & Social Inquiry Dean's Office        |         1 | UP   | 
+| 19 | Economics                                    |        13 | BA   | 
+| 30 | Ed Leadership & Research Methodology         |        14 | ED   | 
+| 31 | Education Dean's Office                      |        14 | ED   | 
+| 37 | Engineering Dean's Office                    |        16 | EG   | 
+|  7 | English                                      |        15 | AL   | 
+| 32 | Exceptional Student Education                |        14 | ED   | 
+| 33 | Exercise Science & Health Promotion          |        14 | ED   | 
+| 20 | Finance                                      |        13 | BA   | 
+|  1 | Freshman Advising Services                   |        11 | 00   | 
+| 47 | Geosciences                                  |        17 | SC   | 
+|  8 | History                                      |        15 | AL   | 
+| 39 | Honor's College Dean's Office                |         4 | HC   | 
+| 40 | Honor's College Humanities                   |         4 | HC   | 
+| 41 | Honor's College Math & Sciences              |         4 | HC   | 
+| 42 | Honor's College Social Sciences              |         4 | HC   | 
+| 21 | Industry Studies                             |        13 | BA   | 
+| 22 | Info Technology & Operations Mgmt            |        13 | BA   | 
+| 26 | Integrated Medical Science                   |        21 | BI   | 
+|  9 | Jewish Studies                               |        15 | AL   | 
+| 10 | Lang, Linguistics & Comp Lit                 |        15 | AL   | 
+| 23 | Management                                   |        13 | BA   | 
+| 24 | Marketing                                    |        13 | BA   | 
+| 48 | Mathematical Sciences                        |        17 | SC   | 
+| 11 | Music                                        |        15 | AL   | 
+| 43 | Nursing                                      |         8 | NU   | 
+| 38 | Ocean & Mechanical Engineering               |        16 | EG   | 
+| 12 | Philosophy                                   |        15 | AL   | 
+| 49 | Physics                                      |        17 | SC   | 
+| 13 | Political Science                            |        15 | AL   | 
+| 50 | Psychology                                   |        17 | SC   | 
+| 56 | Public Administration                        |         1 | UP   | 
+| 51 | Science Dean's Office                        |        17 | SC   | 
+| 52 | Science Student Services                     |        17 | SC   | 
+| 57 | Social Work                                  |         1 | UP   | 
+| 14 | Sociology                                    |        15 | AL   | 
+| 34 | Teaching and Learning                        |        14 | ED   | 
+| 15 | Theatre & Dance                              |        15 | AL   | 
+|  2 | Undergraduate Studies Dean's Office          |        11 | 00   | 
+| 58 | Urban & Regional Planning                    |         1 | UP   | 
+| 16 | Visual Arts & Arts History                   |        15 | AL   | 
++----+----------------------------------------------+-----------+------+

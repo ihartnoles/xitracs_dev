@@ -1,0 +1,24 @@
+<% provide(:title, 'Search by Credit Course Name') %>
+
+<%= form_tag("/report/search_by_credit_course", :method => "get") do %>
+	Course Keyword: <%= text_field_tag 'keyword' %>
+  	<%= submit_tag "Search" %>
+<% end %>
+<br/>
+
+<% if !@results.nil? && @results.count > 0 %>
+	<table class="info round no-zebra">
+		<th>Course Name</th><th>Course Description</th><th>Last Name</th><th>First Name</th><th>Z Number</th>
+		<% @results.each do |row|%>
+			<tr>
+				<td><%= row['course_name'] %></td>
+				<td><%= row['course_description'] %></td>
+				<td><%= row['last_name'] %></td>
+				<td><%= row['first_name'] %></td>
+				<td><%= row['znumber'] %></td>
+			</tr>
+		<% end %>
+	</table>
+	<a href=<%=url_for :action => 'search_by_credit_course', :controller => 'report', :csv => 'yes', :keyword => "#{@keyword}"%>>Download CSV File</a>
+<% end %>
+<%= "<br/>No Records Found<br/>".html_safe if !@results.nil? && @results.count == 0 %>

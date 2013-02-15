@@ -1,0 +1,26 @@
+<% provide(:title, 'Faculty Who Have Not Passed Review and Not Signed Off by Dean') %>
+
+<center><h2>Faculty Who Have Not Passed Review and Not Signed Off by Dean for <%= Semester.find(@semester_id).name %></h2></center><br/>
+
+<% if !@results.nil? && @results.count > 0 %>
+	Total: <%=@results.size %><br/>
+	<table class="info round no-zebra">
+		<tr>
+			<th>Last Name</th><th>First Name</th><th>Z Number</th><th>Degree</th><th>Course ID</th><th>Course Title</th><th>Review Reasons</th><th>Review Comment</th>
+		</tr> 
+		<% @results.each do |r|%>
+  		<tr onclick="window.location.href='<%= url_for :action => 'show_courses_for', :controller => 'wizard', :faculty_id => r.faculty.id %>'">    
+				<td><%=r.faculty.last_name%></td>
+				<td><%=r.faculty.first_name%></td>
+				<td><%=r.faculty.znumber%></td>
+	    		<td><%=r.faculty.qualification.name %></td>
+				<td><%=r.course.name%></td>
+				<td><%=r.course.title%></td>
+	  			<td><%=r.reviewreasons.map{|rr| rr.name}.join("; ")%></td>
+				<td><%=r.review_comments%></td>
+			</tr>
+		<% end %>
+	</table>
+	<a href=<%=url_for :action => 'report_not_passed_and_not_deansignoff', :controller => 'report', :csv => 'yes', :search_by => @search_by, :search_id => @search_id %>>Download CSV File</a>
+<% end %>
+<%= "<br/>No Records Found<br/>".html_safe if !@results.nil? && @results.count == 0 %>

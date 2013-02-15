@@ -1,0 +1,31 @@
+<% provide(:title, 'My Courses') %>
+
+<%= paginate @courses %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Title</th>
+    <th>Department</th>
+    <th>Level description</th>
+    <th>Credit</th>
+    <th>Cip codes</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @courses.each do |course| %>
+  <tr>
+    <td><%= course.name %></td>
+    <td><%= course.title %></td>
+    <td><%= course.department.name %></td>
+    <td><%= course.level_description %></td>
+    <td><%= course.credit %></td>
+    <td><%= course.cip_codes %></td>
+    <td><%= link_to 'Show', course %></td>
+    <td><%= link_to 'Edit', edit_course_path(course) %></td>
+    <td><%= link_to 'Destroy', course, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>

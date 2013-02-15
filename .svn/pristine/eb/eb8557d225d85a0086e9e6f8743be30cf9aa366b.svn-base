@@ -1,0 +1,21 @@
+<% provide(:title, 'List of faculty and the courses they are credentialed to teach') %>
+
+<% if !@results.nil? && @results.count > 0 %>
+	Total: <%=@results.count %><br/>
+	<table class="info round no-zebra">
+		<tr>
+			<th>Last Name</th><th>First Name</th><th>Z Number</th><th>Department (College)</th><th>Course</th>
+		</tr> 
+		<% @results.each do |r|%>
+  			<tr>    
+				<td><%=r.faculty.last_name%></td>
+				<td><%=r.faculty.first_name%></td>
+				<td><%=r.faculty.znumber%></td>
+	    		<td><%=r.faculty.department.name_and_school %></td>
+	    		<td><%=r.course.name%> (<%=r.course.title%>)</td>
+			</tr>
+		<% end %>
+	</table>
+	<a href=<%=url_for :action => 'report_faculty_course', :controller => 'report', :csv => 'yes', :search_by => @search_by, :search_id => @search_id %>>Download CSV File</a>
+<% end %>
+<%= "<br/>No Records Found<br/>".html_safe if !@results.nil? && @results.count == 0 %>

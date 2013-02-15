@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render 'layouts/stylesheets' %>
+  </head>
+  <body>
+    <div class="container">
+      <section class="round">
+        <%= yield %>
+      </section>
+    </div>
+  </body>
+</html>

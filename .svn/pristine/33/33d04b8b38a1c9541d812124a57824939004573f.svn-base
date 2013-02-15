@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  faculty_id: 1
+  email: MyString
+  qualificationaward_id: MyString
+  qualification_name: MyString
+  qualification_institution: MyString
+  qualification_field: MyString
+  qualification_year: MyString
+  transcript_on_file: MyString
+  cip_codes: MyString
+
+two:
+  faculty_id: 1
+  email: MyString
+  qualificationaward_id: MyString
+  qualification_name: MyString
+  qualification_institution: MyString
+  qualification_field: MyString
+  qualification_year: MyString
+  transcript_on_file: MyString
+  cip_codes: MyString

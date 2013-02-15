@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    User ID: <%= @user.name %><br/>
+    Access Level: <%= @user.group.name %><br/>
+    College: <%= @user.school.name_and_description %><br/>
+    Department: <%= @user.department.name %><br/>
+  </body>
+</html>

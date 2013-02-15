@@ -1,0 +1,21 @@
+<% provide :title, "Available Reports" %>
+
+<ul>
+	<% if session[:group_name] == "admin" %>
+		<li><a href='/report/users'>User List</a></li>	
+	<% end %>
+	<li><a href='/report/report_criteria?report_name=report_faculty_course&ask_faculty_or_course=true&ask_semester=false'>List Credentialed Courses and Faculty</a></li>
+	<li><a href='/report/report_criteria?report_name=summary&ask_group=false'>Summary</a></li>	
+	<li><a href='/report/report_criteria?report_name=course_and_faculty_summary&ask_group=false'>Course And Faculty Summary</a></li>	
+	<li><a href='/report/report_criteria?report_name=report_not_passed&ask_deansignoff=true'>Faculty Report By Any Reason and Dean Signoff</a></li>	
+	<li><a href='/report/report_criteria?report_name=report_not_passed&ask_review_reasons=true&ask_reviewstate=true&ask_deansignoff=true'>Faculty Report By Review State, Reason and Dean Signoff</a></li>		
+	<!--
+	<li><a href='/report/report_criteria?report_name=report_not_passed_and_not_deansignoff'>Faculty Not Passed Review Dean Signoff (TO BE REMOVED)</a></li>		
+	-->
+	<li><a href='/report/report_criteria?report_name=report_credentialing_not_completed'>GAP Report : Faculty Credentialing Not Completed</a></li>	
+	<li><a href='/report/report_criteria?report_name=report_credentialing&ask_qualificationreasons=true'>GAP Report : Faculty Credentialing Completed (By Qualification)</a></li>	
+	<li><a href='/report/report_criteria?report_name=report_reviewstate&ask_reviewstate=true'>Review Status</a></li>	
+	<li><a href='/report/search_by_credit_course'>Search - Search Course Credits</a></li>	
+</ul>
+
+

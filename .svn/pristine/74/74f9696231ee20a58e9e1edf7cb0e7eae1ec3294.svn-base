@@ -1,0 +1,32 @@
+<% provide :title, "Login" %>
+
+<%= form_tag '/sessions/create' do %>
+	<div class="field">
+		<%= label_tag 'USername:' %><br/>
+		<%= text_field_tag :name, params[:name], :class => "title" %>
+	</div>
+
+	<div class="field">
+		<%= label_tag 'Password:' %> <br/>
+		<%= password_field_tag :password, params[:password], :class => "title" %>
+	</div>
+	<div class="field">
+		<%= label_tag 'Semester:' %> <%= select_tag :semester_id, options_from_collection_for_select(Semester.find(:all), "id", "name", Semester.find_by_name("Fall 2012").id) %>
+	</div>
+	<div class="field">
+		<%= label_tag 'Reviewer:' %> <%= select_tag :review, "<option>No</option><option>Yes</option>".html_safe %> (Only For FAU SACS Review Team Members)
+	</div>
+	<br/>
+	<div class="actions">
+  		<%= submit_tag "Login" %>
+	</div>
+<% end %>
+
+<br/>
+<% if request.port != 3001 %>
+<br/>
+<br/>
+<h3><a href="/register">Click Here To Request A Login</a></h3> 
+<% end %>
+
+

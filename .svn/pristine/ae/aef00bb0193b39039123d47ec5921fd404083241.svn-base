@@ -1,0 +1,15 @@
+<% provide :title, "Approve Course Done" %>
+
+
+<%= render 'wizard/faculty_and_course'%>
+
+<br/>
+
+<div class="info round">
+	
+	<p>Course Approval Completed.</p> <br/>
+		
+</div>
+
+<%= link_to "Return to Courses", '/wizard/show_courses_for', :class => 'xbutton'%>
+ 	

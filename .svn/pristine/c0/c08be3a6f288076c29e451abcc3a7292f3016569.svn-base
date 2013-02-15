@@ -1,0 +1,146 @@
+<% provide :title, "Additional Course Justification" %>
+
+<%= render 'wizard/faculty_and_course'%>
+<%= render 'wizard/reason_basic'%>
+<%= render 'wizard/review_results'%>
+<%= render 'wizard/existing_comments'%>
+
+<br/>
+
+
+<script type="text/javascript">
+function askyesno() {
+	return confirm("Please remember that justification courses can be used for multiple FAU courses. Please only delete a course if you are sure it will not be used as justification for this faculty for ANY FAU course. Proceed with Delete? ");
+}  
+
+function popup(mylink,windowname,width,height)
+{
+	if (! window.focus)	return true;
+	var href;
+	if (typeof(mylink) == 'string')
+   	href=mylink;
+	else
+   	href=mylink.href;
+	window.open(href, windowname, 'width=' + width + ',height=' + height + ',scrollbars=yes');
+	return false;
+}
+</script>
+
+<div>
+	<fieldset style="background:#FFEBE0" class="round">
+		<legend>Qualification and Comments</legend>	
+  					<strong>Reason:</strong> <%= @reason.qualificationreason.name %><br/><br/>
+						<%= form_for @reason, :url => '/wizard/process_justification_coursework' do |f| %>
+						<%= hidden_field  :reason, :faculty_id %>
+						<%= hidden_field  :reason, :course_id %>
+						<%= hidden_field  :reason, :id %>
+	 					<%= f.text_area :comments, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications" %> 	
+    					<br/>
+    					Click <%= f.submit  "Save", :id => "Next_1", :disabled => current_user.ro %> to save this Qualification/Comment
+						<% end %>				
+	</fieldset>
+</div>
+
+<div>		
+	<fieldset style="background:#FFEFE6" class="round">
+	<legend>Courses</legend>
+	<table class="no-hover">
+	  <tr>
+	    <th>ID</th>
+	    <th>Name</th>
+	    <th>Year</th>
+	  	 <th>Credits</th>
+	    <th>Institution</th>
+	    <th></th>
+	  </tr>	
+	   <% total_credits = 0.0 %>
+		<% @credits.each do |credit| %>
+ 			<tr>
+		  		<%= form_for credit,  :url => '/wizard/process_justification_coursework'  do |f| %>
+					<%= hidden_field  :credit, :faculty_id %>
+					<%= hidden_field_tag  'credit[id]', credit.id  %>	
+			    	<td><%= credit.course_name %></td>
+			    	<td><%= credit.course_description %></td>
+			    	<td><%= credit.course_year %></td>
+			    	<td><%= credit.course_credits.to_s + (credit.semester_credits ? " (Semester)" : " (Quarter)") %> </td>
+			    	<td><%= credit.facultycredential.full_details if credit.facultycredential  %></td>
+		  		 	<td><%= f.submit  "Delete", :id => "Delete", :onclick => "return askyesno();" %></td>
+	  		 	<% end %>
+	  		 	<% if credit.semester_credits %>
+		   		<% total_credits = total_credits + credit.course_credits.to_f %>
+		   	<% else %>
+		   		<% total_credits = total_credits + (credit.course_credits.to_f * 2.0) / 3.0 %>
+		   	<% end %>
+		 	</tr>	
+		<% end %>
+	</table>	
+	Total Credits: <%= "%3.2f" % total_credits.to_s  %>
+	<img src="<%= total_credits >= 18 ? '/assets/check.png' : '/assets/x.png'%>" width="20"/>
+	</fieldset>
+
+	<fieldset style="background:#FFEBE0" class="round">
+	<legend>
+		Add Course Credit: 
+	</legend>
+	<%= form_for @credit,  :url => '/wizard/process_justification_coursework'  do |f| %>
+		<%= hidden_field  :credit, :faculty_id %>
+		<table class="no-zebra no-hover">
+			<tr>	
+				<th>Course ID (ex: CDA 6031)</th>
+				<th>Course Name (ex: Data Mining)</th>
+				<th>Course Year (ex: 1995)</th>
+				<th>Course Credits (ex: 3)</th>
+				<th>Quarter/Semester</th>
+				</tr>
+			<tr>
+				<td><%= f.text_field :course_name, :placeholder =>  "CDA 6031", :class => "text" %></td>
+				<td><%= f.text_field :course_description, :placeholder =>  "Data Mining", :class => "text"  %></td>
+				<td><%= f.text_field :course_year, :placeholder =>  "1995", :class => "text"  %></td>
+				<td><%= f.text_field :course_credits,:placeholder =>  "3", :class => "text"  %></td>
+				<td>
+					<%= f.radio_button :semester_credits, "true", :checked => @credit.semester_credits == true %> Semester<br/>
+					<%= f.radio_button :semester_credits, "false", :checked => @credit.semester_credits == false %> Quarter<br/>
+				</td>		
+			</tr>
+			<tr>
+				<td><br/><br/></td>
+			</tr>
+		</table>
+		<table class="no-zebra no-hover">
+			<tr>
+				<td>
+					<label>Institution: 	</label>
+					<%= collection_select(:credit, 
+												    :facultycredential_id, 
+												    Facultycredential.where(:faculty_id => @faculty.id), 
+												    :id, 
+												    :full_details) %><br/><br/>
+				</td>
+				<td>
+					<fieldset style="background:#CCEEE0" >
+						<legend>Questions?</legend>
+						<a href="/SelectingCoursework.html" onClick="return popup(this,'Selecting Coursework', 800, 400)">How to Select Coursework</a><br/>
+					   <a href="/AddingCoursework.html" onClick="return popup(this,'Adding Coursework', 800, 400)">How to Document Coursework</a>
+					   <br/>
+					</fieldset>
+				</td>
+    		</tr>
+
+	    	<tr>
+		    	<td> 	
+		 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
+		 		</td>
+	 		</tr>
+			<tr>
+				<td>
+					<hr>Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro %> to complete this credential.
+	 			</td>
+ 			</tr>
+		</table>
+	<% end %>
+	</fieldset>
+</div>		
+
+<%= link_to "Return to Courses", '/wizard/show_courses_for', :class => 'xbutton'%>
+<%= link_to "Return to My Faculty", '/wizard/faculty', :class => 'xbutton'%>
+

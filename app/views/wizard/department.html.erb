@@ -1,0 +1,20 @@
+<% provide(:title, 'Departments') %>
+<% if current_user.group.name == "admin" %>
+	<%= link_to "Return to Colleges", '/start', :class => "xbutton" %>
+<% else %>
+	<%= link_to "Return to Summary", '/start', :class => "xbutton" %>
+<% end%> 
+
+<table class="no-zebra box round">
+	<% if current_user.group.name == "admin" || current_user.group.name == "dean" %>
+		<tr onclick="window.location.href='<%= url_for :action => 'faculty', :school_id => session[:school_id] %>'">
+			<td>All Departments in this College</td>
+		</tr>
+	<% end %>
+	<% @departments.each do |department| %>
+		<tr onclick="window.location.href='<%= url_for :action => 'faculty', :department_id => department.id %>'">    
+ 			<td><%= department.name %></td>
+		</tr>
+	<% end %>
+</table>
+

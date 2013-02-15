@@ -1,0 +1,9 @@
+<% provide :title, "Quick Tasks" %>
+
+<ul>
+	<% if session[:group_name] == "admin" || session[:group_name] == "dean"  %>
+		<li><a href='/quick/criteria?task_name=dean_signoff'>Dean Signoff</a></li>
+	<% end %>	
+</ul>
+
+

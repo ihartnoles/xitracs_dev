@@ -1,0 +1,28 @@
+<% provide(:title, 'Review Status') %>
+
+<center><h2>Review Status for <%= Semester.find(@semester_id).name %></h2></center><br/>
+
+<% if !@results.nil? && @results.size > 0 %>
+	<table class="info round no-zebra">
+		<tr>
+			<th>Last Name</th><th>First Name</th><th>Department (College)</th><th>Z Number</th><th>Degree</th><th>Course ID</th>
+			<th>Course Title</th><th>Review Status</th><th>Review Reasons</th><th>Review Comment</th>
+		</tr> 
+		<% @results.each do |r|%>
+  		<tr onclick="window.location.href='<%= url_for :action => 'show_courses_for', :controller => 'wizard', :faculty_id => r.faculty.id %>'">    
+				<td><%=r.faculty.last_name%></td>
+				<td><%=r.faculty.first_name%></td>
+				<td><%=r.faculty.department.name_and_school%></td>
+				<td><%=r.faculty.znumber%></td>
+	    		<td><%=r.faculty.qualification.name %></td>
+				<td><%=r.course.name%></td>
+				<td><%=r.course.title%></td>
+				<td><%=r.review_state_to_s%></td>
+				<td><%=r.reviewreasons.map{|rr| rr.name}.join("; ")%></td>
+				<td><%=r.review_comments%></td>
+			</tr>
+		<% end %>
+	</table>
+	<%= "Total Records : #{@results.size}" %><br/>
+<% end %>
+<%= "<br/>No Records Found<br/>".html_safe if !@results.nil? && @results.size == 0 %>

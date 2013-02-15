@@ -1,0 +1,117 @@
+<% provide :title, "Approve Course" %>
+
+
+<script type="text/javascript">
+
+	function do_checkbox() {
+		elem = document.getElementsByTagName("input");
+		pending = document.getElementById("reason_review_state_0");
+		passed = document.getElementById("reason_review_state_1");
+		failed = document.getElementById("reason_review_state_2");
+		alert = document.getElementById("reason_review_state_3");
+		justdocs = document.getElementById("reason_review_state_4");
+
+		one_checked = false;
+		for (var i = 0 ; i < elem.length ; i++ ) {
+			if (elem[i].className == "check") {
+				if (elem[i].checked == true) {
+					pending.disabled = true;
+					passed.disabled = true;
+					if (alert.checked == false) {
+						failed.checked = true;
+					}
+					one_checked = true;
+				} 
+			} 
+		}	
+		if (one_checked == false) {
+			pending.disabled = false;
+			passed.disabled = false;
+			passed.checked = true;
+		}		
+	}
+	
+	function clear_all_checkboxes() {
+		elem = document.getElementsByTagName("input");
+		for (var i = 0 ; i < elem.length ; i++ ) {
+			if (elem[i].className == "check") {
+				elem[i].checked = false;
+			}
+		}
+	}
+	
+	function set_all_checkboxes(what_to_do) {
+		elem = document.getElementsByTagName("input");
+		for (var i = 0 ; i < elem.length ; i++ ) {
+			if (elem[i].className == "check") {
+				elem[i].disabled = what_to_do;
+			}
+		}
+	}
+	
+	function do_passed() {
+		clear_all_checkboxes();
+		set_all_checkboxes(true);		
+	}
+	
+	function do_failed() {
+		set_all_checkboxes(false);		
+	}
+
+	function do_alert() {
+		set_all_checkboxes(false);		
+	}	
+	
+	function do_justdocs(){
+		set_all_checkboxes(false)
+	}
+</script>
+
+<%= render 'wizard/faculty_and_course'%>
+
+
+<br/>
+<% if @reason.nil? %>
+	<strong>This course has not yet been credentialed</strong>
+	<br/>
+<% elsif current_user.ro %>
+	<div class="info round">
+		<label> Reason: </label> <%= @reason.nil? ? "Not Credentialed" : @reason.qualificationreason.name %>
+	</div> 	
+<% else %>
+	<%= render 'wizard/reason_details'%>
+	<%= render 'wizard/review_results'%>
+	<%= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
+		<%= hidden_field  :reason, :faculty_id %>
+		<%= hidden_field  :reason, :course_id %>
+		<%= hidden_field  :reason, :id %>
+		
+		<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
+		<%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
+		<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "do_failed();"} %> Not Passed
+		<%= f.radio_button :review_state, Reason.review_alert,  {:onclick => "do_alert();"}  %> Alert
+		<%= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %> Justification Docs
+
+		<br/>
+	 		<% Reviewreason.all.each do |reviewreason| -%>
+				<%= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, @reviewreason_ids.include?(reviewreason.id), :class => "check", :onclick => "do_checkbox();" %> <%= reviewreason.name %> <br/>
+			<% end -%>
+	
+		<br/>
+		<label> Comments: </label>
+		<br/>	
+		<%= f.text_area :review_comments %><br/>
+		<%= check_box_tag "apply_comments_to_all"%> Apply Comments to All Pending/Not Passed/Alert Courses 
+		<br/>
+		<%= f.submit  "Submit", :id => "Submit" %>
+	<% end %>
+<% end %>
+<br/>
+
+<%= link_to "Return to Courses", '/wizard/show_courses_for', :class => 'xbutton'%>
+
+
+
+		
+	
+	

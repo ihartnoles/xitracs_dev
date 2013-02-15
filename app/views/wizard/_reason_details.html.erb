@@ -1,0 +1,46 @@
+<table class="profile">
+  </tr>
+  		<td class="success round " colspan=2>
+  			<strong>Credentialed By:</strong> <%= @reason.user.nil? ? "Unknown" : @reason.user.name %><br/>
+  			<strong>Reason:</strong> <%= @reason.qualificationreason.name %><br/>
+  			<strong>Comments:</strong> <%= @reason.comments.nil? || @reason.comments.size == 0 ? "None" : @reason.comments %><br/>
+  		</td>
+  </tr>
+</table>  
+<% if @credits.count > 0 %>
+<table class="profile">
+	<tr>
+		<th class="success">ID</th>
+		<th class="success">Name</th>
+		<th class="success">Year</th>
+		<th class="success">Credits</th>
+		<th class="success">Institution</th>
+  	</tr>	
+   <% total_credits = 0.0 %>
+	<% @credits.each do |credit| %>
+	<tr>
+    	<td class="success"><%= credit.course_name %></td>
+    	<td class="success"><%= credit.course_description %></td>
+    	<td class="success"><%= credit.course_year %></td>
+    	<td class="success"><%= credit.course_credits.to_s + (credit.semester_credits ? " (Semester)" : " (Quarter)") %> </td>
+    	<td class="success"><%= credit.facultycredential.full_details if credit.facultycredential  %></td>
+	 	<% if credit.semester_credits %>
+   		<% total_credits = total_credits + credit.course_credits.to_f %>
+   	<% else %>
+   		<% total_credits = total_credits + (credit.course_credits.to_f * 2.0) / 3.0 %>
+   	<% end %>
+ 	</tr>	
+	<% end %>
+	<tr>
+		<td class="success" colspan=3>
+			Total Credits: 
+		</td>
+		<td class="success" colspan=1>
+			<%= "%3.2f" % total_credits.to_s  %>
+			<img src="<%= total_credits >= 18 ? '/assets/check.png' : '/assets/x.png'%>" width="20"/>
+		</td>
+		<td class="success" colspan=1>
+		</td>
+	</tr>
+</table>	
+<% end %>

@@ -1,0 +1,29 @@
+<table class="profile">
+  <tr>
+    <td class="main round">
+      <strong>Name:</strong> <%= @faculty.title.name.to_s + ' ' + @faculty.first_name.to_s + ' ' + @faculty.middle_name.to_s + ' ' + @faculty.last_name.to_s %><br/>
+  		<strong>Znumber:</strong> <%= @faculty.znumber %><br/>
+  		<strong>Email:</strong> <%= @faculty.email %><br/>
+  		<strong>Department:</strong> <%= @faculty.department.description %><br/>
+ 		<strong>Rank:</strong> <%= @faculty.rank.name %><br/>
+  		<strong>Employment Status:</strong> <%= @faculty.employmentstatus.name %><br/>
+  		<strong>Tenure Status:</strong> <%= @faculty.tenurestatus.name %><br/>
+  		<strong>Qualification:</strong> <%= @faculty.qualification.name %><br/>
+  		<strong>CV On File:</strong> <%= @faculty.cv_onfile ? "YES" : "NO"%><br/>      
+    </td>
+    
+    <td class="sidebar round">
+		<% if session[:group_name] == "admin" || session[:group_name] == "dean" %>
+			<strong>Review Results:</strong> <%= render 'wizard/color_codes_review'%>
+		<% end %>
+    </td>
+  </tr>
+  <tr>
+  		<td class="success round" colspan=2>
+  			<strong>Institutions:</strong><br/>
+  			<% Facultycredential.where(:faculty_id => @faculty.id).each do |fc|  %>
+  				<%= fc.full_details %><br/>
+  			<% end %>
+  		</td>
+  </tr>
+</table>

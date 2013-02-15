@@ -1,0 +1,27 @@
+<h1>Listing donesemesters</h1>
+
+<table>
+  <tr>
+    <th>Faculty</th>
+    <th>Semester</th>
+    <th>Completed</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @donesemesters.each do |donesemester| %>
+  <tr>
+    <td><%= donesemester.faculty_id %></td>
+    <td><%= donesemester.semester_id %></td>
+    <td><%= donesemester.completed %></td>
+    <td><%= link_to 'Show', donesemester %></td>
+    <td><%= link_to 'Edit', edit_donesemester_path(donesemester) %></td>
+    <td><%= link_to 'Destroy', donesemester, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Donesemester', new_donesemester_path %>
