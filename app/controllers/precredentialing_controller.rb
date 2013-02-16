@@ -1,7 +1,8 @@
 class PrecredentialingController < ApplicationController
   
   def credentialsform
-  	@reason = Reason.new
+  	@reason = Reason.find(session[:reason_id])
+  	
     @reason.qualificationreason_id = Qualificationreason.find(:first).id
     @new_reason = true
 
@@ -9,4 +10,14 @@ class PrecredentialingController < ApplicationController
     @credit.semester_credits = true;
   end
 
+  def savecomments
+  	@reason = Reason.new
+  	@reason.update_attributes(params[:reason]) 
+  	session[:reason_id] = @reason.id
+
+  	redirect_to :action => 'credentialsform'
+  end
 end
+
+
+

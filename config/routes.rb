@@ -65,6 +65,8 @@ XitracsRoster::Application.routes.draw do
   get "users/new"
 
   get "/precredentialing/credentialsform"
+  post "/precredentialing/savecomments"
+  put "/precredentialing/savecomments"
 
   root to: 'sessions#new'
 
