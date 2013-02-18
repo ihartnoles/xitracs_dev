@@ -1,0 +1,49 @@
+class NewhiresController < ApplicationController
+  
+  include Wicked::Wizard
+
+  steps :name, :courses
+
+  def show
+  	case step
+  	when :name
+    	@newhire = Newhire.new
+    when :courses
+    	@newhirecourse = Newhirecourse.new
+    end
+    render_wizard
+  end
+
+  def create
+  	  case step
+  	  when :name
+		  @newhire = Newhire.new(:first_name => params[:first_name], :last_name =>params[:last_name])
+		  
+	      if params[:middle_name].blank? 
+	      	 @newhire.middle_name = nil
+	      else 
+	      	 @newhire.middle_name = params[:middle_name]
+	      end
+
+		  if @newhire.save
+		    session[:newhire_id] = @newhire.id
+		    #redirect_to next_wizard_path
+		    render_wizard @newhire
+		  else
+		    render :new
+		  end
+	  when :courses
+	  	  @newhirecourse = Newhirecourse.new(:course_name => params[:course_name], :course_title => params[:course_title], :course_description => params[:course_description])
+	  	
+	  	  if @newhirecourse.save
+		    #session[:newhire_id] = @newhire.id
+		    #redirect_to next_wizard_path
+		    render_wizard @newhire
+		  else
+		    render :new
+		  end
+
+	  end
+  end
+
+end

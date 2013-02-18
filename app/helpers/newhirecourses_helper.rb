@@ -1,0 +1,2 @@
+module NewhirecoursesHelper
+end

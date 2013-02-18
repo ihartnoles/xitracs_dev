@@ -1,11 +1,14 @@
 XitracsRoster::Application.routes.draw do
 
+
   resources :donesemesters
   resources :reviewreasons
   resources :semesters
   resources :users
+  #resources :precredentialing
+  resources :newhires
+  resources :newhirecourses
   resources :sessions, only: [:new, :create, :destroy]
-
 
   get "/quick/criteria"
   get "/quick/dean_signoff"
@@ -65,8 +68,17 @@ XitracsRoster::Application.routes.draw do
   get "users/new"
 
   get "/precredentialing/credentialsform"
+  get "/precredentialing/name"
+   get "/precredentialing/courses"
+
   post "/precredentialing/savecomments"
   put "/precredentialing/savecomments"
+  post "/precredentialing/file_upload"
+  put "/precredentialing/file_upload"
+  
+  post "newhires/courses"
+  post "newhires/create"
+
 
   root to: 'sessions#new'
 

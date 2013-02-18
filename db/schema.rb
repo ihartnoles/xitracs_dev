@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204155624) do
+ActiveRecord::Schema.define(:version => 20130217052500) do
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -144,6 +144,33 @@ ActiveRecord::Schema.define(:version => 20130204155624) do
 
   add_index "keyvalues", ["id"], :name => "index_keyvalues_on_id"
   add_index "keyvalues", ["key"], :name => "index_keyvalues_on_key"
+
+  create_table "newhirecourses", :force => true do |t|
+    t.string   "name"
+    t.string   "title"
+    t.string   "description"
+    t.integer  "department_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "newhiredocuments", :force => true do |t|
+    t.string   "doc_type"
+    t.string   "name"
+    t.string   "location"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "newhires", :force => true do |t|
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
+    t.integer  "department_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "newhiredocument_id"
+  end
 
   create_table "qualificationawards", :force => true do |t|
     t.string   "name"

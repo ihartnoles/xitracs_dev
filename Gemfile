@@ -29,6 +29,8 @@ gem 'kaminari'        # Pagination
 gem 'rubycas-client'  # CAS Authentication 
 gem 'simple_enum'     # Enumerations
 gem 'foreigner'       # Foreign Keys Support
+gem 'carrierwave'	  # Uploads
+gem 'wicked'		  # Wizard
 
 # Gems used only for assets and not required
 # in production environments by default.

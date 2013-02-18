@@ -1,0 +1,23 @@
+<h1>Sup newhirecourses</h1>
+views/newhirecourses/index.html.erb
+
+NEwhire Courses
+
+<%= form_for @newhirecourse do |f| %>
+	<div class="info round">
+		
+		<fieldset class="round">
+			<legend>To Teach:</legend>
+		<p>
+			<strong>Course Prefix and Number:</strong> <%= text_field_tag 'course_name' %>
+		</p>
+		<p>
+			<strong>Course title:</strong> <%= text_field_tag 'course_title' %>
+		</p>
+		<p>
+			<strong>Brief Course Description:</strong><br>
+				 <%= text_area_tag 'course_description' %>
+		</p>
+	</div>
+	<%= f.submit "Continue" %>
+<% end %>

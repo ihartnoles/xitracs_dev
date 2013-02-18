@@ -33,6 +33,8 @@ GEM
     arel (2.2.3)
     awesome_print (1.0.2)
     builder (3.0.0)
+    carrierwave (0.5.8)
+      activesupport (~> 3.0)
     coffee-rails (3.1.1)
       coffee-script (>= 2.2.0)
       railties (~> 3.1.0)
@@ -121,6 +123,9 @@ GEM
     uglifier (1.2.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
+    wicked (0.5.0)
+      activesupport (>= 3.0.7)
+      rails (>= 3.0.7)
 
 PLATFORMS
   ruby
@@ -128,6 +133,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
   awesome_print
+  carrierwave
   coffee-rails (~> 3.1.1)
   foreigner
   google_visualr
@@ -146,3 +152,4 @@ DEPENDENCIES
   therubyrhino
   turn (= 0.8.2)
   uglifier (>= 1.0.3)
+  wicked
