@@ -1,0 +1,13 @@
+showuploadform
+
+<%= debug params %>
+<%= debug session %>
+
+<p>
+<strong>File Upload</strong><br>
+	<%= form_for :file_upload, :url => '/precredentialing/file_upload',:html => {:multipart => true} do |f| %>
+	  <%= f.file_field :my_file %>
+	  <%= f.submit "Upload" %>
+	<% end %>
+
+</p>	

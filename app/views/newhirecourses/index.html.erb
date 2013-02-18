@@ -3,6 +3,10 @@ views/newhirecourses/index.html.erb
 
 NEwhire Courses
 
+
+<%= debug session %>
+
+
 <%= form_for @newhirecourse do |f| %>
 	<div class="info round">
 		
@@ -18,6 +22,12 @@ NEwhire Courses
 			<strong>Brief Course Description:</strong><br>
 				 <%= text_area_tag 'course_description' %>
 		</p>
+		<p>
+			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.
+		</p>
 	</div>
-	<%= f.submit "Continue" %>
+
+	<%#= f.submit "Continue"%>
+
+	Click <%= f.submit 'Continue', :id => "Continue", :disabled => current_user.ro %> to finish this section and continue precredentialing.
 <% end %>

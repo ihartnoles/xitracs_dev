@@ -16,6 +16,7 @@ class NewhiresController < ApplicationController
 	  if @newhire.save
 	    session[:newhire_id] = @newhire.id
 	    #redirect_to next_wizard_path
+       flash[:notice] = "Instructor successfully created."
 	    redirect_to newhirecourses_path 
 	  else
 	    redirect_to newhirecourses_path

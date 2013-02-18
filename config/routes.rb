@@ -8,6 +8,13 @@ XitracsRoster::Application.routes.draw do
   #resources :precredentialing
   resources :newhires
   resources :newhirecourses
+  resources :newhiredocuments do
+     collection do
+        get  'uploadform'
+        post 'uploadform'
+  end
+
+  end
   resources :sessions, only: [:new, :create, :destroy]
 
   get "/quick/criteria"
@@ -78,7 +85,12 @@ XitracsRoster::Application.routes.draw do
   
   post "newhires/courses"
   post "newhires/create"
+  
+  get  "/newhiredocuments/uploadform"
+  post "/newhiredocuments/uploadform"
 
+  post "/newhiredocuments/upload"
+  put  "/newhiredocuments/upload"
 
   root to: 'sessions#new'
 

@@ -1,0 +1,38 @@
+<h1>Sup newhiredocuments</h1>
+views/newhiredocuments/index.html.erb
+
+NEwhire Documents
+
+<%= debug params %>
+<%= debug session %>
+
+
+<%= form_for @newhiredocument do |f| %>
+	<div class="info round">
+		
+		<fieldset class="round">
+			<legend>Documents:</legend>
+	
+				<p>
+				<strong>The following documents have been submitted to the Provost's office:</strong><br>
+					<% Newhiredoctype.all.each do |dt| %>
+		    			<br><%= check_box_tag  'newhiredoctype_ids[]', dt.id %>
+		 				<%=  dt.name.humanize %> 
+		 				<%=link_to "[upload]", '/newhiredocuments/showuploadform', :doc_type => dt.id %>
+		 			<% end %>	
+
+
+				<p>
+					<br>
+				<p>
+				<strong>Would you like to upload documents?</strong><br>
+					<%= radio_button_tag 'upload_docs', 'Yes', %> Yes <br>
+					<%= radio_button_tag 'upload_docs', 'No', %> No <br>	
+				<p>
+
+	</div>
+
+	<%#= f.submit "Continue"%>
+
+	Click <%= f.submit 'Save and Continue', :id => "Continue", :disabled => current_user.ro %> to finish this section and continue precredentialing.
+<% end %>
