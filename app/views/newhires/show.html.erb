@@ -1,0 +1,41 @@
+Show New Hires
+
+
+<br> New Hire Count: <%= @newhire_count %>
+
+<% if @newhires.nil? || @newhires.count > 0%>
+	<%= @newhires.each do |newhire| %>
+
+		<div class="info round">
+			<p>
+				<%= newhire.last_name %>
+			</p>
+		</div>
+
+	<% end %>
+
+<% else %>
+			<p>No New Hires Available</p>
+<% end %>
+
+
+<% if @newhires.nil? || @newhires.count == 0 %>
+	<div class="error round">
+  			<center>No New Hires Available</center>
+  	</div>
+
+<% else %>
+	<table class="profile">
+	  <th>Lastname</th>
+	  <th>First</th>
+	  <th>Department</th>
+	  <th>Review Status</th>
+	  <th>Actions</th>
+	    <%= @newhires.each do |newhire| %>
+			  <tr>
+			  	<td><%= newhire.last_name %></td>
+			  	<td><%= newhire.first_name %></td>
+			  </tr>
+		  <% end %>
+	</table>  
+<% end %>

@@ -86,6 +86,8 @@ XitracsRoster::Application.routes.draw do
   post "newhires/courses"
   post "newhires/create"
   
+  get "newhires/show"
+
   get  "/newhiredocuments/uploadform"
   post "/newhiredocuments/uploadform"
 

@@ -26,12 +26,12 @@ class NewhiredocumentsController < ApplicationController
 	 end
 
 
-	 if params[:upload_docs] == 'Yes'
-	 	redirect_to '/newhiredocuments/uploadform'
-	 else
+	 #if params[:upload_docs] == 'Yes'
+	 #	redirect_to '/newhiredocuments/uploadform'
+	 #else
 	 	#TO DO: redirect to instructor credential radio boxes
 	 	redirect_to newhiredocuments_path
-	 end
+	 #end
 
   end 
 
@@ -41,7 +41,7 @@ class NewhiredocumentsController < ApplicationController
   end
 
   def upload
-	  doctype = params[:file_upload][:doc_type]
+	  #doctype = params[:file_upload][:doc_type]
 	  name = params[:file_upload][:filename].original_filename
 	  directory = "public/data/"
 	  path = File.join(directory, params[:file_upload][:filename].original_filename)
@@ -49,9 +49,10 @@ class NewhiredocumentsController < ApplicationController
 	  File.open(path, "wb") { |f| f.write(params[:file_upload][:filename].read) }
 
 	  d = Newhiredocument.new
-	  d.doc_type = params[:doc_type]
+	  #d.doc_type = params[:doc_type]
 		d.name = name
 		d.location = path
+		d.newhiredoctype_id = 
 		d.save
   end
 

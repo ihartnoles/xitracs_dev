@@ -24,8 +24,8 @@ class PrecredentialingController < ApplicationController
 
    def file_upload
 
-=begin
-	doctype = params[:file_upload][:doc_type]
+
+	#doctype = params[:file_upload][:doc_type]
   name = params[:file_upload][:filename].original_filename
   directory = "public/data/"
   path = File.join(directory, params[:file_upload][:filename].original_filename)
@@ -33,12 +33,12 @@ class PrecredentialingController < ApplicationController
   File.open(path, "wb") { |f| f.write(params[:file_upload][:filename].read) }
 
   d = Newhiredocument.new
-  d.doc_type = params[:doc_type]
+  #d.doc_type = params[:doc_type]
 	d.name = name
 	d.location = path
 	d.save
-=end
-      
+
+=begin      
      #file = File.open('public/data/test.txt')
 
      #path = params[:file_upload][:my_file].path
@@ -47,6 +47,7 @@ class PrecredentialingController < ApplicationController
 
      uploader = MyUploader.new
      uploader.store!(file)
+=end
 
 		flash[:notice] = "File has been uploaded successfully"
 

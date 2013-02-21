@@ -3,10 +3,6 @@ views/newhirecourses/index.html.erb
 
 NEwhire Courses
 
-
-<%= debug session %>
-
-
 <%= form_for @newhirecourse do |f| %>
 	<div class="info round">
 		
@@ -27,7 +23,31 @@ NEwhire Courses
 		</p>
 	</div>
 
-	<%#= f.submit "Continue"%>
+	<% if @newhire_course.nil? || @newhire_course.count > 0 %>
 
-	Click <%= f.submit 'Continue', :id => "Continue", :disabled => current_user.ro %> to finish this section and continue precredentialing.
+		<fieldset class="round">
+			<legend>Courses Added:</legend>
+	
+				<p>
+				<strong>The following courses have already been added:</strong><br>
+					<% @newhire_courses_added.each do |ca| %>
+		    			<br>
+		 				<%=  ca.name %> 
+		 				<%=  ca.title.humanize %> 
+		 				<%=  ca.description.humanize %> <br>
+		 				
+		 			<% end %>	
+
+
+				<p>
+					<br>
+	   </fieldset>
+
+		Click <%= f.submit 'Continue', :id => "Continue", :disabled => current_user.ro %> to finish this section and continue precredentialing.
+
+
+
+
+
+	<% end %>
 <% end %>
