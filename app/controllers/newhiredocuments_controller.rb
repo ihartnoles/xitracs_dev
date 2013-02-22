@@ -4,7 +4,7 @@ class NewhiredocumentsController < ApplicationController
   def index
   	@newhiredocument = Newhiredocument.new
 
-  	#@newhiredoctypes= Newhiredoctype.new
+  	@newhiredoctypes= Newhiredoctype.new
   end
 
   def create
@@ -36,8 +36,8 @@ class NewhiredocumentsController < ApplicationController
   end 
 
   def uploadform
-  	
-  	
+  	@doc_type = params[:doc_type]
+  	@docname  = Newhiredoctype.find(params[:doc_type]).name
   end
 
   def upload

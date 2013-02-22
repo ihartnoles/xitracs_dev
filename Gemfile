@@ -19,7 +19,7 @@ platforms :jruby do
 end
 
 
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.1'
 gem 'awesome_print'   # Pretty Printer
 
 gem 'net-ldap'        # LDAP Authentication (to AD)

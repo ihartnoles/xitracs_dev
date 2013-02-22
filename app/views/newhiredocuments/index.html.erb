@@ -13,15 +13,15 @@ views/newhiredocuments/index.html.erb
 		    			<br><%= check_box_tag  'newhiredoctype_ids[]', dt.id %>
 		 				<%=  dt.name.humanize %> 
 
-		 				<%#=link_to "[upload]", '/newhiredocuments/showuploadform', :doc_type => dt.id %>
+		 				<%#=link_to "[upload]", uploadform_newhiredocuments_path(:doc_type => dt.id), :id => 'my-link' %>
 
-		 				<%= form_for :file_upload,:url => '/precredentialing/file_upload',:html => {:name => "upload_#{dt.id}", :multipart => true} do |g| %>
-						  <%= g.file_field :filename %>
-						  <%= hidden_field_tag 'newhiredoctype_id', dt.id%>
-						  <%= g.submit "Upload" %>
-						<% end %>
 
-		 			<% end %>	
+		 				<%= link_to "[upload]", 
+			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id}, 
+        							:onClick=>"window.open(this.href,'Details','height=800, width=600'); return false;" 
+							%>
+
+					<% end %>	
 
 
 				<p>
@@ -31,4 +31,6 @@ views/newhiredocuments/index.html.erb
 	</div>
 
 	Click <%= f.submit 'Save and Continue', :id => "Continue", :disabled => current_user.ro %> to finish this section and continue precredentialing.
+
+
 <% end %>

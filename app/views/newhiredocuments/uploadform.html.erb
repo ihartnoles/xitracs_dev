@@ -1,13 +1,14 @@
-showuploadform
-
-<%= debug params %>
-<%= debug session %>
+<fieldset class="round">
 
 <p>
-<strong>File Upload</strong><br>
+	<legend><%= @docname %> file upload</legend>
 	<%= form_for :file_upload, :url => '/precredentialing/file_upload',:html => {:multipart => true} do |f| %>
+	  <%= hidden_field_tag 'doc_type', params[:doc_type] %>
 	  <%= f.file_field :filename %>
 	  <%= f.submit "Upload" %>
 	<% end %>
 
 </p>	
+</fieldset>
+
+
