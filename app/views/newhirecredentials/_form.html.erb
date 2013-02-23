@@ -1,0 +1,25 @@
+<%= form_for(@newhirecredential) do |f| %>
+  <% if @newhirecredential.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@newhirecredential.errors.count, "error") %> prohibited this newhirecredential from being saved:</h2>
+
+      <ul>
+      <% @newhirecredential.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :newhire_id %><br />
+    <%= f.number_field :newhire_id %>
+  </div>
+  <div class="field">
+    <%= f.label :qualificationreason_id %><br />
+    <%= f.number_field :qualificationreason_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

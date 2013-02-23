@@ -1,6 +1,8 @@
 XitracsRoster::Application.routes.draw do
 
 
+  resources :newhirecredentials
+
   resources :donesemesters
   resources :reviewreasons
   resources :semesters
@@ -91,8 +93,11 @@ XitracsRoster::Application.routes.draw do
   get  "/newhiredocuments/uploadform"
   post "/newhiredocuments/uploadform"
 
-  post "/newhiredocuments/upload"
-  put  "/newhiredocuments/upload"
+  post "/newhiredocuments/file_upload"
+  put  "/newhiredocuments/file_upload"
+
+  get  "/newhiredocuments/uploadstatus"
+  post  "/newhiredocuments/uploadstatus"
 
   root to: 'sessions#new'
 

@@ -60,6 +60,8 @@ class PrecredentialingController < ApplicationController
         #d.doc_type = params[:doc_type]
       	d.name = name
       	d.location = path
+        d.newhiredoctype_id = params[:doc_type]
+        d.newhire_id = session[:newhire_id]
       	d.save
 
        	flash[:notice] = "File has been uploaded successfully"

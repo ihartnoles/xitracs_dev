@@ -3,8 +3,7 @@ class NewhiredocumentsController < ApplicationController
 
   def index
   	@newhiredocument = Newhiredocument.new
-
-  	@newhiredoctypes= Newhiredoctype.new
+  	@newhiredoctypes = Newhiredoctype.new
   end
 
   def create
@@ -30,7 +29,7 @@ class NewhiredocumentsController < ApplicationController
 	 #	redirect_to '/newhiredocuments/uploadform'
 	 #else
 	 	#TO DO: redirect to instructor credential radio boxes
-	 	redirect_to newhiredocuments_path
+	 	redirect_to newhirecredentials_path
 	 #end
 
   end 
@@ -38,22 +37,57 @@ class NewhiredocumentsController < ApplicationController
   def uploadform
   	@doc_type = params[:doc_type]
   	@docname  = Newhiredoctype.find(params[:doc_type]).name
+  	render :layout => 'simple'
   end
 
-  def upload
-	  #doctype = params[:file_upload][:doc_type]
-	  name = params[:file_upload][:filename].original_filename
-	  directory = "public/data/"
-	  path = File.join(directory, params[:file_upload][:filename].original_filename)
-	  # write the file
-	  File.open(path, "wb") { |f| f.write(params[:file_upload][:filename].read) }
+  def file_upload
+       	#doctype = params[:file_upload][:doc_type]
+        # get the file name
+        name = params[:file_upload][:filename].original_filename
 
-	  d = Newhiredocument.new
-	  #d.doc_type = params[:doc_type]
-		d.name = name
-		d.location = path
-		d.newhiredoctype_id = 
-		d.save
+        #gather new hire info
+        newhirelname = Newhire.find(session[:newhire_id]).last_name
+        newhirefname = Newhire.find(session[:newhire_id]).first_name
+        newhireid    = Newhire.find(session[:newhire_id]).id
+        
+        #determine doc type
+        doctype     = params[:doc_type]
+         case doctype
+            when '1' then doctypedir = 'transcript'
+            when '2' then doctypedir = 'evaluation'
+            when '3' then doctypedir = 'cv'
+            when '4' then doctypedir = 'syllabus'
+            when '5' then doctypedir = 'offerletter'
+         end 
+       
+        #set the dynamic directory name
+        dir = "public/data/#{newhirelname}_#{newhirefname}_#{newhireid}/#{doctypedir}"
+        
+        #create the file path
+        path = File.join(dir, params[:file_upload][:filename].original_filename)
+        
+        #create the directory if it doesn't exist
+        unless File.directory?(dir)
+          FileUtils.mkdir_p(dir)
+        end 
+       
+        # write the file
+        File.open(path, "wb") { |f| f.write(params[:file_upload][:filename].read) }
+
+        d = Newhiredocument.new
+        #d.doc_type = params[:doc_type]
+      	d.name = name
+      	d.location = path
+        d.newhiredoctype_id = params[:doc_type]
+        d.newhire_id = session[:newhire_id]
+      	d.save
+
+       	flash[:notice] = "File has been uploaded successfully"
+
+     	redirect_to newhiredocuments_uploadstatus_path
   end
 
+  def show
+  	render :layout => 'simple'
+  end
 end

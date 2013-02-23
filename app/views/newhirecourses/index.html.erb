@@ -23,7 +23,7 @@ NEwhire Courses
 		</p>
 	</div>
 
-	<% if @newhire_course.nil? || @newhire_course.count > 0 %>
+	<% if @newhire_courses_added.count > 0 %>
 
 		<fieldset class="round">
 			<legend>Courses Added:</legend>
@@ -43,7 +43,7 @@ NEwhire Courses
 					<br>
 	   </fieldset>
 
-		Click <%= f.submit 'Continue', :id => "Continue", :disabled => current_user.ro %> to finish this section and continue precredentialing.
+		Click <%= f.submit 'Continue', :id => "Continue" %> to finish this section and continue precredentialing.
 
 
 

@@ -10,7 +10,7 @@ views/newhiredocuments/index.html.erb
 				<p>
 				<strong>The following documents have been submitted to the Provost's office:</strong><br>
 					<% Newhiredoctype.all.each do |dt| %>
-		    			<br><%= check_box_tag  'newhiredoctype_ids[]', dt.id %>
+		    			<br><%#= check_box_tag  'newhiredoctype_ids[]', dt.id %>
 		 				<%=  dt.name.humanize %> 
 
 		 				<%#=link_to "[upload]", uploadform_newhiredocuments_path(:doc_type => dt.id), :id => 'my-link' %>
@@ -18,7 +18,7 @@ views/newhiredocuments/index.html.erb
 
 		 				<%= link_to "[upload]", 
 			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id}, 
-        							:onClick=>"window.open(this.href,'Details','height=800, width=600'); return false;" 
+        							:onClick=>"window.open(this.href,'Details','height=200, width=400'); return false;" 
 							%>
 
 					<% end %>	
