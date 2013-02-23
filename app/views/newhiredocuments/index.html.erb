@@ -1,9 +1,8 @@
 <h1>Sup newhiredocuments</h1>
 views/newhiredocuments/index.html.erb
 
-<%= form_for @newhiredocument do |f| %>
-	<div class="info round">
-		
+
+	<div class="info round">		
 		<fieldset class="round">
 			<legend>Documents:</legend>
 	
@@ -14,11 +13,9 @@ views/newhiredocuments/index.html.erb
 		 				<%=  dt.name.humanize %> 
 
 		 				<%#=link_to "[upload]", uploadform_newhiredocuments_path(:doc_type => dt.id), :id => 'my-link' %>
-
-
 		 				<%= link_to "[upload]", 
 			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id}, 
-        							:onClick=>"window.open(this.href,'Details','height=200, width=400'); return false;" 
+        							:onClick=>"window.open(this.href,'Details','height=250, width=500'); return false;" 
 							%>
 
 					<% end %>	
@@ -30,7 +27,7 @@ views/newhiredocuments/index.html.erb
 
 	</div>
 
-	Click <%= f.submit 'Save and Continue', :id => "Continue", :disabled => current_user.ro %> to finish this section and continue precredentialing.
+Click
+<input type="button" name="Continue" value="Contine"  onclick="window.location.href='newhirecredentials'">
+to finish this section and continue precredentialing.
 
-
-<% end %>

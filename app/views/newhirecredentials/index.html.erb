@@ -20,6 +20,15 @@
 <% end %>
 </table>
 
+<br>
+
+<% @qualificationreasons.each do |qr| %>
+              <br><%= radio_button_tag  'qualificationreason_name', qr.name, qr.id, {:onclick => "do_inst();"} %>
+            <%=  qr.name.humanize %>
+            <% end %> 
+
 <br />
+
+<br>
 
 <%= link_to 'New Newhirecredential', new_newhirecredential_path %>

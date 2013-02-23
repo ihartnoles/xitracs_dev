@@ -4,6 +4,8 @@ class NewhirecredentialsController < ApplicationController
   def index
     @newhirecredentials = Newhirecredential.all
 
+    @qualificationreasons = Qualificationreason.all
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @newhirecredentials }
