@@ -22,6 +22,7 @@ class NewhirecoursesController < ApplicationController
 		  	  if @newhirecourse.save
 			    #session[:newhire_id] = @newhire.id
 			    #redirect_to next_wizard_path
+			    @newhireinfo = Newhire.where(:newhire_id => session[:newhire_id])
 			    flash[:notice] = "Course to teach successfully created."
 			   else
 			   	flash[:notice] = "There was a problem saving the course to teach."		    

@@ -1,34 +1,25 @@
-<h1>Listing newhirecredentials</h1>
 
-<table>
-  <tr>
-    <th>Newhire</th>
-    <th>Qualificationreason</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= render :partial => "newhires/newhirename" %>
 
-<% @newhirecredentials.each do |newhirecredential| %>
-  <tr>
-    <td><%= newhirecredential.newhire_id %></td>
-    <td><%= newhirecredential.qualificationreason_id %></td>
-    <td><%= link_to 'Show', newhirecredential %></td>
-    <td><%= link_to 'Edit', edit_newhirecredential_path(newhirecredential) %></td>
-    <td><%= link_to 'Destroy', newhirecredential, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
-</table>
+<fieldset class="round">
+      <legend>Instructor Credentials:</legend>
+      <br><strong>The instructor is credentialed to teach:</strong><br>
+      <%= form_for @newhirecredential do |c| %>
+        <% @qualificationreasons.each do |qr| %>
+                      <br><%= radio_button_tag  'qualificationreason_name', qr.name, qr.id, {:onclick => "do_inst();"} %>
+                    <%=  qr.name.humanize %>
+                    <% end %> 
+            <br />
+            <br />
+            <p>
+            <strong>Explanation of instructor's qualifications:</strong><br>
+                 <%= text_area_tag 'qualification_explanation' %>          
+            </p>
+            <p>
+             Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
 
-<br>
+            </p>
+       <% end %>
+</fieldset>
 
-<% @qualificationreasons.each do |qr| %>
-              <br><%= radio_button_tag  'qualificationreason_name', qr.name, qr.id, {:onclick => "do_inst();"} %>
-            <%=  qr.name.humanize %>
-            <% end %> 
-
-<br />
-
-<br>
-
-<%= link_to 'New Newhirecredential', new_newhirecredential_path %>
+<%#= link_to 'New Newhirecredential', new_newhirecredential_path %>

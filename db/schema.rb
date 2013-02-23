@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130223020904) do
+ActiveRecord::Schema.define(:version => 20130223190220) do
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(:version => 20130223020904) do
     t.integer  "qualificationreason_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "qualification_explanation"
   end
 
   create_table "newhiredoctypes", :force => true do |t|

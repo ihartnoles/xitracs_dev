@@ -1,5 +1,4 @@
-<h1>Sup newhiredocuments</h1>
-views/newhiredocuments/index.html.erb
+<%= render :partial => "newhires/newhirename" %>
 
 
 	<div class="info round">		
@@ -7,20 +6,27 @@ views/newhiredocuments/index.html.erb
 			<legend>Documents:</legend>
 	
 				<p>
-				<strong>The following documents have been submitted to the Provost's office:</strong><br>
+				<strong>The following documents have been submitted to the Provost's office:</strong>
+					<table width="80%">
 					<% Newhiredoctype.all.each do |dt| %>
 		    			<br><%#= check_box_tag  'newhiredoctype_ids[]', dt.id %>
-		 				<%=  dt.name.humanize %> 
-
-		 				<%#=link_to "[upload]", uploadform_newhiredocuments_path(:doc_type => dt.id), :id => 'my-link' %>
-		 				<%= link_to "[upload]", 
+		 				
+		 					<tr>
+		 						<td><%=  dt.name.humanize %></td>
+		 						<td><%= link_to "[upload]", 
 			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id}, 
         							:onClick=>"window.open(this.href,'Details','height=250, width=500'); return false;" 
-							%>
+							%></td>
+		 					</tr>
+
+		 			
+		 				 
+
+		 				<%#=link_to "[upload]", uploadform_newhiredocuments_path(:doc_type => dt.id), :id => 'my-link' %>
+		 				
 
 					<% end %>	
-
-
+				</table>
 				<p>
 					<br>
 				
