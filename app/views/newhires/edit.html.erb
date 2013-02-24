@@ -1,0 +1,58 @@
+Edit Newhires
+
+<%= form_for(@newhire) do |f| %>
+  <% if @newhire.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@newhire.errors.count, "error") %> prohibited this newhire from being saved:</h2>
+
+      <ul>
+      <% @newhire.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %> <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :middle_name %> <%= f.text_field :middle_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %> <%= f.text_field :last_name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<hr>
+
+<%#= form_for @newhirecourses do |f| %>
+	<%# if @newhire_courses_added.count > 0 %>
+
+		<fieldset class="round">
+			<legend>Courses Added:</legend>
+				<% if @newhirecourses.count == 0 %>
+				   <strong>No classes have been added!</strong>
+				<% else %>
+					<p>
+					<strong>The following courses have already been added:</strong><br>
+						<% @newhirecourses.each do |ca| %>
+			    			<br>
+			 				<%=  ca.name %> 
+			 				<%=  ca.title.humanize %> 
+			 				<%=  ca.description.humanize %> <br>
+			 				
+			 			<% end %>	
+
+
+						<p>
+						<br>
+				<% end %>
+	   </fieldset>
+
+		Click <%#= f.submit 'Continue', :id => "Continue" %> to finish this section and continue precredentialing.
+	<%# end %>
+<%# end %>

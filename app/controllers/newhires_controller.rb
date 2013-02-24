@@ -9,6 +9,12 @@ class NewhiresController < ApplicationController
       @newhire_count = Newhire.all.count     
   end
 
+  def edit
+      @newhire = Newhire.find(params[:id])
+      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
+      #todo newhiredocuments
+      #todo newhirecredentials
+  end
 
 
   def create
