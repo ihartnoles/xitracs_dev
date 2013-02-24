@@ -44,17 +44,22 @@ class NewhirecredentialsController < ApplicationController
   # POST /newhirecredentials
   # POST /newhirecredentials.json
   def create
-    @newhirecredential = Newhirecredential.new(params[:newhirecredential])
+    if ( params[:qualificationreason_id].blank? || params[:qualification_explanation].blank?) 
+          flash[:notice] = 'Please fill out all fields'
+          redirect_to newhirecredentials_path
+    else 
+        @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_name], :qualification_explanation => params[:qualification_explanation], :newhire_id => session[:newhire_id])
 
-    respond_to do |format|
-      if @newhirecredential.save
-        format.html { redirect_to @newhirecredential, notice: 'Newhirecredential was successfully created.' }
-        format.json { render json: @newhirecredential, status: :created, location: @newhirecredential }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @newhirecredential.errors, status: :unprocessable_entity }
+        respond_to do |format|
+          if @newhirecredential.save
+            format.html { redirect_to @newhirecredential, notice: 'Newhirecredential was successfully created.' }
+            format.json { render json: @newhirecredential, status: :created, location: @newhirecredential }
+          else
+            format.html { render action: "new" }
+            format.json { render json: @newhirecredential.errors, status: :unprocessable_entity }
+          end
+        end
       end
-    end
   end
 
   # PUT /newhirecredentials/1
