@@ -1,0 +1,59 @@
+display details
+
+
+<div style="width:inherit; float:left">
+	<div style="width:400px; float:right;">
+		<fieldset class="round">
+			<legend>Courses Added:</legend>
+				<table  class="profile">
+					<th colspan="3">The following courses have already been added:</th>
+						<% @newhirecourses.each do |ca| %>
+			    			<tr>
+			    				<td><%=  ca.name %></td> 
+			 					<td><%=  ca.title.humanize %></td>
+			 					<td><%=  ca.description.humanize %></td> 	 					
+			 				</tr>
+			 			<% end %>
+				</table>
+		</fieldset>
+	</div>
+	<hr>
+
+	<div style="width:400px; float:right;">
+		<fieldset class="round">
+			<legend>Documents Added:</legend>
+				<table  class="profile">
+					<th colspan="3">
+				The following documents have already been added:</strong></th>
+					<% @newhiredocuments.each do |d| %>
+		    			<tr>
+			    			<td><%=  d.name %></td>  
+		 					<td><%=  d.location %></td>  
+		 					<td><%=  d.newhiredoctype_id %></td> 
+		 				</tr>
+		 			<% end %>	
+					</table>
+		</fieldset>
+	</div>
+
+	<hr>
+
+	<div style="width:300px; float:left;">
+		<fieldset class="round">
+			<legend>Relevant Coursework:</legend>
+			<p> #To Do </p>
+
+		</fieldset>
+	</div>
+
+	<hr>
+
+	<div style="width:300px; float:left;">
+		<fieldset class="round">
+			<legend>Additional Comments:</legend>
+			<p> #To Do </p>
+
+		</fieldset>
+	</div>
+
+</div>

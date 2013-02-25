@@ -13,7 +13,13 @@ class NewhiresController < ApplicationController
       @newhire = Newhire.find(params[:id])
       @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
       #todo newhiredocuments
+      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
       #todo newhirecredentials
+  end
+
+  def displaydetails
+      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
+      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
   end
 
 

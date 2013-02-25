@@ -22,7 +22,10 @@ Show New Hires
 			  	<td><%= newhire.first_name %></td>
 			  	<td>N/A</td>
 			  	<td>N/A</td>
-			  	<td><%= link_to 'Edit', edit_newhire_path(newhire) %></td>
+			  	<td>
+			  		<%= link_to '[Edit]', edit_newhire_path(newhire) %>
+			  		<%= link_to '[View]', newhiredetails_path(newhire) %>
+			  	</td>
 			  </tr>
 		  <% end %>
 	</table>  

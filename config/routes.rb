@@ -89,6 +89,7 @@ XitracsRoster::Application.routes.draw do
   post "newhires/create"
   
   get "newhires/show"
+  #get "newhires/displaydetails"
 
   get  "/newhiredocuments/uploadform"
   post "/newhiredocuments/uploadform"
@@ -114,7 +115,9 @@ XitracsRoster::Application.routes.draw do
   match '/reports', to: 'report#index'
   match '/login',  to: 'sessions#new'
   match '/logout', to: 'sessions#destroy'
-  
+
+  match "/newhires/:id/displaydetails" => 'newhires#displaydetails', :as => :newhiredetails
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
