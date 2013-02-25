@@ -12,14 +12,23 @@ class NewhiresController < ApplicationController
   def edit
       @newhire = Newhire.find(params[:id])
       @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
-      #todo newhiredocuments
       @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
       #todo newhirecredentials
   end
 
   def displaydetails
+      @newhire = Newhire.find(params[:id])
+      
+
       @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
       @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
+
+      @newhire_dept = Department.find(@newhire.department_id)
+      
+      @newhirecredentials = Newhirecredential.where(:newhire_id => params[:id])
+
+      @newhirecredits = Newhirecredit.where(:newhire_id => params[:id])
+      #@coursework = 
   end
 
 

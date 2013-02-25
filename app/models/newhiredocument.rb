@@ -1,4 +1,5 @@
 class Newhiredocument < ActiveRecord::Base
-	belongs_to :newhire
-	has_many :newhiredocument
+	attr_accessible :name
+		
+	belongs_to :newhiredoctype
 end

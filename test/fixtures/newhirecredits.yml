@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  newhire_id: 1
+  course_name: MyString
+  course_description: MyString
+  course_year: MyString
+  course_credits: 1
+  semester_credits: 
+
+two:
+  newhire_id: 1
+  course_name: MyString
+  course_description: MyString
+  course_year: MyString
+  course_credits: 1
+  semester_credits: 

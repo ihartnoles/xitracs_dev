@@ -1,3 +1,6 @@
 class Qualificationreason < ActiveRecord::Base
+  attr_accessible :name
+
   has_many :reasons
-end
+  belongs_to :newhirecredential
+ end

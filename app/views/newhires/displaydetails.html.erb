@@ -1,12 +1,37 @@
-display details
-
-
-<div style="width:inherit; float:left">
-	<div style="width:400px; float:right;">
-		<fieldset class="round">
-			<legend>Courses Added:</legend>
+<div class="wrapper">
+    <div class="wrapleft"> 	  
+	    <div class="left">
+	        <fieldset class="round">
+			<legend>Instructor Info:</legend>
+				<table  class="profile">					
+	    			<tr>
+	    				<td>Name:</td> 
+	    				<td><%= @newhire.first_name %> <%= @newhire.middle_name %> <%= @newhire.last_name %></td>
+	    			</tr>
+	    			<tr>	
+	 					<td>Dept:</td>
+	 					<td><%= @newhire_dept.name %></td>
+	 				</tr>	
+	 				<tr>
+	 					<td>Qualification:</td> 	 
+	 					<td></td>					
+	 				</tr>
+	 				<tr>
+	 					<td>Status:</td> 	 
+	 					<td>PENDING</td>					
+	 				</tr>			 			
+				</table>
+			</fieldset>
+	    </div>
+	</div>    
+	    
+	    <div class="right">
+	        <fieldset class="round">
+			<legend>Courses To Teach:</legend>
 				<table  class="profile">
-					<th colspan="3">The following courses have already been added:</th>
+					<th>Prefix & Number</th>
+					<th>Title</th>
+					<th>Description</th>
 						<% @newhirecourses.each do |ca| %>
 			    			<tr>
 			    				<td><%=  ca.name %></td> 
@@ -15,45 +40,102 @@ display details
 			 				</tr>
 			 			<% end %>
 				</table>
-		</fieldset>
-	</div>
-	<hr>
+			</fieldset>
+	    </div> 
 
-	<div style="width:400px; float:right;">
-		<fieldset class="round">
-			<legend>Documents Added:</legend>
+	    <div class="right">	        
+	        <fieldset class="round">
+			<legend>Documents submitted to Provost:</legend>
 				<table  class="profile">
-					<th colspan="3">
-				The following documents have already been added:</strong></th>
+					<th>Name</th>
+					<th>Location</th>
+					<th>Type</th>
 					<% @newhiredocuments.each do |d| %>
 		    			<tr>
 			    			<td><%=  d.name %></td>  
 		 					<td><%=  d.location %></td>  
-		 					<td><%=  d.newhiredoctype_id %></td> 
+		 					<td>
+		 						<%= d.newhiredoctype.name %>
+	 						
+		 					</td> 
 		 				</tr>
 		 			<% end %>	
 					</table>
-		</fieldset>
-	</div>
+				</fieldset>
+	    </div> 
 
-	<hr>
+	    <div class="coursework">	        
+	        <fieldset class="round">
+			<legend>Instructor Credentialed to Teach Based On:</legend>
+				<table  class="profile">
+					<th>Reason</th>
+					<th>Explanation</th>
+					<% @newhirecredentials.each do |c| %>
+		    			<tr>
+			    			<td>
+			    				<%= c.qualificationreasons.name %>
 
-	<div style="width:300px; float:left;">
-		<fieldset class="round">
+			    				<% case c.qualificationreason_id  when 1 %>
+									<p>Terminal Degree In Teaching Discipline</p>
+								<%  when 2 %>
+									<p>Other Terminal degree - Credential by Research/Experience/Creative Activity     </p>
+								<%  when 3 %>
+									<p>Other Terminal degree - Credential by Coursework   </p>
+								<%  when 4 %>
+									<p>Other Terminal degree - Credential by Coursework and Research/Experience/Creative Activity</p>
+								<%  when 5 %>
+									<p>Masters Degree</p>
+								<%  when 6 %>
+									<p>Bachelors Degree</p>
+								<%  when 7 %>
+									<p>Terminal Justification</p>
+								<% end %>
+			    			</td>  
+		 					<td><%=  c.qualification_explanation %></td> 
+		 				</tr>
+		 			<% end %>	
+					</table>
+				</fieldset>
+	    </div> 
+
+
+	    <div class="comments">	        
+	        <fieldset class="round">
 			<legend>Relevant Coursework:</legend>
-			<p> #To Do </p>
+				<table  class="profile">
+					<th>Course ID</th>
+					<th>Course Name</th>
+					<th>Year Taken</th>
+					<th>Institution</th>
+					<th>Credits</th>
+					<% @newhirecredits.each do |cr| %>
+		    			<tr>
+			    			<td><%=  cr.course_name %></td>  
+		 					<td><%=  cr.course_description %></td>  
+		 					<td><%=  cr.course_year %></td> 
+		 					<td><%=  cr.newhire_institution_id %></td>
+		 					<td><%=  cr.course_credits %></td>
+		 				</tr>
+		 			<% end %>	
+					</table>
+				</fieldset>
+	    </div> 
 
-		</fieldset>
-	</div>
-
-	<hr>
-
-	<div style="width:300px; float:left;">
-		<fieldset class="round">
+	    <div class="coursework">	        
+	        <fieldset class="round">
 			<legend>Additional Comments:</legend>
-			<p> #To Do </p>
-
-		</fieldset>
+				<table  class="profile">
+					
+				</table>
+			</fieldset>
+	    </div> 
+	     
+	    <div>
+		
 	</div>
+
 
 </div>
+
+	
+
