@@ -1,0 +1,24 @@
+<fieldset class="round">
+	<legend>
+		Additional Comments: 
+	</legend>
+	<table>
+		<tr>
+			<td>Comments to assist with establishing credentials to teach</td>
+		</tr>
+		<tr>
+			<td>
+				<%= form_for @comment,  :url => newhirecomment_create_path  do |f| %>
+					<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications" %> 	
+					<br/>
+					Click <%= f.submit  "Save", :disabled => current_user.ro %> to save this Qualification/Comment
+					<br/>
+					Click <%= f.submit  "Finish", :disabled => current_user.ro %> to finish the Certification of Credentials and Qualifications
+				<% end %>		
+
+			</td>
+		</tr>
+	</table>
+
+
+</fieldset>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130225205230) do
+ActiveRecord::Schema.define(:version => 20130226195453) do
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -145,6 +145,14 @@ ActiveRecord::Schema.define(:version => 20130225205230) do
   add_index "keyvalues", ["id"], :name => "index_keyvalues_on_id"
   add_index "keyvalues", ["key"], :name => "index_keyvalues_on_key"
 
+  create_table "newhirecomments", :force => true do |t|
+    t.text     "comment"
+    t.integer  "newhire_id"
+    t.integer  "created_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "newhirecourses", :force => true do |t|
     t.string   "name"
     t.string   "title"
@@ -170,7 +178,7 @@ ActiveRecord::Schema.define(:version => 20130225205230) do
     t.string   "course_year"
     t.integer  "course_credits"
     t.integer  "semester_credits"
-    t.integer  "newhire_institution_id"
+    t.integer  "newhireinstitution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -191,14 +199,20 @@ ActiveRecord::Schema.define(:version => 20130225205230) do
     t.integer  "newhiredoctype_id"
   end
 
+  create_table "newhireinstitutions", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "newhires", :force => true do |t|
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
     t.integer  "department_id"
+    t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "newhiredocument_id"
   end
 
   create_table "qualificationawards", :force => true do |t|
@@ -347,6 +361,16 @@ ActiveRecord::Schema.define(:version => 20130225205230) do
 
   add_index "semesters", ["id"], :name => "index_semesters_on_id"
   add_index "semesters", ["name"], :name => "index_semesters_on_name"
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "tenurestatuses", :force => true do |t|
     t.string   "name"

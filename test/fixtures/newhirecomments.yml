@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  comment: MyText
+  newhire_id: 1
+  created_by: 1
+
+two:
+  comment: MyText
+  newhire_id: 1
+  created_by: 1

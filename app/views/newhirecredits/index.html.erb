@@ -1,1 +1,83 @@
-NEw Hire CREDITS
+
+<%= render :partial => "newhires/newhirename" %>
+
+<fieldset class="round">
+	<legend>
+		Add Relevant Coursework: 
+	</legend>
+	<%= form_for @newhirecredits,  :url => '/newhirecredits'  do |f| %>
+		<%= hidden_field  :credit, :faculty_id %>
+		<table class="no-zebra no-hover">
+			<tr>	
+				<th>Course ID (ex: CDA 6031)</th>
+				<th>Course Name (ex: Data Mining)</th>
+				<th>Course Year (ex: 1995)</th>
+				<th>Institution</th>
+				<th>Course Credits (ex: 3)</th>
+				
+				</tr>
+			<tr>
+				<td><%= f.text_field :course_name,  :class => "text" %></td>
+				<td><%= f.text_field :course_description,  :class => "text"  %></td>
+				<td><%= f.text_field :course_year,  :class => "text"  %></td>
+				<td>
+					<%= collection_select(:newhirecredit,
+										   :newhireinstitution_id,		   
+										   @newhireinstitutions,
+										   :id,
+										   :name
+											)%> </td>
+				<td><%= f.text_field :course_credits, :class => "text"  %></td>
+				
+			</tr>
+			<tr>
+				<td><br/><br/></td>
+			</tr>
+		</table>
+		<table class="no-zebra no-hover">
+			<tr>
+		    	<td colspan="2"> 	
+		 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
+		 		</td>
+	 		</tr>
+			<tr>
+				<td colspan="2">
+					Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro %> to complete this credential.
+	 			</td>
+ 			</tr>
+		</table>
+	<% end %>
+	</fieldset>
+
+
+	<% if @newhire_credits_added.count > 0 %>
+		<fieldset class="round">
+			<legend>Relevant Coursework Added:</legend>
+			<table>
+			<tr>
+				
+				<th>Course ID (ex: CDA 6031)</th>
+				<th>Course Name (ex: Data Mining)</th>
+				<th>Course Year (ex: 1995)</th>
+				<th>Institution</th>
+				<th>Course Credits (ex: 3)</th>
+				
+				
+			<tr>
+
+			<% @newhire_credits_added.each do |cr| %>
+			<tr>
+				<td><%=  cr.course_name %> </td>
+				<td><%=  cr.course_description %> </td>
+				<td><%=  cr.course_year %> </td>
+				<td><%=  cr.newhireinstitution.name %></td>
+				<td><%=  cr.course_credits %> </td>
+				
+			</tr>
+			<% end %>
+
+			</table>
+	   </fieldset>
+
+		
+	<% end %>

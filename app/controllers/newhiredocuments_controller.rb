@@ -4,6 +4,7 @@ class NewhiredocumentsController < ApplicationController
   def index
   	@newhiredocument = Newhiredocument.new
   	@newhiredoctypes = Newhiredoctype.new
+    @newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
   end
 
   def create

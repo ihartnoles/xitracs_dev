@@ -3,5 +3,6 @@ class Newhirecredential < ActiveRecord::Base
 
   belongs_to :newhire
   
-  has_many  :qualificationreasons
+  #has_many  :qualificationreasons
+  belongs_to :qualificationreason
 end

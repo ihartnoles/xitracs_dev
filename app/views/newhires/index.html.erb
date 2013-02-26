@@ -1,17 +1,23 @@
 <%= form_for @newhire do |f| %>
-	<div class="info round">
-		
 		<fieldset class="round">
 			<legend>Instructor Name:</legend>
-		<p>
-			<strong>Firstname:</strong> <%= text_field_tag 'first_name'%>
-		</p>
-		<p>
-			<strong>Middle name:</strong> <%= text_field_tag 'middle_name'%>
-		</p>
-		<p>
-			<strong>Last name:</strong> <%= text_field_tag 'last_name'%>
-		</p>
-	</div>
+				<table class="no-zebra no-hover">
+					<tr>
+						<td><strong>Firstname:</strong></td>
+						<td><%= text_field_tag 'first_name'%></td>
+					</tr>
+
+					<tr>
+						<td><strong>Middle name:</strong></td>
+						<td><%= text_field_tag 'middle_name'%></td>
+					</tr>
+
+					<tr>
+						<td><strong>Last name:</strong> </td>
+						<td><%= text_field_tag 'last_name'%></td>
+					</tr>
+
+				</table>
+	</fieldset>
 	<%= f.submit "Save & Continue" %>
 <% end %>

@@ -5,17 +5,26 @@
 			<legend>Instructor Info:</legend>
 				<table  class="profile">					
 	    			<tr>
-	    				<td>Name:</td> 
-	    				<td><%= @newhire.first_name %> <%= @newhire.middle_name %> <%= @newhire.last_name %></td>
+	    				<td>Firstname:</td> 
+	    				<td><%= @newhire.first_name %></td>
 	    			</tr>
+	    			<tr>
+	    				<td>Middlename:</td>
+	    				<td><%= @newhire.middle_name %></td>
+	    			</tr>
+	    			<tr>
+	    				<td>Lastname:</td>
+	    				<td><%= @newhire.last_name %></td>
+	    			</tr>
+	    			<tr>
+	 					<td>School:</td> 	 
+	 					<td><%= @newhire_dept.school.description %></td>					
+	 				</tr>
 	    			<tr>	
-	 					<td>Dept:</td>
+	 					<td>Department:</td>
 	 					<td><%= @newhire_dept.name %></td>
 	 				</tr>	
-	 				<tr>
-	 					<td>Qualification:</td> 	 
-	 					<td></td>					
-	 				</tr>
+	 				
 	 				<tr>
 	 					<td>Status:</td> 	 
 	 					<td>PENDING</td>					
@@ -72,25 +81,7 @@
 					<th>Explanation</th>
 					<% @newhirecredentials.each do |c| %>
 		    			<tr>
-			    			<td>
-			    				<%= c.qualificationreasons.name %>
-
-			    				<% case c.qualificationreason_id  when 1 %>
-									<p>Terminal Degree In Teaching Discipline</p>
-								<%  when 2 %>
-									<p>Other Terminal degree - Credential by Research/Experience/Creative Activity     </p>
-								<%  when 3 %>
-									<p>Other Terminal degree - Credential by Coursework   </p>
-								<%  when 4 %>
-									<p>Other Terminal degree - Credential by Coursework and Research/Experience/Creative Activity</p>
-								<%  when 5 %>
-									<p>Masters Degree</p>
-								<%  when 6 %>
-									<p>Bachelors Degree</p>
-								<%  when 7 %>
-									<p>Terminal Justification</p>
-								<% end %>
-			    			</td>  
+			    			<td><%= c.qualificationreason.name %></td>  
 		 					<td><%=  c.qualification_explanation %></td> 
 		 				</tr>
 		 			<% end %>	
@@ -108,12 +99,12 @@
 					<th>Year Taken</th>
 					<th>Institution</th>
 					<th>Credits</th>
-					<% @newhirecredits.each do |cr| %>
+					<% @newhire_credits_added.each do |cr| %>
 		    			<tr>
 			    			<td><%=  cr.course_name %></td>  
 		 					<td><%=  cr.course_description %></td>  
 		 					<td><%=  cr.course_year %></td> 
-		 					<td><%=  cr.newhire_institution_id %></td>
+		 					<td><%=  cr.newhireinstitution.name %></td>
 		 					<td><%=  cr.course_credits %></td>
 		 				</tr>
 		 			<% end %>	
@@ -125,7 +116,12 @@
 	        <fieldset class="round">
 			<legend>Additional Comments:</legend>
 				<table  class="profile">
-					
+					<th>Comment</th>
+					<% @newhire_comments_added.each do |cm| %>
+						<tr>
+							<td><%= cm.comment %></td>
+						</tr>
+					<% end %>
 				</table>
 			</fieldset>
 	    </div> 

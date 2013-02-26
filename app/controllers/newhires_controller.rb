@@ -27,8 +27,9 @@ class NewhiresController < ApplicationController
       
       @newhirecredentials = Newhirecredential.where(:newhire_id => params[:id])
 
-      @newhirecredits = Newhirecredit.where(:newhire_id => params[:id])
-      #@coursework = 
+      @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:id])
+      
+      @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:id])
   end
 
 
@@ -37,7 +38,7 @@ class NewhiresController < ApplicationController
           flash[:notice] = 'Please provide both a firstname and a lastname'
           redirect_to newhires_path
         else
-  	      @newhire = Newhire.new(:first_name => params[:first_name], :last_name =>params[:last_name])
+  	      @newhire = Newhire.new(:first_name => params[:first_name], :middle_name => params[:middle_name],:last_name =>params[:last_name], :school_id => session[:school_id], :department_id => session[:department_id])
 		  
           if params[:middle_name].blank? 
           	 @newhire.middle_name = nil
