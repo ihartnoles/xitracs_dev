@@ -48,17 +48,21 @@ class NewhirecredentialsController < ApplicationController
           flash[:notice] = 'Please fill out all fields'
           redirect_to newhirecredentials_path
     else 
-        @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_name], :qualification_explanation => params[:qualification_explanation], :newhire_id => session[:newhire_id])
+          @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_id], :qualification_explanation => params[:qualification_explanation], :newhire_id => session[:newhire_id])
+          #@newhirecredential.save
 
-        respond_to do |format|
           if @newhirecredential.save
-            format.html { redirect_to @newhirecredential, notice: 'Newhirecredential was successfully created.' }
-            format.json { render json: @newhirecredential, status: :created, location: @newhirecredential }
+            
+            redirect_to newhirecredits_path
+
+            #format.html { redirect_to @newhirecredential, notice: 'Newhirecredential was successfully created.' }
+            #format.json { render json: @newhirecredential, status: :created, location: @newhirecredential }
           else
-            format.html { render action: "new" }
-            format.json { render json: @newhirecredential.errors, status: :unprocessable_entity }
+             flash[:notice] = "A problem occurred saving the credential."
+          #else
+           # format.html { render action: "new" }
+           # format.json { render json: @newhirecredential.errors, status: :unprocessable_entity }
           end
-        end
       end
   end
 

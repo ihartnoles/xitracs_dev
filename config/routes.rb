@@ -10,6 +10,7 @@ XitracsRoster::Application.routes.draw do
   #resources :precredentialing
   resources :newhires
   resources :newhirecourses
+  resources :newhirecredits
   resources :newhiredocuments do
      collection do
         get  'uploadform'

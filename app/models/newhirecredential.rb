@@ -1,10 +1,7 @@
 class Newhirecredential < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :qualificationreason_id, :qualification_explanation, :newhire_id
 
   belongs_to :newhire
   
   has_many  :qualificationreasons
-  #validates :qualificationreason_id, :presence => {:message => 'Name cannot be blank, Task not saved'}
-  #validates :qualification_explanation, :presence => {:message => 'Name cannot be blank, Task not saved'}
-  
 end

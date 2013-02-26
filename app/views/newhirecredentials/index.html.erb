@@ -5,10 +5,10 @@
       <legend>Instructor Credentials:</legend>
       <br><strong>The instructor is credentialed to teach:</strong><br>
       <%= form_for @newhirecredential do |c| %>
-        <% @qualificationreasons.each do |qr| %>
-                      <br><%= radio_button_tag  'qualificationreason_name',  qr.id, {:onclick => "do_inst();"} %>
+                  <% @qualificationreasons.each do |qr| %>
+                      <br><%= radio_button_tag  'qualificationreason_id',  qr.id, {:onclick => "do_inst();"} %>
                     <%=  qr.name.humanize %>
-                    <% end %> 
+                  <% end %> 
             <br />
             <br />
             <p>
