@@ -1,0 +1,26 @@
+<fieldset class="round">
+	<legend>
+		Additional Comments: 
+	</legend>
+	<table>
+		<tr>
+			<td>Comments to assist with establishing credentials to teach</td>
+		</tr>
+		<tr>
+			<td>
+				<%= form_for @comment,  :url => newhirecomment_create_path  do |f| %>
+					<%= hidden_field_tag 'source', 'New' %>
+		 			<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+
+					<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications" %> 	
+					<br/>
+					Click <%= f.submit  "Save", :disabled => current_user.ro %> to save this Qualification/Comment
+					
+				<% end %>		
+
+			</td>
+		</tr>
+	</table>
+
+
+</fieldset>

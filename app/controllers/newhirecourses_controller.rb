@@ -7,7 +7,7 @@ class NewhirecoursesController < ApplicationController
   end
 
   def edit
-		@newhirecourse = Newhirecourse.find(params[:id])
+	@newhirecourse = Newhirecourse.find(params[:id])
   end
 
   def update
@@ -22,6 +22,27 @@ class NewhirecoursesController < ApplicationController
       	redirect_to newhiredetails_path(params[:newhire_id])
   end
 
+  def new
+    if (params.has_key?(:newhire_id))
+        session[:newhire_id] = params[:newhire_id]
+    end
+
+  	@newhirecourse = Newhirecourse.new
+  end
+
+
+  def destroy
+    @newhirecourse = Newhirecourse.find(params[:id])
+    @newhirecourse.destroy
+
+    #respond_to do |format|
+    #  format.html { redirect_to newhirecredentials_url }
+    #  format.json { head :ok }
+    #end
+
+    redirect_to newhiredetails_path(params[:newhire_id])
+  end
+
 
   def create 	 
 	if (params[:commit] == 'Add' || params[:commit] == 'Save') 
@@ -29,11 +50,17 @@ class NewhirecoursesController < ApplicationController
 
 		if ( params[:course_name].blank? || params[:course_title].blank? || params[:course_description].blank?) 
           flash[:notice] = 'Please fill out all course fields'
-          redirect_to newhirecourses_path
+          
+  	      if (params.has_key?(:source))
+  			  	redirect_to new_newhirecourse_path(params[:newhire_id])
+  			  else
+  			  	redirect_to newhirecourse_path
+  			  end
+
         else 	
+
         	@newhire_course  = Newhirecourse.where(:newhire_id => session[:newhire_id]).count   
-        	
-		    @newhirecourse = Newhirecourse.new(:name => params[:course_name], :title => params[:course_title], :description => params[:course_description], :newhire_id => session[:newhire_id])
+        	@newhirecourse = Newhirecourse.new(:name => params[:course_name], :title => params[:course_title], :description => params[:course_description], :newhire_id => session[:newhire_id])
 		
 		  	  if @newhirecourse.save
 			    #session[:newhire_id] = @newhire.id
@@ -43,11 +70,17 @@ class NewhirecoursesController < ApplicationController
 			   else
 			   	flash[:notice] = "There was a problem saving the course to teach."		    
 			  end
-			  redirect_to newhirecourses_path
+
+
+			  if (params.has_key?(:source))
+			  	redirect_to newhiredetails_path(params[:newhire_id])
+			  else
+			  	redirect_to newhirecourse_path
+			  end
 		end
 
-	else
-		redirect_to newhiredocuments_path
+	#else
+	#	redirect_to newhiredocuments_path
 	end
 		
   end 

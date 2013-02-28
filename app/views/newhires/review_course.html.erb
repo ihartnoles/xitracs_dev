@@ -1,0 +1,183 @@
+ <script type="text/javascript">
+
+	function do_checkbox() {
+		elem = document.getElementsByTagName("input");
+		pending = document.getElementById("reason_review_state_0");
+		passed = document.getElementById("reason_review_state_1");
+		failed = document.getElementById("reason_review_state_2");
+		alert = document.getElementById("reason_review_state_3");
+		justdocs = document.getElementById("reason_review_state_4");
+
+		one_checked = false;
+		for (var i = 0 ; i < elem.length ; i++ ) {
+			if (elem[i].className == "check") {
+				if (elem[i].checked == true) {
+					pending.disabled = true;
+					passed.disabled = true;
+					if (alert.checked == false) {
+						failed.checked = true;
+					}
+					one_checked = true;
+				} 
+			} 
+		}	
+		if (one_checked == false) {
+			pending.disabled = false;
+			passed.disabled = false;
+			passed.checked = true;
+		}		
+	}
+	
+	function clear_all_checkboxes() {
+		elem = document.getElementsByTagName("input");
+		for (var i = 0 ; i < elem.length ; i++ ) {
+			if (elem[i].className == "check") {
+				elem[i].checked = false;
+			}
+		}
+	}
+	
+	function set_all_checkboxes(what_to_do) {
+		elem = document.getElementsByTagName("input");
+		for (var i = 0 ; i < elem.length ; i++ ) {
+			if (elem[i].className == "check") {
+				elem[i].disabled = what_to_do;
+			}
+		}
+	}
+	
+	function do_passed() {
+		clear_all_checkboxes();
+		set_all_checkboxes(true);		
+	}
+	
+	function do_failed() {
+		set_all_checkboxes(false);		
+	}
+
+	function do_alert() {
+		set_all_checkboxes(false);		
+	}	
+	
+	function do_justdocs(){
+		set_all_checkboxes(false)
+	}
+</script>
+
+ <div class="container">
+ <% if session[:review] %>
+
+<strong>
+ <%=@newhire.first_name %>  <%=@newhire.last_name %> 
+ <%=@newhire_course_to_review.name %> - <%=@newhire_course_to_review.title %>
+</strong>
+		    <div class="coursework">
+		    	<fieldset class="round">
+				<legend>Review:</legend>    
+				 	<%= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
+						<%#= hidden_field  :reason, :faculty_id %>
+						<%#= hidden_field  :reason, :course_id %>
+						<%#= hidden_field  :reason, :id %>
+						
+						<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
+						<%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
+						<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "do_failed();"} %> Not Passed
+						<%= f.radio_button :review_state, Reason.review_alert,  {:onclick => "do_alert();"}  %> Alert
+						<%= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %> Justification Docs
+
+						<br/>
+					 		<% Reviewreason.all.each do |reviewreason| -%>
+								<%= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, 'test', :class => "check", :onclick => "do_checkbox();" %>
+
+								 <%= reviewreason.name %> <br/>
+							<% end %>
+					
+						<br/>
+						<label> Comments: </label>
+						<br/>	
+						<%= f.text_area :review_comments %><br/>
+						<%= check_box_tag "apply_comments_to_all"%> Apply Comments to All Pending/Not Passed/Alert Courses 
+						<br/>
+						<%= f.submit  "Submit", :id => "Submit" %>
+					<% end %>	   
+				</fieldset>
+		    <div>
+
+
+
+		     <fieldset class="round">
+			<legend>Documents submitted to Provost:</legend>
+			<table  class="profile">
+					<th>Name</th>
+					<th>Location</th>
+					<th>Type</th>
+					<% @newhiredocuments.each do |d| %>
+		    			<tr>
+			    			<td><%=  d.name %></td>  
+		 					<td><%=  d.location %></td>  
+		 					<td><%= d.newhiredoctype.name %></td> 
+		 					
+		 				</tr>
+		 			<% end %>	
+					</table>
+				</fieldset>
+
+
+			<div class="coursework">	        
+		        <fieldset class="round">
+				<legend>Instructor Credentialed to Teach Based On:</legend>
+					<table  class="profile">
+						<th>Reason</th>
+						<th>Explanation</th>
+						
+						<% @newhirecredentials.each do |c| %>
+			    			<tr>
+				    			<td><%= c.qualificationreason.name %></td>  
+			 					<td><%=  c.qualification_explanation %></td> 
+			 					
+			 				</tr>
+			 			<% end %>	
+						</table>
+				</fieldset>
+	    	</div> 
+
+
+	     <div class="comments">	        
+	        <fieldset class="round">
+			<legend>Relevant Coursework:</legend>
+			
+				<table  class="profile">
+					<th>Course ID</th>
+					<th>Course Name</th>
+					<th>Year Taken</th>
+					<th>Institution</th>
+					<th>Credits</th>
+					
+					<% @newhire_credits_added.each do |cr| %>
+		    			<tr>
+			    			<td><%=  cr.course_name %></td>  
+		 					<td><%=  cr.course_description %></td>  
+		 					<td><%=  cr.course_year %></td> 
+		 					<td><%=  cr.newhireinstitution.name %></td>
+		 					<td><%=  cr.course_credits %></td>
+		 				</tr>
+		 			<% end %>	
+					</table>
+				</fieldset>
+	    </div> 
+
+	     <div class="coursework">	        
+	        <fieldset class="round">
+			<legend>Additional Comments:</legend>
+				<table  class="profile">
+					<th>Comment</th>
+					<% @newhire_comments_added.each do |cm| %>
+						<tr>
+							<td><%= cm.comment %></td>							
+						</tr>
+					<% end %>
+				</table>
+			</fieldset>
+	    </div> 
+<% end %>
+</div>

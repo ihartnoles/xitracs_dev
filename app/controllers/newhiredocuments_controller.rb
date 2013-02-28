@@ -5,6 +5,9 @@ class NewhiredocumentsController < ApplicationController
   	@newhiredocument = Newhiredocument.new
   	@newhiredoctypes = Newhiredoctype.new
     @newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
+    
+
+    render :layout => 'simple'
   end
 
   def create
@@ -37,15 +40,23 @@ class NewhiredocumentsController < ApplicationController
 
   def edit
     @newhiredocument = Newhiredocument.find(params[:id])
-  end
+    @doc_type = params[:doc_type]
+    @docname  = Newhiredoctype.find(params[:doc_type]).name
 
-  def update
+    if (params.has_key?(:source))
+      render :layout => 'simple'
+    end
   end
 
   def uploadform
   	@doc_type = params[:doc_type]
   	@docname  = Newhiredoctype.find(params[:doc_type]).name
-  	render :layout => 'simple'
+
+    if !params[:newhire_id].blank?
+      session[:newhire_id] = params[:newhire_id]
+  	end
+
+    render :layout => 'simple'
   end
 
   def file_upload
@@ -74,21 +85,34 @@ class NewhiredocumentsController < ApplicationController
         #create the file path
         path = File.join(dir, params[:file_upload][:filename].original_filename)
         
+
+        FileUtils.rm_rf(dir)
+
         #create the directory if it doesn't exist
         unless File.directory?(dir)
-          FileUtils.mkdir_p(dir)
+          FileUtils.mkdir_p(dir)                  
         end 
-       
+              
+
         # write the file
         File.open(path, "wb") { |f| f.write(params[:file_upload][:filename].read) }
-
-        d = Newhiredocument.new
-        #d.doc_type = params[:doc_type]
-      	d.name = name
-      	d.location = path
-        d.newhiredoctype_id = params[:doc_type]
-        d.newhire_id = session[:newhire_id]
-      	d.save
+        
+        if (params[:commit] == 'Upload')
+          d = Newhiredocument.new
+           #d.doc_type = params[:doc_type]
+          d.name = name
+          d.location = path
+          d.newhiredoctype_id = params[:doc_type]
+          d.newhire_id = session[:newhire_id]
+          d.save
+        else
+          @newhiredocument = Newhiredocument.find(params[:id])
+          @newhiredocument.name = name
+          @newhiredocument.location = path
+          @newhiredocument.newhiredoctype_id = params[:doc_type]
+          @newhiredocument.newhire_id = session[:newhire_id]
+          @newhiredocument.save
+        end
 
        	flash[:notice] = "File has been uploaded successfully"
 

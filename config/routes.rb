@@ -10,7 +10,13 @@ XitracsRoster::Application.routes.draw do
   resources :semesters
   resources :users
   #resources :precredentialing
-  resources :newhires
+  resources :newhires do
+     collection do
+        get  'review_course'
+        post 'review_course'
+    end
+  end
+
   resources :newhirecourses
   resources :newhirecredits
   resources :newhirecomment
@@ -18,9 +24,9 @@ XitracsRoster::Application.routes.draw do
      collection do
         get  'uploadform'
         post 'uploadform'
+    end
   end
 
-  end
   resources :sessions, only: [:new, :create, :destroy]
 
   get "/quick/criteria"
@@ -92,6 +98,9 @@ XitracsRoster::Application.routes.draw do
   post "newhires/courses"
   post "newhires/create"
   
+  get  "newhires/review_course"
+  post "newhires/review_course"
+
   get "newhires/show"
   #get "newhires/displaydetails"
 
@@ -125,6 +134,8 @@ XitracsRoster::Application.routes.draw do
   match '/logout', to: 'sessions#destroy'
 
   match "/newhires/:id/displaydetails" => 'newhires#displaydetails', :as => :newhiredetails
+
+  match "/newhires/review_course" => 'newhires#review_course', :as => :newhire_review_course
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

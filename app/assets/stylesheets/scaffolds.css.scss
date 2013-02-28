@@ -15,6 +15,11 @@ pre {
   padding: 10px;
   font-size: 11px; }
 
+.icon:hover {
+   background-color: white;
+}
+
+
 a {
   color: #000;
   &:visited {
@@ -22,6 +27,7 @@ a {
   &:hover {
     color: #fff;
     background-color: #000; } }
+
 
 div {
   &.field, &.actions {

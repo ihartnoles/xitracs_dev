@@ -1,1 +1,15 @@
 views/Newhiredocuments/edit.html.erb
+
+<fieldset class="round">
+
+<p>
+	<legend><%= @docname %> file upload</legend>
+	<%= form_for :file_upload, :url => newhiredocuments_file_upload_path ,:html => {:multipart => true} do |f| %>
+	  <%= hidden_field_tag 'id', params[:id] %>
+	  <%= hidden_field_tag 'doc_type', params[:doc_type] %>
+	  <%= f.file_field :filename %>
+	  <%= f.submit "Re-Upload" %>
+	<% end %>
+
+</p>	
+</fieldset>

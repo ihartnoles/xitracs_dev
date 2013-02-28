@@ -1,9 +1,16 @@
+
+<%= render :partial => "newhires/newhirename" %>
+
 <fieldset class="round">
 	<legend>
 		Add Relevant Coursework: 
 	</legend>
+	
 	<%= form_for(@newhirecredits) do |f| %>
+		
 		<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+		<%= hidden_field_tag 'source', 'New' %>
+
 		<table class="no-zebra no-hover">
 			<tr>	
 				<th>Course ID (ex: CDA 6031)</th>
@@ -19,14 +26,11 @@
 				<td><%= f.text_field :course_year,  :class => "text"  %></td>
 				<td>
 					<%= collection_select(:newhirecredit,
-										  :newhireinstitution_id,		
-										  Newhireinstitution.all,
-										  :id,
-										  :name,
-										   {:selected => @newhirecredits.newhireinstitution_id}
-										
-										)%> 
-				</td>
+										   :newhireinstitution_id,		   
+										   @newhireinstitutions,
+										   :id,
+										   :name
+											)%> </td>
 				<td><%= f.text_field :course_credits, :class => "text"  %></td>
 				
 			</tr>
@@ -37,10 +41,9 @@
 		<table class="no-zebra no-hover">
 			<tr>
 		    	<td colspan="2"> 	
-		 			Click <%= f.submit 'Update', :id => "Update" , :disabled => current_user.ro %> to save this course.<br/><br/>
+		 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
 		 		</td>
-	 		</tr>
-			
+	 		</tr>			
 		</table>
 	<% end %>
 	</fieldset>

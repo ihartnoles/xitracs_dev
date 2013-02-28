@@ -38,12 +38,36 @@ class NewhiresController < ApplicationController
       @reason = Reason.new
 
       @reviewreason = Reviewreason.all
-
-       #if (@reason != nil)
-        #@reviewreason_ids = @reason.reviewreason_ids      
-        #@credits = Credit.where(:faculty_id => @faculty.id)        
-      #end
   end
+
+  def review_course
+      @newhire = Newhire.find(params[:newhire_id])
+      
+      @newhire_course_to_review = Newhirecourse.find(params[:id])
+
+      @newhirecourses = Newhirecourse.where(:newhire_id => params[:newhire_id])
+
+      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:newhire_id])
+
+      @newhire_dept = Department.find(@newhire.department_id)
+      
+      @newhirecredentials = Newhirecredential.where(:newhire_id => params[:newhire_id])
+
+      @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id])
+      
+      @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:newhire_id])
+
+      #pull user id to for @credentialed
+      user_id = @newhire_comments_added.map(&:user_id)
+      @credentialed_by = User.find(user_id).map(&:name).join("")
+
+      @reason = Reason.new
+
+      @reviewreason = Reviewreason.all
+      @reason = Reason.new
+      @reviewreason = Reviewreason.all
+  end
+
 
   def process_justification_deansignoff
     #@faculty = Faculty.find(session[:faculty_id])
