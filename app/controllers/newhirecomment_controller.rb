@@ -21,4 +21,20 @@ class NewhirecommentController < ApplicationController
 	end
   end
 
+
+  def edit
+    @comment = Newhirecomment.find(params[:id])
+  end
+
+
+  def update
+    @comment = Newhirecomment.find(params[:id])
+
+     if @comment.update_attributes(params[:newhirecomment])
+        flash[:notice] = "Comment successfully updated."
+     else
+     	flash[:notice] = "There was a problem updating the comment."
+     end
+     redirect_to newhiredetails_path(params[:newhire_id])
+  end
 end

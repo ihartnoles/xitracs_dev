@@ -19,8 +19,8 @@ class NewhiresController < ApplicationController
   def displaydetails
       @newhire = Newhire.find(params[:id])
       
-
       @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
+
       @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
 
       @newhire_dept = Department.find(@newhire.department_id)
@@ -30,8 +30,31 @@ class NewhiresController < ApplicationController
       @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:id])
       
       @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:id])
+
+      #pull user id to for @credentialed_bu
+      user_id = @newhire_comments_added.map(&:user_id)
+      @credentialed_by = User.find(user_id).map(&:name).join("")
+
+      @reason = Reason.new
+
+      @reviewreason = Reviewreason.all
+
+       #if (@reason != nil)
+        #@reviewreason_ids = @reason.reviewreason_ids      
+        #@credits = Credit.where(:faculty_id => @faculty.id)        
+      #end
   end
 
+  def process_justification_deansignoff
+    #@faculty = Faculty.find(session[:faculty_id])
+    #@course = Course.find(session[:course_id])
+    #@reason = Reason.find(session[:reason_id])   
+    if (params[:commit] == 'Submit')
+      params[:reason][:dean_id] = current_user.id
+     # @reason.update_attributes(params[:reason])
+     # redirect_to :action => 'process_justification_done'
+    end   
+  end
 
   def create
        if ( params[:first_name].blank? || params[:last_name].blank? ) 

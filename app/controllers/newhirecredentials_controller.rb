@@ -38,6 +38,7 @@ class NewhirecredentialsController < ApplicationController
 
   # GET /newhirecredentials/1/edit
   def edit
+    @qualificationreasons = Qualificationreason.all
     @newhirecredential = Newhirecredential.find(params[:id])
   end
 
@@ -71,15 +72,14 @@ class NewhirecredentialsController < ApplicationController
   def update
     @newhirecredential = Newhirecredential.find(params[:id])
 
-    respond_to do |format|
-      if @newhirecredential.update_attributes(params[:newhirecredential])
-        format.html { redirect_to @newhirecredential, notice: 'Newhirecredential was successfully updated.' }
-        format.json { head :ok }
+    
+      if @newhirecredential.update_attributes(:newhirecredential => params[:newhirecredential], :qualificationreason_id => params[:qualificationreason_id])
+         flash[:notice] = "Credential successfully updated."
       else
-        format.html { render action: "edit" }
-        format.json { render json: @newhirecredential.errors, status: :unprocessable_entity }
+        flash[:notice] = "There was a problem updating the credential."
       end
-    end
+    
+      redirect_to newhiredetails_path(params[:newhire_id])
   end
 
   # DELETE /newhirecredentials/1

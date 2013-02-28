@@ -1,6 +1,22 @@
-<h1>Editing newhirecredential</h1>
+<fieldset class="round">
+      <legend>Instructor Credentials:</legend>
+      <br><strong>The instructor is credentialed to teach:</strong><br>
+       <%= form_for @newhirecredential do |c| %>
+       <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+                  <% @qualificationreasons.each do |qr| %>
+                      <br><%= radio_button_tag  'qualificationreason_id',  qr.id, @newhirecredential.qualificationreason_id == qr.id %>
+                    <%=  qr.name.humanize %>
+                  <% end %> 
+            <br />
+            <br />
+            <p>
+            <strong>Explanation of instructor's qualifications:</strong><br>
+                 <%= c.text_area :qualification_explanation %>          
+            </p>
+            <p>
+             Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
 
-<%= render 'form' %>
+            </p>
+       <% end %>
+</fieldset>
 
-<%= link_to 'Show', @newhirecredential %> |
-<%= link_to 'Back', newhirecredentials_path %>

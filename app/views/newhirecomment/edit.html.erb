@@ -1,0 +1,10 @@
+<h1>Editing newhirecomment</h1>
+
+
+
+<%= form_for @comment  do |f| %>
+			<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+			<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications" %> 	
+			<br/>
+			Click <%= f.submit  "Save", :disabled => current_user.ro %> to save this Qualification/Comment
+<% end %>
