@@ -130,11 +130,13 @@
 					<th>Prefix & Number</th>
 					<th>Title</th>
 					<th>Description</th>
+					<th>Action</th>
 						<% @newhirecourses.each do |ca| %>
 			    			<tr>
 			    				<td><%=  ca.name %></td> 
 			 					<td><%=  ca.title.humanize %></td>
-			 					<td><%=  ca.description.humanize %></td> 	 					
+			 					<td><%=  ca.description.humanize %></td> 	
+			 					<td><%= link_to 'Edit',  edit_newhirecourse_path(ca , :newhire_id => params[:id] )  %></td> 					
 			 				</tr>
 			 			<% end %>
 				</table>
@@ -148,14 +150,13 @@
 					<th>Name</th>
 					<th>Location</th>
 					<th>Type</th>
+					<th>Action</th>
 					<% @newhiredocuments.each do |d| %>
 		    			<tr>
 			    			<td><%=  d.name %></td>  
 		 					<td><%=  d.location %></td>  
-		 					<td>
-		 						<%= d.newhiredoctype.name %>
-	 						
-		 					</td> 
+		 					<td><%= d.newhiredoctype.name %></td> 
+		 					<td><%= link_to 'Edit',  edit_newhiredocument_path(d , :newhire_id => params[:id] )  %></td>
 		 				</tr>
 		 			<% end %>	
 					</table>
@@ -190,6 +191,7 @@
 					<th>Year Taken</th>
 					<th>Institution</th>
 					<th>Credits</th>
+					<th>Actions</th>
 					<% @newhire_credits_added.each do |cr| %>
 		    			<tr>
 			    			<td><%=  cr.course_name %></td>  
@@ -197,6 +199,7 @@
 		 					<td><%=  cr.course_year %></td> 
 		 					<td><%=  cr.newhireinstitution.name %></td>
 		 					<td><%=  cr.course_credits %></td>
+		 					<td><%= link_to 'Edit', edit_newhirecredit_path(cr , :newhire_id => params[:id] )  %></td>
 		 				</tr>
 		 			<% end %>	
 					</table>

@@ -1,0 +1,49 @@
+<fieldset class="round">
+	<legend>
+		Add Relevant Coursework: 
+	</legend>
+	<%= form_for(@newhirecredits) do |f| %>
+		<%= hidden_field  :credit, :faculty_id %>
+		<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+		<table class="no-zebra no-hover">
+			<tr>	
+				<th>Course ID (ex: CDA 6031)</th>
+				<th>Course Name (ex: Data Mining)</th>
+				<th>Course Year (ex: 1995)</th>
+				<th>Institution</th>
+				<th>Course Credits (ex: 3)</th>
+				
+				</tr>
+			<tr>
+				<td><%= f.text_field :course_name,  :class => "text" %></td>
+				<td><%= f.text_field :course_description,  :class => "text"  %></td>
+				<td><%= f.text_field :course_year,  :class => "text"  %></td>
+				<td>
+					<%= collection_select(:newhirecredit,
+										   :newhireinstitution_id,		
+										   @newhirecredits.newhireinstitution_id == f.id
+
+										   :id,
+										   :name
+											)%> </td>
+				<td><%= f.text_field :course_credits, :class => "text"  %></td>
+				
+			</tr>
+			<tr>
+				<td><br/><br/></td>
+			</tr>
+		</table>
+		<table class="no-zebra no-hover">
+			<tr>
+		    	<td colspan="2"> 	
+		 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
+		 		</td>
+	 		</tr>
+			<tr>
+				<td colspan="2">
+					Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro %> to complete this credential.
+	 			</td>
+ 			</tr>
+		</table>
+	<% end %>
+	</fieldset>

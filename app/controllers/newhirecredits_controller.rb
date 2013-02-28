@@ -5,6 +5,15 @@ class NewhirecreditsController < ApplicationController
       @newhire_credits_added  = Newhirecredit.where(:newhire_id => session[:newhire_id])
     end
 
+    def edit
+      @newhirecredits = Newhirecredit.find(params[:id])
+      @newhireinstitutions = Newhireinstitution.all
+    end
+
+    def update
+
+    end 
+
     def create
 
     	if (params[:commit] == 'Add') 

@@ -1,0 +1,35 @@
+
+		<fieldset class="round">
+			<legend>To Teach:</legend>
+			<%= form_for(@newhirecourse) do |f| %>
+				<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+
+				<table  class="no-zebra no-hover">
+					<tr>
+						<td><strong>Course Prefix and Number:</strong></td>
+						<td> <%= f.text_field :name %></td>
+					</tr>
+
+					<tr>
+						<td><strong>Course title:</strong> </td>
+						<td><%= f.text_field :title %></td>
+					</tr>
+
+
+					<tr>
+						<td><strong>Brief Course Description:</strong></td>
+						<td><%= f.text_area :description %></td>
+					</tr>
+
+					<tr>
+						<td colspan="2">
+							&nbsp;
+						</td>
+					</tr>	
+					<tr>
+						<td colspan="2">
+						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro %> to save this course.</p>
+					</tr>
+				</table>
+			<% end %>
+		</fieldset>

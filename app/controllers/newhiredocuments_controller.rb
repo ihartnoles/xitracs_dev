@@ -35,6 +35,13 @@ class NewhiredocumentsController < ApplicationController
 
   end 
 
+  def edit
+    @newhiredocument = Newhiredocument.find(params[:id])
+  end
+
+  def update
+  end
+
   def uploadform
   	@doc_type = params[:doc_type]
   	@docname  = Newhiredoctype.find(params[:doc_type]).name

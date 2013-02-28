@@ -6,9 +6,25 @@ class NewhirecoursesController < ApplicationController
   	@newhire_courses_added = Newhirecourse.where(:newhire_id => session[:newhire_id])
   end
 
-  def create
- 	 
-	if (params[:commit] == 'Add') 
+  def edit
+		@newhirecourse = Newhirecourse.find(params[:id])
+  end
+
+  def update
+		@newhirecourse = Newhirecourse.find(params[:id])
+
+	  	if @newhirecourse.update_attributes(params[:newhirecourse])
+         flash[:notice] = "Course successfully updated."
+      	else
+         flash[:notice] = "There was a problem updating the course."
+      	end
+    
+      	redirect_to newhiredetails_path(params[:newhire_id])
+  end
+
+
+  def create 	 
+	if (params[:commit] == 'Add' || params[:commit] == 'Save') 
 
 
 		if ( params[:course_name].blank? || params[:course_title].blank? || params[:course_description].blank?) 
@@ -33,5 +49,6 @@ class NewhirecoursesController < ApplicationController
 	else
 		redirect_to newhiredocuments_path
 	end
+		
   end 
 end
