@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  newhire_id: 1
+  course_id: 1
+  qualificationreason_id: 1
+  comments: MyText
+  reviewer_id: 1
+  review_comments: MyText
+  review_state: 1
+  dean_id: 1
+  dean_comments: 1
+  dean_signoff: 
+
+two:
+  user_id: 1
+  newhire_id: 1
+  course_id: 1
+  qualificationreason_id: 1
+  comments: MyText
+  reviewer_id: 1
+  review_comments: MyText
+  review_state: 1
+  dean_id: 1
+  dean_comments: 1
+  dean_signoff: 

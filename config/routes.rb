@@ -101,6 +101,9 @@ XitracsRoster::Application.routes.draw do
   get  "newhires/review_course"
   post "newhires/review_course"
 
+  get  "/newhires/approve_course"
+  post "/newhires/approve_course"
+
   get "newhires/show"
   #get "newhires/displaydetails"
 

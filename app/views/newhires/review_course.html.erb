@@ -74,7 +74,8 @@
 		    <div class="coursework">
 		    	<fieldset class="round">
 				<legend>Review:</legend>    
-				 	<%= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
+				 	<%#= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
+				 	<%= form_for @reason, :url => '/newhires/approve_course' do |f| %>
 						<%#= hidden_field  :reason, :faculty_id %>
 						<%#= hidden_field  :reason, :course_id %>
 						<%#= hidden_field  :reason, :id %>

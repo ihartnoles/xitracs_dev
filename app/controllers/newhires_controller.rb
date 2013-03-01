@@ -68,6 +68,8 @@ class NewhiresController < ApplicationController
       @reviewreason = Reviewreason.all
   end
 
+  def approve_course
+  end 
 
   def process_justification_deansignoff
     #@faculty = Faculty.find(session[:faculty_id])
