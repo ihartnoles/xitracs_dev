@@ -9,6 +9,13 @@ class NewhiresController < ApplicationController
       @newhire_count = Newhire.all.count     
   end
 
+  def showcourses
+     @newhire = Newhire.find(params[:id])
+     @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])   
+     @newhire_dept = Department.find(@newhire.department_id)  
+  end
+
+
   def edit
       @newhire = Newhire.find(params[:id])
       @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
@@ -36,7 +43,7 @@ class NewhiresController < ApplicationController
       @credentialed_by = User.find(user_id).map(&:name).join("")
 
       @reason = Reason.new
-
+      @newhirereason = Newhirereason.new
       @reviewreason = Reviewreason.all
   end
 
@@ -62,24 +69,97 @@ class NewhiresController < ApplicationController
       @credentialed_by = User.find(user_id).map(&:name).join("")
 
       @reason = Reason.new
+      @reviewreason = Reviewreason.all
 
-      @reviewreason = Reviewreason.all
-      @reason = Reason.new
-      @reviewreason = Reviewreason.all
+      #if (@reviewreason != nil)
+        #@reviewreason_ids = @reviewreason.reviewreason_ids      
+        #@credits = Credit.where(:faculty_id => @faculty.id)        
+      #end  
+      
+      #begin
+        @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
+
+       if (params.has_key?(:newhirereason_id))
+          @newhirereason = Newhirereason.find(params[:newhirereason_id])
+       else
+          @newhirereason = Newhirereason.new 
+       end
+        
+      #rescue
+        #@newhirereason = Newhirereason.new
+      #end
   end
 
   def approve_course
+    if (params[:commit] == 'Submit')
+      #if (params[:apply_comments_to_all])
+      #  apply_comments_to_all = params[:apply_comments_to_all]
+      #  params.delete(:apply_comments_to_all)
+      #end
+      #begin
+      #  @newhirereason = Newhirereason.find(params[:id])
+      #rescue
+        @newhirereason = Newhirereason.new
+      #end
+      #params[:newhirereason][:reviewreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
+      params[:newhirereason][:reviewer_id] = current_user.id
+      newhirereason.update_attributes(params[:newhirereason]) if !current_user.ro
+      #if (!apply_comments_to_all.nil?) 
+        reasons = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id])
+        reasons.each do |r|
+          if (r.review_state != Reason.review_passed)
+            r.update_attributes(:review_comments => params[:newhirereason][:review_comments]) 
+            r.update_attributes(:reviewer_id => params[:newhirereason][:reviewer_id]) 
+          end
+        end
+      #end
+    #  redirect_to :action => 'approve_course'  
+    # else
+    #  @faculty = Faculty.find(params[:faculty_id])
+    #  @course = Course.find(params[:course_id])
+    #  @reason = Reason.where(:faculty_id => @faculty.id, :course_id => @course.id).first
+    #  if (@reason != nil)
+    #    @reviewreason_ids = @reason.reviewreason_ids      
+    #    @credits = Credit.where(:faculty_id => @faculty.id)        
+    #  end  
+    #  session[:faculty_id] = params[:faculty_id]
+    #  session[:course_id] = params[:course_id]
+     end
   end 
 
   def process_justification_deansignoff
     #@faculty = Faculty.find(session[:faculty_id])
     #@course = Course.find(session[:course_id])
     #@reason = Reason.find(session[:reason_id])   
-    if (params[:commit] == 'Submit')
-      params[:reason][:dean_id] = current_user.id
+    #if (params.has_key?(params[:newhirereason][:id]))
+    #   @newhirereason = Newhirereason.find(params[:newhirereason][:id])
+    #else 
+
+       @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
+     
+       if (params.has_key?(:newhirereason_id))
+          @newhirereason = Newhirereason.find(params[:newhirereason_id])
+       else
+          @newhirereason = Newhirereason.new 
+       end  
+    
+      @newhirereason.dean_id = current_user.id
+      @newhirereason.newhire_id = params[:newhire_id]
+      @newhirereason.course_id = params[:course_id]
+      @newhirereason.dean_signoff = params[:newhirereason][:dean_signoff]
+      @newhirereason.dean_comments = params[:newhirereason][:dean_comments]
+   
+   #if (params.has_key?(params[:newhirereason][:id]))
+     
+   #   @newhirereason.update_attributes(:dean_signoff => params[:dean_signoff]) 
+   #   @newhirereason.update_attributes(:dean_comments => params[:dean_comments])
+   #else
+       @newhirereason.save
+   #end
      # @reason.update_attributes(params[:reason])
-     # redirect_to :action => 'process_justification_done'
-    end   
+     
+    #redirect_to :action => '/newhires/review_course',
+     redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 
   def create

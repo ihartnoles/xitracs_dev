@@ -1,4 +1,4 @@
-<%= render :partial => "newhires/newhirename" %>
+<%= @newhire.details %> <br>
 
 
 	<div>		
@@ -14,7 +14,7 @@
 		 						<td><%=  dt.name.humanize %></td>
 		 						<td><%= link_to "[upload]", 
 			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id}, 
-        							:onClick=>"window.open(this.href,'Details','height=250, width=500'); return false;" 
+        							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" 
 							%></td>
 		 					</tr>
 						<% end %>		

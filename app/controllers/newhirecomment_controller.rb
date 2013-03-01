@@ -33,7 +33,7 @@ class NewhirecommentController < ApplicationController
      if (params.has_key?(:newhire_id))
         session[:newhire_id] = params[:newhire_id]
      end
-
+      @newhire = Newhire.find(params[:newhire_id])
       @comment = Newhirecomment.new
   end
 
@@ -50,6 +50,7 @@ class NewhirecommentController < ApplicationController
   end
 
   def edit
+    @newhire = Newhire.find(params[:id])
     @comment = Newhirecomment.find(params[:id])
   end
 

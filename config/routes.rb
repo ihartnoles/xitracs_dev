@@ -104,8 +104,10 @@ XitracsRoster::Application.routes.draw do
   get  "/newhires/approve_course"
   post "/newhires/approve_course"
 
-  get "newhires/show"
-  #get "newhires/displaydetails"
+  get  "newhires/show"
+
+  post "/newhires/process_justification_deansignoff"
+
 
   get  "/newhiredocuments/uploadform"
   post "/newhiredocuments/uploadform"
@@ -137,8 +139,8 @@ XitracsRoster::Application.routes.draw do
   match '/logout', to: 'sessions#destroy'
 
   match "/newhires/:id/displaydetails" => 'newhires#displaydetails', :as => :newhiredetails
-
   match "/newhires/review_course" => 'newhires#review_course', :as => :newhire_review_course
+  match "/newhires/:id/showcourses" => 'newhires#showcourses', :as => :newhireshowcourses
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

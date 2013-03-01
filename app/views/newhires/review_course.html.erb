@@ -65,64 +65,38 @@
 </script>
 
  <div class="container">
- <% if session[:review] %>
+
+
+
+
+ <%# if session[:review] %>
 
 <strong>
- <%=@newhire.first_name %>  <%=@newhire.last_name %> 
+ <%#=@newhire.first_name %>  <%#=@newhire.last_name %> 
  <%=@newhire_course_to_review.name %> - <%=@newhire_course_to_review.title %>
 </strong>
-		    <div class="coursework">
-		    	<fieldset class="round">
-				<legend>Review:</legend>    
-				 	<%#= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
-				 	<%= form_for @reason, :url => '/newhires/approve_course' do |f| %>
-						<%#= hidden_field  :reason, :faculty_id %>
-						<%#= hidden_field  :reason, :course_id %>
-						<%#= hidden_field  :reason, :id %>
-						
-						<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
-						<%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
-						<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "do_failed();"} %> Not Passed
-						<%= f.radio_button :review_state, Reason.review_alert,  {:onclick => "do_alert();"}  %> Alert
-						<%= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %> Justification Docs
-
-						<br/>
-					 		<% Reviewreason.all.each do |reviewreason| -%>
-								<%= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, 'test', :class => "check", :onclick => "do_checkbox();" %>
-
-								 <%= reviewreason.name %> <br/>
-							<% end %>
-					
-						<br/>
-						<label> Comments: </label>
-						<br/>	
-						<%= f.text_area :review_comments %><br/>
-						<%= check_box_tag "apply_comments_to_all"%> Apply Comments to All Pending/Not Passed/Alert Courses 
-						<br/>
-						<%= f.submit  "Submit", :id => "Submit" %>
-					<% end %>	   
-				</fieldset>
-		    <div>
+		   
 
 
-
-		     <fieldset class="round">
-			<legend>Documents submitted to Provost:</legend>
-			<table  class="profile">
-					<th>Name</th>
-					<th>Location</th>
-					<th>Type</th>
-					<% @newhiredocuments.each do |d| %>
-		    			<tr>
-			    			<td><%=  d.name %></td>  
-		 					<td><%=  d.location %></td>  
-		 					<td><%= d.newhiredoctype.name %></td> 
-		 					
-		 				</tr>
-		 			<% end %>	
+ 
+			<div class="coursework">
+			    <fieldset class="round">
+				<legend>Documents submitted to Provost:</legend>
+					<table  class="profile">
+							<th>Name</th>
+							<th>Location</th>
+							<th>Type</th>
+							<% @newhiredocuments.each do |d| %>
+				    			<tr>
+					    			<td><%=  d.name %></td>  
+				 					<td><%=  d.location %></td>  
+				 					<td><%= d.newhiredoctype.name %></td> 
+				 					
+				 				</tr>
+				 			<% end %>	
 					</table>
 				</fieldset>
-
+			</div>
 
 			<div class="coursework">	        
 		        <fieldset class="round">
@@ -180,5 +154,94 @@
 				</table>
 			</fieldset>
 	    </div> 
-<% end %>
+
+
+
+	    <% if session[:group_name] == "dean" %>
+	 	  <div class="coursework">
+			    	<fieldset class="round">
+						<legend>Dean Signoff:</legend>  
+						<% if @newhire_reasons_added.count == 0 || params.has_key?(:newhirereason_id) %>
+
+							<%= form_for :newhirereason,  :url => '/newhires/process_justification_deansignoff'  do |f| %>
+							<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+							<%= hidden_field_tag 'course_id', params[:id] %>
+
+							<% if params.has_key?(:newhirereason_id) %>
+								<%= hidden_field_tag  :newhirereason_id, params[:newhirereason_id] %>
+							<% end %>
+
+							<div>
+								<p>
+									<label> Dean Signoff: </label> <%= f.check_box :dean_signoff %><br/>
+									<label> Deans Comments: </label> <%= f.text_area :dean_comments %> 	
+								</p>	 	
+							</div> 	
+							<%# if @newhirereason.id.blank?%>
+								<%= f.submit  "Submit", :id => "Submit", :disabled => current_user.ro %>
+							<%# else %>
+								<%#= f.submit  "Update", :id => "Update", :disabled => current_user.ro %>
+							<%# end %>
+							<% end %>
+
+						<% else %>
+							
+								<% @newhire_reasons_added.each do |nhc| %>
+									<div align="right">
+										<%= link_to image_tag('/assets/Edit_16x16.png'), newhire_review_course_path(:id => nhc.course_id , :newhire_id => params[:newhire_id], :newhirereason_id => nhc.id) %>
+									</div>
+									<strong>Sign-off by:</strong> <%if nhc.dean_signoff == 1%> <%= nhc.dean %> <% else %> N/A <% end %><br>
+									<strong>Dean's comments:</strong> <%= nhc.dean_comments %>
+
+									
+								<% end %>
+
+						<% end %>
+
+
+					</fieldset>
+				</div>
+ 		<% end %>
+
+
+
+ 		<% if session[:review] %>
+		    <div class="coursework">
+		    	<fieldset class="round">
+				<legend>Review:</legend>    
+				 	<%#= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
+				 	<%= form_for @newhirereason, :url => '/newhires/approve_course' do |f| %>
+						<%#= f.hidden_field  :newhirereason, :newhire_id %>
+						<%= hidden_field_tag 'newhirereason[newhire_id]', params[:newhire_id] %>
+						<%= hidden_field_tag 'newhirereason[course_id]', params[:id] %>
+						<%= hidden_field  :newhirereason, :id %>
+						
+						<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
+						<%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
+						<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "do_failed();"} %> Not Passed
+						<%= f.radio_button :review_state, Reason.review_alert,  {:onclick => "do_alert();"}  %> Alert
+						<%= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %> Justification Docs
+
+						<br/>
+					 		<% Reviewreason.all.each do |reviewreason| %>
+								<%#= check_box_tag "newhirereason[reviewreason_ids][]", reviewreason.id, :class => "check", :onclick => "do_checkbox();" %>
+
+								 <%= reviewreason.name %> <br/>
+
+
+								 <%# Reviewreason.all.each do |reviewreason| -%>
+				<%#= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, @reviewreason_ids.include?(reviewreason.id), :class => "check", :onclick => "do_checkbox();" %> 				<% end %>
+					
+						<br/>
+						<label> Comments: </label>
+						<br/>	
+						<%= f.text_area :review_comments %><br/>
+						<%= check_box_tag "apply_comments_to_all"%> Apply Comments to All Pending/Not Passed/Alert Courses 
+						<br/>
+						<%= f.submit  "Submit", :id => "Submit" %>
+					<% end %>	   
+				</fieldset>
+		    <div>
+ <% end %>
+<%# end %>
 </div>

@@ -38,6 +38,7 @@ class NewhirecredentialsController < ApplicationController
 
   # GET /newhirecredentials/1/edit
   def edit
+    @newhire = Newhire.find(params[:newhire_id])
     @qualificationreasons = Qualificationreason.all
     @newhirecredential = Newhirecredential.find(params[:id])
   end

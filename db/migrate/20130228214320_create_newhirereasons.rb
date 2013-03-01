@@ -10,7 +10,7 @@ class CreateNewhirereasons < ActiveRecord::Migration
       t.text :review_comments
       t.integer :review_state
       t.integer :dean_id
-      t.integer :dean_comments
+      t.text :dean_comments
       t.integer :dean_signoff
 
       t.timestamps

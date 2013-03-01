@@ -1,0 +1,46 @@
+showcourses
+
+<div class="wrapper">
+	<div align="left" class="icon">
+		<%= link_to image_tag('/assets/Previous_16x16.png'), newhires_show_path%>
+	</div>
+
+	 <div align="left"> 	  
+	    <div>
+	        <fieldset class="round">
+			<legend>New Hire Info:</legend>
+				<strong>Name:</strong> <%= @newhire.first_name %> <%= @newhire.last_name %><br>
+				<strong>School: </strong> <%= @newhire_dept.school.description %>
+				<br>
+				<strong>Department:</strong> <%= @newhire_dept.name %>
+			</fieldset>
+	    </div>
+	</div>    
+
+	 <div>
+	        <fieldset class="round">
+			<legend>Courses To Teach:</legend>
+			
+				<table  class="profile">
+					<th>Prefix & Number</th>
+					<th>Title</th>
+					<th>Description</th>
+					<th>Action</th>
+						<% @newhirecourses.each do |ca| %>
+			    			<tr>
+			    				<td><%=  ca.name %></td> 
+			 					<td><%=  ca.title.humanize %></td>
+			 					<td><%=  ca.description.humanize %></td> 	
+			 					<td>
+
+			 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]) %>	 						
+			 					</td> 					
+			 				</tr>
+			 			<% end %>
+				</table>
+			</fieldset>
+	    </div> 
+
+
+
+</div>

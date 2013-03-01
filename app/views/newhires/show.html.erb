@@ -23,8 +23,10 @@ Show New Hires
 			  	<td>N/A</td>
 			  	<td>N/A</td>
 			  	<td>
-			  		<%= link_to '[Edit]', edit_newhire_path(newhire) %>
-			  		<%= link_to '[View]', newhiredetails_path(newhire) %>
+			  		<%#= link_to '[Edit]', edit_newhire_path(newhire) %>
+			  		<%#= link_to '[View]', newhiredetails_path(newhire) %>
+			  		<%= link_to image_tag('/assets/Edit_16x16.png'), newhiredetails_path(newhire) %>
+			  		<%= link_to image_tag('/assets/Preview_16x16.png'), newhireshowcourses_path(newhire) %>
 			  	</td>
 			  </tr>
 		  <% end %>

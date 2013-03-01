@@ -2,7 +2,9 @@ class NewhiredocumentsController < ApplicationController
 
 
   def index
-  	@newhiredocument = Newhiredocument.new
+  	@newhire = Newhire.find(params[:newhire_id])
+
+    @newhiredocument = Newhiredocument.new
   	@newhiredoctypes = Newhiredoctype.new
     @newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
     
@@ -39,6 +41,9 @@ class NewhiredocumentsController < ApplicationController
   end 
 
   def edit
+    #@newhire = Newhire.find(params[:id])
+    @newhire =Newhire.find(params[:newhire_id])
+    @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
     @newhiredocument = Newhiredocument.find(params[:id])
     @doc_type = params[:doc_type]
     @docname  = Newhiredoctype.find(params[:doc_type]).name

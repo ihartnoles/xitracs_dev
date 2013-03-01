@@ -7,7 +7,8 @@ class NewhirecoursesController < ApplicationController
   end
 
   def edit
-	@newhirecourse = Newhirecourse.find(params[:id])
+   @newhire = Newhire.find(params[:newhire_id])
+	 @newhirecourse = Newhirecourse.find(params[:id])
   end
 
   def update
@@ -26,7 +27,7 @@ class NewhirecoursesController < ApplicationController
     if (params.has_key?(:newhire_id))
         session[:newhire_id] = params[:newhire_id]
     end
-
+    @newhire = Newhire.find(params[:newhire_id])
   	@newhirecourse = Newhirecourse.new
   end
 

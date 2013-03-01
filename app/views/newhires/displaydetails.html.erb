@@ -170,7 +170,7 @@
 									:action => 'index', 
 									:newhire_id => params[:id],
 									:source => 'detailscreen'}, 
-									:onClick=>"window.open(this.href,'Details','height=250, width=500'); return false;"%>
+									:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"%>
 			</div>
 				<table  class="profile">
 					<th>Name</th>
@@ -274,57 +274,7 @@
 			</fieldset>
 	    </div> 
 
-	    <% if session[:review] %>
-		    <div class="coursework">
-		    	<fieldset class="round">
-				<legend>Review:</legend>    
-				 	<%= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
-						<%#= hidden_field  :reason, :faculty_id %>
-						<%#= hidden_field  :reason, :course_id %>
-						<%#= hidden_field  :reason, :id %>
-						
-						<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
-						<%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
-						<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "do_failed();"} %> Not Passed
-						<%= f.radio_button :review_state, Reason.review_alert,  {:onclick => "do_alert();"}  %> Alert
-						<%= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %> Justification Docs
-
-						<br/>
-					 		<% Reviewreason.all.each do |reviewreason| -%>
-								<%= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, 'test', :class => "check", :onclick => "do_checkbox();" %>
-
-								 <%= reviewreason.name %> <br/>
-							<% end %>
-					
-						<br/>
-						<label> Comments: </label>
-						<br/>	
-						<%= f.text_area :review_comments %><br/>
-						<%= check_box_tag "apply_comments_to_all"%> Apply Comments to All Pending/Not Passed/Alert Courses 
-						<br/>
-						<%= f.submit  "Submit", :id => "Submit" %>
-					<% end %>	   
-				</fieldset>
-		    <div>
-		 <% end %>
-
-
-		  <% if session[:group_name] == "dean" %>
-		    <div class="coursework">
-		    	<fieldset class="round">
-					<legend>Dean Signoff:</legend>  
-						<%= form_for @reason,  :url => '/newhires/process_justification_deansignoff'  do |f| %>
-						<div class="info round">
-							<p>
-								<label> Dean Signoff: </label> <%= f.check_box :dean_signoff %><br/>
-								<label> Deans Comments: </label> <%= f.text_area :dean_comments %> 	
-							</p>	 	
-						</div> 	
-						<%= f.submit  "Submit", :id => "Submit", :disabled => current_user.ro %>
-					<% end %>
-				</fieldset>
-			</div>
-		 <% end %>
+	   
 
 	</div>
 

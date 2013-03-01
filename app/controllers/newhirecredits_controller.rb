@@ -6,6 +6,7 @@ class NewhirecreditsController < ApplicationController
     end
 
     def edit
+      @newhire = Newhire.find(params[:newhire_id])
       @newhirecredits = Newhirecredit.find(params[:id])
       @newhireinstitutions = Newhireinstitution.all
     end
@@ -29,6 +30,7 @@ class NewhirecreditsController < ApplicationController
         	session[:newhire_id] = params[:newhire_id]
    		end
 
+   		@newhire = Newhire.find(params[:newhire_id])
     	@newhirecredits = Newhirecredit.new
     	@newhireinstitutions = Newhireinstitution.all
     end
