@@ -2,11 +2,11 @@
 
 	function do_checkbox() {
 		elem = document.getElementsByTagName("input");
-		pending = document.getElementById("reason_review_state_0");
-		passed = document.getElementById("reason_review_state_1");
-		failed = document.getElementById("reason_review_state_2");
-		alert = document.getElementById("reason_review_state_3");
-		justdocs = document.getElementById("reason_review_state_4");
+		pending = document.getElementById("newhirereason_review_state_0");
+		passed = document.getElementById("newhirereason_review_state_1");
+		failed = document.getElementById("newhirereason_review_state_2");
+		alert = document.getElementById("newhirereason_review_state_3");
+		justdocs = document.getElementById("newhirereason_review_state_4");
 
 		one_checked = false;
 		for (var i = 0 ; i < elem.length ; i++ ) {
@@ -205,7 +205,7 @@
 
 
 
- 		<% if session[:review] %>
+ 		<% if session[:review] && @newhire_reasons_added.count > 0%>
 		    <div class="coursework">
 		    	<fieldset class="round">
 				<legend>Review:</legend>    
@@ -214,8 +214,12 @@
 						<%#= f.hidden_field  :newhirereason, :newhire_id %>
 						<%= hidden_field_tag 'newhirereason[newhire_id]', params[:newhire_id] %>
 						<%= hidden_field_tag 'newhirereason[course_id]', params[:id] %>
-						<%= hidden_field  :newhirereason, :id %>
-						
+						<%#= hidden_field  :newhirereason, :id %>
+
+						<% @newhire_reasons_added.each do |nhc| %>
+							<%= hidden_field_tag  'newhirereason[newhirereason_id]', nhc.id %>
+						<% end %>
+
 						<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
 						<%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
 						<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "do_failed();"} %> Not Passed
@@ -224,7 +228,7 @@
 
 						<br/>
 					 		<% Reviewreason.all.each do |reviewreason| %>
-								<%#= check_box_tag "newhirereason[reviewreason_ids][]", reviewreason.id, :class => "check", :onclick => "do_checkbox();" %>
+								<%= check_box_tag "newhirereason[reviewreason_ids][]", reviewreason.id, 'test',:class => "check", :onclick => "do_checkbox();" %>
 
 								 <%= reviewreason.name %> <br/>
 

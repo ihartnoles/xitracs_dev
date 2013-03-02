@@ -2,7 +2,7 @@ class NewhiredocumentsController < ApplicationController
 
 
   def index
-  	@newhire = Newhire.find(params[:newhire_id])
+  	@newhire = Newhire.find(session[:newhire_id])
 
     @newhiredocument = Newhiredocument.new
   	@newhiredoctypes = Newhiredoctype.new

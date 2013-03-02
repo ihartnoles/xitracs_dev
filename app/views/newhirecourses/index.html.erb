@@ -1,9 +1,10 @@
 
-<%= render :partial => "newhires/newhirename" %>
+<%= @newhire.details %> <br>
 
+<div class="wrappersmall">
 <%= form_for @newhirecourse do |f| %>
 	
-	
+	<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
 		<fieldset class="round">
 			<legend>To Teach:</legend>
 			<table  class="no-zebra no-hover">
@@ -58,3 +59,4 @@
 		Click <%= f.submit 'Continue', :id => "Continue" %> to finish this section and continue precredentialing.
 	<% end %>
 <% end %>
+</div>

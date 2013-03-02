@@ -1,5 +1,6 @@
 class NewhirecommentController < ApplicationController
   def index
+    @newhire = Newhire.find(session[:newhire_id])
   	@comment = Newhirecomment.new
   end
 

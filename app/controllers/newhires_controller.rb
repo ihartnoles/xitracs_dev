@@ -77,7 +77,7 @@ class NewhiresController < ApplicationController
       #end  
       
       #begin
-        @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
+       @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
        if (params.has_key?(:newhirereason_id))
           @newhirereason = Newhirereason.find(params[:newhirereason_id])
@@ -96,23 +96,35 @@ class NewhiresController < ApplicationController
       #  apply_comments_to_all = params[:apply_comments_to_all]
       #  params.delete(:apply_comments_to_all)
       #end
-      #begin
-      #  @newhirereason = Newhirereason.find(params[:id])
-      #rescue
-        @newhirereason = Newhirereason.new
-      #end
-      #params[:newhirereason][:reviewreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
-      params[:newhirereason][:reviewer_id] = current_user.id
-      newhirereason.update_attributes(params[:newhirereason]) if !current_user.ro
+      
+        #@newhirereason = Newhirereason.new
+     
+      @newhirereason = Newhirereason.find(params[:newhirereason][:newhirereason_id])
+
+      params[:newhirereason][:reviewreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
+      @newhirereason.qualificationreason_id = params[:newhirereason][:reviewreason_ids].to_s
+
+      @newhirereason.reviewer_id = current_user.id
+      @newhirereason.review_state = params[:newhirereason][:review_state]
+      
+      if (!params[:newhirereason][:review_comments].blank?)
+       @newhirereason.review_comments = params[:newhirereason][:review_comments]
+      end
+      
+      
+
       #if (!apply_comments_to_all.nil?) 
-        reasons = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id])
-        reasons.each do |r|
-          if (r.review_state != Reason.review_passed)
-            r.update_attributes(:review_comments => params[:newhirereason][:review_comments]) 
-            r.update_attributes(:reviewer_id => params[:newhirereason][:reviewer_id]) 
-          end
-        end
+       # reasons = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id])
+       #reasons.each do |r|
+       #   if (r.review_state != Reason.review_passed)
+       #     r.update_attributes(:review_comments => params[:newhirereason][:review_comments]) 
+       #     r.update_attributes(:reviewer_id => params[:newhirereason][:reviewer_id]) 
+       #   end
+       # end
       #end
+      
+      @newhirereason.save
+
     #  redirect_to :action => 'approve_course'  
     # else
     #  @faculty = Faculty.find(params[:faculty_id])
@@ -124,6 +136,7 @@ class NewhiresController < ApplicationController
     #  end  
     #  session[:faculty_id] = params[:faculty_id]
     #  session[:course_id] = params[:course_id]
+      redirect_to newhire_review_course_path(:newhire_id => params[:newhirereason][:newhire_id], :id => params[:newhirereason][:course_id])
      end
   end 
 
@@ -157,8 +170,7 @@ class NewhiresController < ApplicationController
        @newhirereason.save
    #end
      # @reason.update_attributes(params[:reason])
-     
-    #redirect_to :action => '/newhires/review_course',
+    
      redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 

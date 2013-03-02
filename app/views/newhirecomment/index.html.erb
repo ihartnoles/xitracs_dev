@@ -1,3 +1,5 @@
+<%= @newhire.details %> <br>
+
 <fieldset class="round">
 	<legend>
 		Additional Comments: 
@@ -14,6 +16,7 @@
 					Click <%= f.submit  "Save", :disabled => current_user.ro %> to save this Qualification/Comment
 					<br/>
 					Click <%= f.submit  "Finish", :disabled => current_user.ro %> to finish the Certification of Credentials and Qualifications
+			
 				<% end %>		
 
 			</td>

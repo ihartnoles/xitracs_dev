@@ -1,78 +1,164 @@
+<div id="wrapper">
 
-<script type="text/javascript">
-
-	function do_checkbox() {
-		elem = document.getElementsByTagName("input");
-		pending = document.getElementById("reason_review_state_0");
-		passed = document.getElementById("reason_review_state_1");
-		failed = document.getElementById("reason_review_state_2");
-		alert = document.getElementById("reason_review_state_3");
-		justdocs = document.getElementById("reason_review_state_4");
-
-		one_checked = false;
-		for (var i = 0 ; i < elem.length ; i++ ) {
-			if (elem[i].className == "check") {
-				if (elem[i].checked == true) {
-					pending.disabled = true;
-					passed.disabled = true;
-					if (alert.checked == false) {
-						failed.checked = true;
-					}
-					one_checked = true;
-				} 
-			} 
-		}	
-		if (one_checked == false) {
-			pending.disabled = false;
-			passed.disabled = false;
-			passed.checked = true;
-		}		
-	}
 	
-	function clear_all_checkboxes() {
-		elem = document.getElementsByTagName("input");
-		for (var i = 0 ; i < elem.length ; i++ ) {
-			if (elem[i].className == "check") {
-				elem[i].checked = false;
-			}
-		}
-	}
-	
-	function set_all_checkboxes(what_to_do) {
-		elem = document.getElementsByTagName("input");
-		for (var i = 0 ; i < elem.length ; i++ ) {
-			if (elem[i].className == "check") {
-				elem[i].disabled = what_to_do;
-			}
-		}
-	}
-	
-	function do_passed() {
-		clear_all_checkboxes();
-		set_all_checkboxes(true);		
-	}
-	
-	function do_failed() {
-		set_all_checkboxes(false);		
-	}
 
-	function do_alert() {
-		set_all_checkboxes(false);		
-	}	
-	
-	function do_justdocs(){
-		set_all_checkboxes(false)
-	}
-</script>
+	<div id="middle">
+
+		<div id="container">
+			<div id="content">
+			<fieldset class="round">
+			<legend>Courses To Teach:</legend>
+			<div align="right">
+				<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id])  %>
+			</div>
+				<table  class="profile">
+					<th>Prefix & Number</th>
+					<th>Title</th>
+					<th>Description</th>
+					<th>Action</th>
+						<% @newhirecourses.each do |ca| %>
+			    			<tr>
+			    				<td><%=  ca.name %></td> 
+			 					<td><%=  ca.title.humanize %></td>
+			 					<td><%=  ca.description.humanize %></td> 	
+			 					<td>
+
+			 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]) %>
+
+			 						<%= link_to image_tag('/assets/Edit_16x16.png'),  edit_newhirecourse_path(ca , :newhire_id => params[:id]) %>
+
+			 						<%#= link_to image_tag('/assets/Delete_16x16.png'), @newhirecourse, :method => :delete, :confirm => "Are you sure ?" %>
+
+			 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecourse_path(ca , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this course?"
+			 						%>
+			 						<%#= button_to "delete", {:controller => :newhirecourses, :action => 'destroy' }, :method => :delete %>
+	 						
+			 					</td> 					
+			 				</tr>
+			 			<% end %>
+				</table>
+			</fieldset>
+			</div><!-- #content-->
+
+			<div id="content">
+				<fieldset class="round">
+				<legend>Documents submitted to Provost:</legend>
+				<div align="right">
+					<%= link_to image_tag('/assets/Add_16x16.png'), 
+									{:controller => 'newhiredocuments', 
+										:action => 'index', 
+										:newhire_id => params[:id],
+										:source => 'detailscreen'}, 
+										:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"%>
+				</div>
+					<table  class="profile">
+						<th>Name</th>
+						<th>Location</th>
+						<th>Type</th>
+						<th>Action</th>
+						<% @newhiredocuments.each do |d| %>
+			    			<tr>
+				    			<td><%=  d.name %></td>  
+			 					<td><%=  d.location %></td>  
+			 					<td><%= d.newhiredoctype.name %></td> 
+			 					<td>
+			 					<%= link_to image_tag('/assets/Edit_16x16.png'), 
+	        									{:controller => 'newhiredocuments', 
+	        										:action => 'edit', 
+	        										:id => d.id,
+	        										:newhire_id => params[:id], 
+	        										:doc_type =>  d.newhiredoctype_id,
+	        										:source => 'detailscreen'}, 
+	        										:onClick=>"window.open(this.href,'Details','height=250, width=500'); return false;"%>
+			 					</td>
+			 				</tr>
+			 			<% end %>	
+						</table>
+					</fieldset>
+			</div>
+
+			<div id="content">
+				<fieldset class="round">
+				<legend>Instructor Credentialed to Teach Based On:</legend>
+					<table  class="profile">
+						<th>Reason</th>
+						<th>Explanation</th>
+						<th>Actions</th>
+						<% @newhirecredentials.each do |c| %>
+			    			<tr>
+				    			<td><%= c.qualificationreason.name %></td>  
+			 					<td><%=  c.qualification_explanation %></td> 
+			 					<td><%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecredential_path(c , :newhire_id => params[:id] )  %></td>
+			 				</tr>
+			 			<% end %>	
+						</table>
+					</fieldset>
+
+			</div>
+
+			<div id="content">
+				<fieldset class="round">
+					<legend>Relevant Coursework:</legend>
+					<div align="right">
+						<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecredit_path(:newhire_id => params[:id])  %>
+					</div>
+						<table  class="profile">
+							<th>Course ID</th>
+							<th>Course Name</th>
+							<th>Year Taken</th>
+							<th>Institution</th>
+							<th>Credits</th>
+							<th>Actions</th>
+							<% @newhire_credits_added.each do |cr| %>
+				    			<tr>
+					    			<td><%=  cr.course_name %></td>  
+				 					<td><%=  cr.course_description %></td>  
+				 					<td><%=  cr.course_year %></td> 
+				 					<td><%=  cr.newhireinstitution.name %></td>
+				 					<td><%=  cr.course_credits %></td>
+				 					<td><%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecredit_path(cr , :newhire_id => params[:id] )  %>
+
+				 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecredit_path(cr , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this coursework?"
+					 						%>
+				 					</td>
+				 				</tr>
+				 			<% end %>	
+							</table>
+						</fieldset>
+			</div>
+
+			<div id="content">
+				<fieldset class="round">
+					<legend>Additional Comments:</legend>
+						<div align="right">
+							<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecomment_path(:newhire_id => params[:id])  %>
+						</div>
+
+						<table  class="profile">
+							<th>Comment</th>
+							<th>Actions</th>
+							<% @newhire_comments_added.each do |cm| %>
+								<tr>
+									<td><%= cm.comment %></td>
+									<td>
+										<%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecomment_path(cm , :newhire_id => params[:id] )  %>
+
+										<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecomment_path(cm , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this comment ?"
+					 						%>
+								   </td>
+									
+								</tr>
+							<% end %>
+						</table>
+					</fieldset>
+			</div>
+
+		</div><!-- #container-->
 
 
-<div class="wrapper">
-	<div align="left" class="icon">
-		<%= link_to image_tag('/assets/Previous_16x16.png'), newhires_show_path%>
-	</div>
-    <div class="wrapleft"> 	  
-	    <div class="left">
-	        <fieldset class="round">
+
+		<div class="sidebar" id="sideLeft">
+			<fieldset class="round" >
 			<legend>Instructor Info:</legend>
 				<table  class="profile">					
 	    			<tr>
@@ -123,163 +209,8 @@
 	 				</tr>			 			
 				</table>
 			</fieldset>
-	    </div>
-	</div>    
-	    
-	    <div class="right">
-	        <fieldset class="round">
-			<legend>Courses To Teach:</legend>
-			<div align="right">
-				<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id])  %>
-			</div>
-				<table  class="profile">
-					<th>Prefix & Number</th>
-					<th>Title</th>
-					<th>Description</th>
-					<th>Action</th>
-						<% @newhirecourses.each do |ca| %>
-			    			<tr>
-			    				<td><%=  ca.name %></td> 
-			 					<td><%=  ca.title.humanize %></td>
-			 					<td><%=  ca.description.humanize %></td> 	
-			 					<td>
+		</div><!-- .sidebar#sideLeft -->
 
-			 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]) %>
+	</div><!-- #middle-->
 
-			 						<%= link_to image_tag('/assets/Edit_16x16.png'),  edit_newhirecourse_path(ca , :newhire_id => params[:id]) %>
-
-			 						<%#= link_to image_tag('/assets/Delete_16x16.png'), @newhirecourse, :method => :delete, :confirm => "Are you sure ?" %>
-
-			 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecourse_path(ca , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this course?"
-			 						%>
-			 						<%#= button_to "delete", {:controller => :newhirecourses, :action => 'destroy' }, :method => :delete %>
-	 						
-			 					</td> 					
-			 				</tr>
-			 			<% end %>
-				</table>
-			</fieldset>
-	    </div> 
-
-	    <div class="right">	        
-	        <fieldset class="round">
-			<legend>Documents submitted to Provost:</legend>
-			<div align="right">
-				<%= link_to image_tag('/assets/Add_16x16.png'), 
-								{:controller => 'newhiredocuments', 
-									:action => 'index', 
-									:newhire_id => params[:id],
-									:source => 'detailscreen'}, 
-									:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"%>
-			</div>
-				<table  class="profile">
-					<th>Name</th>
-					<th>Location</th>
-					<th>Type</th>
-					<th>Action</th>
-					<% @newhiredocuments.each do |d| %>
-		    			<tr>
-			    			<td><%=  d.name %></td>  
-		 					<td><%=  d.location %></td>  
-		 					<td><%= d.newhiredoctype.name %></td> 
-		 					<td>
-		 					<%= link_to image_tag('/assets/Edit_16x16.png'), 
-        									{:controller => 'newhiredocuments', 
-        										:action => 'edit', 
-        										:id => d.id,
-        										:newhire_id => params[:id], 
-        										:doc_type =>  d.newhiredoctype_id,
-        										:source => 'detailscreen'}, 
-        										:onClick=>"window.open(this.href,'Details','height=250, width=500'); return false;"%>
-		 					</td>
-		 				</tr>
-		 			<% end %>	
-					</table>
-				</fieldset>
-	    </div> 
-
-	    <div class="coursework">	        
-	        <fieldset class="round">
-			<legend>Instructor Credentialed to Teach Based On:</legend>
-				<table  class="profile">
-					<th>Reason</th>
-					<th>Explanation</th>
-					<th>Actions</th>
-					<% @newhirecredentials.each do |c| %>
-		    			<tr>
-			    			<td><%= c.qualificationreason.name %></td>  
-		 					<td><%=  c.qualification_explanation %></td> 
-		 					<td><%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecredential_path(c , :newhire_id => params[:id] )  %></td>
-		 				</tr>
-		 			<% end %>	
-					</table>
-				</fieldset>
-	    </div> 
-
-
-	    <div class="comments">	        
-	        <fieldset class="round">
-			<legend>Relevant Coursework:</legend>
-			<div align="right">
-				<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecredit_path(:newhire_id => params[:id])  %>
-			</div>
-				<table  class="profile">
-					<th>Course ID</th>
-					<th>Course Name</th>
-					<th>Year Taken</th>
-					<th>Institution</th>
-					<th>Credits</th>
-					<th>Actions</th>
-					<% @newhire_credits_added.each do |cr| %>
-		    			<tr>
-			    			<td><%=  cr.course_name %></td>  
-		 					<td><%=  cr.course_description %></td>  
-		 					<td><%=  cr.course_year %></td> 
-		 					<td><%=  cr.newhireinstitution.name %></td>
-		 					<td><%=  cr.course_credits %></td>
-		 					<td><%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecredit_path(cr , :newhire_id => params[:id] )  %>
-
-		 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecredit_path(cr , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this coursework?"
-			 						%>
-		 					</td>
-		 				</tr>
-		 			<% end %>	
-					</table>
-				</fieldset>
-	    </div> 
-
-	    <div class="coursework">	        
-	        <fieldset class="round">
-			<legend>Additional Comments:</legend>
-				<div align="right">
-					<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecomment_path(:newhire_id => params[:id])  %>
-				</div>
-
-				<table  class="profile">
-					<th>Comment</th>
-					<th>Actions</th>
-					<% @newhire_comments_added.each do |cm| %>
-						<tr>
-							<td><%= cm.comment %></td>
-							<td>
-								<%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecomment_path(cm , :newhire_id => params[:id] )  %>
-
-								<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecomment_path(cm , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this comment ?"
-			 						%>
-						   </td>
-							
-						</tr>
-					<% end %>
-				</table>
-			</fieldset>
-	    </div> 
-
-	   
-
-	</div>
-
-
-</div>
-
-	
-
+</div><!-- #wrapper -->

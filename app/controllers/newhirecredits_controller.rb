@@ -1,5 +1,6 @@
 class NewhirecreditsController < ApplicationController
 	def index
+	   @newhire = Newhire.find(session[:newhire_id])
       @newhirecredits = Newhirecredit.new
       @newhireinstitutions = Newhireinstitution.all
       @newhire_credits_added  = Newhirecredit.where(:newhire_id => session[:newhire_id])

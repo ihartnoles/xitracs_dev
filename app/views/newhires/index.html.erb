@@ -1,7 +1,9 @@
-<%= form_for @newhire do |f| %>
+<div class="wrappersmall">
+<div class="coursework">
 		<fieldset class="round">
 			<legend>Instructor Name:</legend>
 				<table class="no-zebra no-hover">
+					<%= form_for @newhire do |f| %>
 					<tr>
 						<td><strong>Firstname:</strong></td>
 						<td><%= text_field_tag 'first_name'%></td>
@@ -18,6 +20,9 @@
 					</tr>
 
 				</table>
-	</fieldset>
-	<%= f.submit "Save & Continue" %>
-<% end %>
+				<%= f.submit "Save & Continue" %>
+				<% end %>
+		</fieldset>
+</div>
+</div>
+	
