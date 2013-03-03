@@ -13,7 +13,7 @@
 		    				<tr>
 		 						<td><%=  dt.name.humanize %></td>
 		 						<td><%= link_to "[upload]", 
-			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id}, 
+			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id, :newhire_id => params[:newhire_id]}, 
         							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" 
 							%></td>
 		 					</tr>

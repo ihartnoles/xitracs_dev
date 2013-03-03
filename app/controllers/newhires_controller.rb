@@ -13,6 +13,7 @@ class NewhiresController < ApplicationController
      @newhire = Newhire.find(params[:id])
      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])   
      @newhire_dept = Department.find(@newhire.department_id)  
+     @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
   end
 
 

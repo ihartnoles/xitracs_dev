@@ -1,6 +1,8 @@
 showcourses
 
-<div class="wrapper">
+<div id="wrapper">
+	<div id="middle">
+
 	<div align="left" class="icon">
 		<%= link_to image_tag('/assets/Previous_16x16.png'), newhires_show_path%>
 	</div>
@@ -16,6 +18,34 @@ showcourses
 			</fieldset>
 	    </div>
 	</div>    
+
+	
+			<fieldset class="round">
+				<legend>Documents submitted to Provost:</legend>
+					<table  class="profile">
+						<th>Name</th>
+						<th>Location</th>
+						<th>Type</th>
+						<th>Action</th>
+						<% @newhiredocuments.each do |d| %>
+			    			<tr>
+				    			<td><%=  d.name %></td>  
+			 					<td><%=  d.location %></td>  
+			 					<td><%= d.newhiredoctype.name %></td> 
+			 					<td>
+			 					<%= link_to image_tag('/assets/Download_16x16.png'), 
+	        									{:controller => 'newhiredocuments', 
+	        										:action => 'file_download', 
+	        										:doc_id => d.id,
+	        										:newhire_id => params[:id], 
+	        										:doc_type =>  d.newhiredoctype_id,
+	        										:source => 'detailscreen'}%>
+			 					</td>
+			 				</tr>
+			 			<% end %>	
+						</table>
+					</fieldset>
+		
 
 	 <div>
 	        <fieldset class="round">
@@ -42,5 +72,5 @@ showcourses
 	    </div> 
 
 
-
+	</div>
 </div>

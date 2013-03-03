@@ -2,12 +2,13 @@ class NewhiredocumentsController < ApplicationController
 
 
   def index
-  	@newhire = Newhire.find(session[:newhire_id])
+  	#@newhire = Newhire.find(session[:newhire_id])
+    @newhire = Newhire.find(params[:newhire_id])
 
     @newhiredocument = Newhiredocument.new
   	@newhiredoctypes = Newhiredoctype.new
-    @newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
-    
+    #@newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
+    @newhire_docs_added = Newhiredocument.where(:newhire_id => params[:newhire_id])
 
     render :layout => 'simple'
   end
@@ -64,15 +65,30 @@ class NewhiredocumentsController < ApplicationController
     render :layout => 'simple'
   end
 
+  def file_download
+     download = Newhiredocument.find(params[:doc_id])
+
+     #send_file("#{Rails.root}/public/data/John_Jimmy_9/transcript/LoremIpsum.txt")
+
+     send_file("#{Rails.root}/#{download.location}")
+
+     #client = Client.find(params[:id])
+     #send_data("#{RAILS_ROOT}/files/clients/#{client.id}.pdf", :filename => "#{client.name}.pdf", :type => "application/pdf")
+  end
+
   def file_upload
        	#doctype = params[:file_upload][:doc_type]
         # get the file name
         name = params[:file_upload][:filename].original_filename
 
         #gather new hire info
-        newhirelname = Newhire.find(session[:newhire_id]).last_name
-        newhirefname = Newhire.find(session[:newhire_id]).first_name
-        newhireid    = Newhire.find(session[:newhire_id]).id
+        #newhirelname = Newhire.find(session[:newhire_id]).last_name
+        #newhirefname = Newhire.find(session[:newhire_id]).first_name
+        #newhireid    = Newhire.find(session[:newhire_id]).id
+
+        newhirelname = Newhire.find(params[:newhire_id]).last_name
+        newhirefname = Newhire.find(params[:newhire_id]).first_name
+        newhireid    = Newhire.find(params[:newhire_id]).id
         
         #determine doc type
         doctype     = params[:doc_type]
@@ -108,14 +124,16 @@ class NewhiredocumentsController < ApplicationController
           d.name = name
           d.location = path
           d.newhiredoctype_id = params[:doc_type]
-          d.newhire_id = session[:newhire_id]
+          #d.newhire_id = session[:newhire_id]
+          d.newhire_id = params[:newhire_id]
           d.save
         else
           @newhiredocument = Newhiredocument.find(params[:id])
           @newhiredocument.name = name
           @newhiredocument.location = path
           @newhiredocument.newhiredoctype_id = params[:doc_type]
-          @newhiredocument.newhire_id = session[:newhire_id]
+          #@newhiredocument.newhire_id = session[:newhire_id]
+          @newhiredocument.newhire_id = params[:newhire_id]
           @newhiredocument.save
         end
 

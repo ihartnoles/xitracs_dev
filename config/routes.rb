@@ -24,6 +24,7 @@ XitracsRoster::Application.routes.draw do
      collection do
         get  'uploadform'
         post 'uploadform'
+        get  'file_download'
     end
   end
 
@@ -114,6 +115,9 @@ XitracsRoster::Application.routes.draw do
 
   post "/newhiredocuments/file_upload"
   put  "/newhiredocuments/file_upload"
+
+  get   "/newhiredocuments/file_download"
+  #post  "/newhiredocuments/file_download"
 
   get  "/newhiredocuments/uploadstatus"
   post  "/newhiredocuments/uploadstatus"
