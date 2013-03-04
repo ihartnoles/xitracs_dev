@@ -4,7 +4,8 @@
 <div class="wrappersmall">
 <%= form_for @newhirecourse do |f| %>
 	
-	<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+	<%= hidden_field_tag 'newhire_id', @newhire.id %>
+
 		<fieldset class="round">
 			<legend>To Teach:</legend>
 			<table  class="no-zebra no-hover">
@@ -38,6 +39,7 @@
 	
 
 	<% if @newhire_courses_added.count > 0 %>
+		<br>
 		<fieldset class="round">
 			<legend>Courses Added:</legend>
 	

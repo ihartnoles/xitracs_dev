@@ -86,7 +86,7 @@ class NewhirecoursesController < ApplicationController
     		end
 
   	else
-  		redirect_to newhiredocuments_path(params[:newhire_id])
+  		redirect_to newhiredocuments_path(:newhire_id => params[:newhire_id])
   	end		
   end 
 
