@@ -1,0 +1,74 @@
+<div id="wrapper">
+	<div id="middle">
+
+	<div align="left" class="icon">
+		<%= link_to image_tag('/assets/Previous_16x16.png'), 'test'%>
+	</div>
+
+	 <div align="left"> 	  
+	    <div>
+	        <fieldset class="round">
+			<legend>New Hire Info:</legend>
+				<strong>Name:</strong> <%= @newhire.first_name %> <%= @newhire.last_name %><br>
+				<strong>School: </strong> <%= @newhire_dept.school.description %>
+				<br>
+				<strong>Department:</strong> <%= @newhire_dept.name %>
+			</fieldset>
+	    </div>
+	</div>    
+
+	
+			<fieldset class="round">
+				<legend>Documents submitted to Provost:</legend>
+					<table  class="profile">
+						<th>Name</th>
+						<th>Location</th>
+						<th>Type</th>
+						<th>Action</th>
+						<% @newhiredocuments.each do |d| %>
+			    			<tr>
+				    			<td><%=  d.name %></td>  
+			 					<td><%=  d.location %></td>  
+			 					<td><%= d.newhiredoctype.name %></td> 
+			 					<td>
+			 					<%= link_to image_tag('/assets/Download_16x16.png'), 
+	        									{:controller => 'newhiredocuments', 
+	        										:action => 'file_download', 
+	        										:doc_id => d.id,
+	        										:newhire_id => params[:id], 
+	        										:doc_type =>  d.newhiredoctype_id,
+	        										:source => 'detailscreen'}%>
+			 					</td>
+			 				</tr>
+			 			<% end %>	
+						</table>
+					</fieldset>
+		
+
+	 <div>
+	        <fieldset class="round">
+			<legend>Courses To Teach:</legend>
+			
+				<table  class="profile">
+					<th>Prefix & Number</th>
+					<th>Title</th>
+					<th>Description</th>
+					<th>Action</th>
+						<% @newhirecourses.each do |ca| %>
+			    			<tr>
+			    				<td><%=  ca.name %></td> 
+			 					<td><%=  ca.title.humanize %></td>
+			 					<td><%=  ca.description.humanize %></td> 	
+			 					<td>
+
+			 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]) %>	 						
+			 					</td> 					
+			 				</tr>
+			 			<% end %>
+				</table>
+			</fieldset>
+	    </div> 
+
+
+	</div>
+</div>

@@ -156,60 +156,8 @@
 		</div><!-- #container-->
 
 
-
-		<div class="sidebar" id="sideLeft">
-			<fieldset class="round" >
-			<legend>Instructor Info:</legend>
-				<table  class="profile">					
-	    			<tr>
-	    				<td><strong>Firstname:</strong></td> 
-	    				<td><%= @newhire.first_name %></td>
-	    			</tr>
-	    			
-	    			<% if !@newhire.middle_name.blank? %>
-		    			<tr>
-		    				<td><strong>Middlename:</strong></td>
-		    				<td><%= @newhire.middle_name %></td>
-		    			</tr>
-	    			<% end %>
-	    			<tr>
-	    				<td><strong>Lastname:</strong></td>
-	    				<td><%= @newhire.last_name %></td>
-	    			</tr>
-	    			<tr>
-	 					<td><strong>School:</strong></td> 	 
-	 					<td><%= @newhire_dept.school.description %></td>					
-	 				</tr>
-	    			<tr>	
-	 					<td><strong>Department:</strong></td>
-	 					<td><%= @newhire_dept.name %></td>
-	 				</tr>	
-	 				<tr>	
-	 					<td><strong>Credentialed by:</strong></td>
-	 					<td><%= @credentialed_by %>
-	 						<%#= @newhire_comments_added.user.name  %>
-	 					</td>
-	 				</tr>
-	 				
-	 				<tr>	
-	 					<td><strong>Reviewed by:</strong></td>
-	 					<td><%= @newhire_dept.name %></td>
-	 				</tr>
-	 				<tr>	
-	 					<td><strong>Dean Signoff by:</strong></td>
-	 					<td><%= @newhire_dept.name %></td>
-	 				</tr>
-
-	 				
-	 				
-
-	 				<tr>
-	 					<td><strong>Status:</strong></td> 	 
-	 					<td>PENDING</td>					
-	 				</tr>			 			
-				</table>
-			</fieldset>
-		</div><!-- .sidebar#sideLeft -->
+		<!-- .sidebar#sideLeft -->
+		<%= render 'instructorinfo_basic' %>
 
 	</div><!-- #middle-->
 

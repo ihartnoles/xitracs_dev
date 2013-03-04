@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(:version => 20130301151135) do
     t.text     "review_comments"
     t.integer  "review_state"
     t.integer  "dean_id"
-    t.integer  "dean_comments"
+    t.text     "dean_comments"
     t.integer  "dean_signoff"
     t.datetime "created_at"
     t.datetime "updated_at"

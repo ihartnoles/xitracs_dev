@@ -12,4 +12,15 @@ class Department < ActiveRecord::Base
   def name_and_school
    "#{self.name} (#{self.school.name})"
   end
+
+  def count_by_dept(department_id)
+  	newhires_by_dept_count = Newhire.where(:department_id => department_id).count
+
+
+  	if newhires_by_dept_count > 0
+  		return " <strong>(<em>#{newhires_by_dept_count} NEW</em>)</strong>".html_safe
+  	else
+  		return ""
+  	end 
+  end 
 end

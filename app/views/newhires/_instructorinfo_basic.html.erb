@@ -1,0 +1,34 @@
+<!-- .sidebar#sideLeft -->
+	<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;">
+			<fieldset class="round" >
+			<legend>Instructor Info:</legend>
+				<table  class="profile">					
+	    			<tr>
+	    				<td><strong>Firstname:</strong></td> 
+	    				<td><%= @newhire.first_name %></td>
+	    			</tr>
+	    			
+	    			<% if !@newhire.middle_name.blank? %>
+		    			<tr>
+		    				<td><strong>Middlename:</strong></td>
+		    				<td><%= @newhire.middle_name %></td>
+		    			</tr>
+	    			<% end %>
+	    			<tr>
+	    				<td><strong>Lastname:</strong></td>
+	    				<td><%= @newhire.last_name %></td>
+	    			</tr>
+	    			<tr>
+	 					<td><strong>School:</strong></td> 	 
+	 					<td><%= @newhire_dept.school.description %></td>					
+	 				</tr>
+	    			<tr>	
+	 					<td><strong>Department:</strong></td>
+	 					<td><%= @newhire_dept.name %></td>
+	 				</tr>		 				
+				</table>
+			</fieldset>
+		</div>

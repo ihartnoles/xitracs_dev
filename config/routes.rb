@@ -14,7 +14,14 @@ XitracsRoster::Application.routes.draw do
      collection do
         get  'review_course'
         post 'review_course'
-    end
+        get  'list'
+        get  'departments'
+        post 'departments'
+        get  'list_by_dept'
+        get  'list_by_school'
+        get  'send_review_email'
+        post 'send_review_email'
+       end
   end
 
   resources :newhirecourses
@@ -105,8 +112,12 @@ XitracsRoster::Application.routes.draw do
   get  "/newhires/approve_course"
   post "/newhires/approve_course"
 
-  get  "newhires/show"
+  get  "newhires/list"
 
+  get   "newhires/list_by_dept"
+
+  get   "newhires/list_by_school"
+  
   post "/newhires/process_justification_deansignoff"
 
 
@@ -144,7 +155,12 @@ XitracsRoster::Application.routes.draw do
 
   match "/newhires/:id/displaydetails" => 'newhires#displaydetails', :as => :newhiredetails
   match "/newhires/review_course" => 'newhires#review_course', :as => :newhire_review_course
+  match "/newhires/departments" => 'newhires#departments', :as => :newhire_showdepartments
   match "/newhires/:id/showcourses" => 'newhires#showcourses', :as => :newhireshowcourses
+  match "/newhires/list_by_dept" => 'newhires#list_by_dept' , :as => :newhire_listbydept
+  match "/newhires/list_by_school" => 'newhires#list_by_school' , :as => :newhire_listbyschool
+
+  match '/newhires/send_review_email', to: 'newhires#send_review_email' , :as => :newhire_send_review_email
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

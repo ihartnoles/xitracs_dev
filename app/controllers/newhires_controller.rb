@@ -4,9 +4,39 @@ class NewhiresController < ApplicationController
     	@newhire = Newhire.new    
   end
 
-  def show   
-      @newhires = Newhire.all
-      @newhire_count = Newhire.all.count     
+  def list  
+
+     if  current_user.group.name == "chair"
+      #if chair show only listings for the specific department
+       @newhires = Newhire.where(:department_id => session[:department_id])
+       @newhire_count = @newhires.count
+    
+
+     elsif current_user.group.name == "admin"
+
+       @newhires = Newhire.all
+       @newhire_count = @newhires.count     
+       @departments =  Department.where(:school_id => session[:school_id])
+
+     else
+      
+      #otherwise you are dean OR admin and you need to be able to see list of dept.
+       redirect_to  newhire_showdepartments_path
+
+       #@newhires = Newhire.all
+       #@newhire_count = @newhires.count     
+       #@departments =  Department.where(:school_id => session[:school_id])
+     end
+  end
+
+  def list_by_dept
+     @newhires = Newhire.where(:department_id => params[:department_id])
+     @newhire_count = @newhires.count
+  end
+
+  def list_by_school
+     @newhires = Newhire.where(:school_id => params[:school_id])
+     @newhire_count = @newhires.count
   end
 
   def showcourses
@@ -14,6 +44,11 @@ class NewhiresController < ApplicationController
      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])   
      @newhire_dept = Department.find(@newhire.department_id)  
      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
+  end
+
+  def departments
+     #session[:school_id] = params[:school_id] if !params[:school_id].nil?
+     @departments =  Department.where(:school_id => session[:school_id]) 
   end
 
 
@@ -198,6 +233,16 @@ class NewhiresController < ApplicationController
       	    redirect_to newhirecourses_path
       	  end	 
        end
+  end
+
+
+  def send_review_email
+    @newhire = Newhire.find(params[:newhire_id])
+    WizardMailer.send_review_email(@newhire).deliver
+
+     flash[:notice] = "Notification sent to Review Team"
+
+     redirect_to newhiredetails_path(@newhire.id)
   end
 
 end
