@@ -1,5 +1,25 @@
 <%= @newhire.details %> <br>
 
+<% if @newhire_docs_added.count > 0 %>
+			 <fieldset class="round">
+				<legend>Documents uploaded:</legend>
+					<table  class="profile">
+						<th>Name</th>
+						<th>Location</th>
+						<th>Type</th>
+						<% @newhire_docs_added.each do |d| %>
+			    			<tr>
+				    			<td><%=  d.name %></td>  
+			 					<td><%=  d.location %></td>  
+			 					<td>
+			 						<%= d.newhiredoctype.name %>
+		 						
+			 					</td> 
+			 				</tr>
+			 			<% end %>	
+					</table>
+			</fieldset>
+		<% end %>
 
 	<div>		
 		<fieldset class="round">
@@ -28,23 +48,4 @@ to finish this section and continue precredentialing.</td>
 
 	</div>
 
-		<% if @newhire_docs_added.count > 0 %>
-			 <fieldset class="round">
-				<legend>Documents uploaded:</legend>
-					<table  class="profile">
-						<th>Name</th>
-						<th>Location</th>
-						<th>Type</th>
-						<% @newhire_docs_added.each do |d| %>
-			    			<tr>
-				    			<td><%=  d.name %></td>  
-			 					<td><%=  d.location %></td>  
-			 					<td>
-			 						<%= d.newhiredoctype.name %>
-		 						
-			 					</td> 
-			 				</tr>
-			 			<% end %>	
-					</table>
-			</fieldset>
-		<% end %>
+		

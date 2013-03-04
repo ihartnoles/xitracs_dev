@@ -21,12 +21,12 @@ class NewhirecommentController < ApplicationController
        if (params.has_key?(:source))
           redirect_to newhiredetails_path(params[:newhire_id])
        else
-          redirect_to newhires_show_path
+          redirect_to newhires_list_path
        end
 
 
   	else
-  		redirect_to newhires_show_path
+  		redirect_to newhires_list_path
   	end
   end
 
