@@ -1,9 +1,6 @@
 <div id="wrapper">
 
-	
-
 	<div id="middle">
-
 		<div id="container">
 			<div id="content">
 				<fieldset class="round">
@@ -13,7 +10,7 @@
 							<th>Prefix & Number</th>
 							<th>Title</th>
 							<th>Description</th>
-							<th>Action</th>
+							<th width="10%">Action</th>
 								<% @newhirecourses.each do |ca| %>
 					    			<tr>
 					    				<td><%=  ca.name %></td> 
@@ -36,7 +33,7 @@
 							<th>Name</th>
 							<th>Location</th>
 							<th>Type</th>
-							<th>Action</th>
+							<th width="10%">Action</th>
 							<% @newhiredocuments.each do |d| %>
 				    			<tr>
 					    			<td><%=  d.name %></td>  

@@ -37,15 +37,15 @@
 	 				
 	 				<tr>	
 	 					<td><strong>Reviewed by:</strong></td>
-	 					<td><%= @newhire_dept.name %></td>
+	 					<td>N/A</td>
 	 				</tr>
 	 				<tr>	
 	 					<td><strong>Dean Signoff by:</strong></td>
-	 					<td><%= @newhire_dept.name %></td>
+	 					<td>N/A</td>
 	 				</tr>
 					<tr>
 	 					<td><strong>Status:</strong></td> 	 
-	 					<td>PENDING</td>					
+	 					<td><%=  @newhirereason.review_state_name(@newhire_review_state) %></td>					
 	 				</tr>			 			
 	 				<tr>
 	 					<td colspan="2"><strong>Review Team Notification:</strong><br>Send Notification Now!

@@ -15,7 +15,7 @@
 					<th>Prefix & Number</th>
 					<th>Title</th>
 					<th>Description</th>
-					<th>Action</th>
+					<th width="10%">Action</th>
 						<% @newhirecourses.each do |ca| %>
 			    			<tr>
 			    				<td><%=  ca.name %></td> 
@@ -55,7 +55,7 @@
 						<th>Name</th>
 						<th>Location</th>
 						<th>Type</th>
-						<th>Action</th>
+						<th width="10%">Action</th>
 						<% @newhiredocuments.each do |d| %>
 			    			<tr>
 				    			<td><%=  d.name %></td>  
@@ -83,7 +83,7 @@
 					<table  class="profile">
 						<th>Reason</th>
 						<th>Explanation</th>
-						<th>Actions</th>
+						<th width="10%">Actions</th>
 						<% @newhirecredentials.each do |c| %>
 			    			<tr>
 				    			<td><%= c.qualificationreason.name %></td>  
@@ -108,7 +108,7 @@
 							<th>Year Taken</th>
 							<th>Institution</th>
 							<th>Credits</th>
-							<th>Actions</th>
+							<th width="10%">Actions</th>
 							<% @newhire_credits_added.each do |cr| %>
 				    			<tr>
 					    			<td><%=  cr.course_name %></td>  
@@ -136,7 +136,7 @@
 
 						<table  class="profile">
 							<th>Comment</th>
-							<th>Actions</th>
+							<th width="10%">Actions</th>
 							<% @newhire_comments_added.each do |cm| %>
 								<tr>
 									<td><%= cm.comment %></td>

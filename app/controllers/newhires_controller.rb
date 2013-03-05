@@ -81,6 +81,8 @@ class NewhiresController < ApplicationController
       @reason = Reason.new
       @newhirereason = Newhirereason.new
       @reviewreason = Reviewreason.all
+
+      @newhire_review_reason = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
   end
 
   def review_course
@@ -115,6 +117,8 @@ class NewhiresController < ApplicationController
       #begin
        @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
+       @newhire_review_state = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
+
        if (params.has_key?(:newhirereason_id))
           @newhirereason = Newhirereason.find(params[:newhirereason_id])
        else
@@ -133,13 +137,20 @@ class NewhiresController < ApplicationController
       #  params.delete(:apply_comments_to_all)
       #end
       
-        #@newhirereason = Newhirereason.new
+      #@newhirereason = Newhirereason.new
      
-      @newhirereason = Newhirereason.find(params[:newhirereason][:newhirereason_id])
+      #@newhirereason = Newhirereason.find(params[:newhirereason][:newhirereason_ids])
+       
+       if (params.has_key?(:newhirereason_id))
+          @newhirereason = Newhirereason.find(params[:newhirereason_id])
+       else
+          @newhirereason = Newhirereason.new 
+       end
 
       params[:newhirereason][:reviewreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
       @newhirereason.qualificationreason_id = params[:newhirereason][:reviewreason_ids].to_s
-
+      @newhirereason.course_id = params[:newhirereason][:course_id]
+      @newhirereason.newhire_id = params[:newhirereason][:newhire_id]
       @newhirereason.reviewer_id = current_user.id
       @newhirereason.review_state = params[:newhirereason][:review_state]
       
