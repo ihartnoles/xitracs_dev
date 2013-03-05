@@ -21,6 +21,9 @@ XitracsRoster::Application.routes.draw do
         get  'list_by_school'
         get  'send_review_email'
         post 'send_review_email'
+        get  'approve_course'
+        post 'approve_course'
+        put  'approve_course'
        end
   end
 
@@ -108,9 +111,10 @@ XitracsRoster::Application.routes.draw do
   
   get  "newhires/review_course"
   post "newhires/review_course"
-
+  
   get  "/newhires/approve_course"
   post "/newhires/approve_course"
+  put "/newhires/approve_course"
 
   get  "newhires/list"
 
@@ -159,8 +163,8 @@ XitracsRoster::Application.routes.draw do
   match "/newhires/:id/showcourses" => 'newhires#showcourses', :as => :newhireshowcourses
   match "/newhires/list_by_dept" => 'newhires#list_by_dept' , :as => :newhire_listbydept
   match "/newhires/list_by_school" => 'newhires#list_by_school' , :as => :newhire_listbyschool
-
   match '/newhires/send_review_email', to: 'newhires#send_review_email' , :as => :newhire_send_review_email
+  match '/newhires/approve_course', to: 'newhires#approve_course' , :as => :newhire_approve_course
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

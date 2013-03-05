@@ -119,12 +119,20 @@ class NewhiresController < ApplicationController
 
        @newhire_review_state = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
 
-       if (params.has_key?(:newhirereason_id))
-          @newhirereason = Newhirereason.find(params[:newhirereason_id])
+       @newhire_reason_state = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:qualificationreason_id).join(',')
+       #if (params.has_key?(:newhirereason_id) )
+       #   @newhirereason = Newhirereason.find(params[:newhirereason_id])
+       if ( @newhire_reasons_added.count > 0)
+          @newhirereason = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).first
+          
        else
           @newhirereason = Newhirereason.new 
        end
         
+        @newhirereason_array =  @newhirereason.qualificationreason_id
+       
+       #@newhirereason.review_state = 4
+
       #rescue
         #@newhirereason = Newhirereason.new
       #end
@@ -140,15 +148,19 @@ class NewhiresController < ApplicationController
       #@newhirereason = Newhirereason.new
      
       #@newhirereason = Newhirereason.find(params[:newhirereason][:newhirereason_ids])
+
+      @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id], :course_id => params[:newhirereason][:course_id])
        
-       if (params.has_key?(:newhirereason_id))
-          @newhirereason = Newhirereason.find(params[:newhirereason_id])
+       #if (params.has_key?(:newhirereason_id))
+       #   @newhirereason = Newhirereason.find(params[:newhirereason_id])
+       if ( @newhire_reasons_added.count > 0)
+          @newhirereason = @newhire_reasons_added.first
        else
           @newhirereason = Newhirereason.new 
        end
 
-      params[:newhirereason][:reviewreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
-      @newhirereason.qualificationreason_id = params[:newhirereason][:reviewreason_ids].to_s
+      params[:newhirereason][:qualificationreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
+      @newhirereason.qualificationreason_id = params[:newhirereason][:qualificationreason_ids].join(",")
       @newhirereason.course_id = params[:newhirereason][:course_id]
       @newhirereason.newhire_id = params[:newhirereason][:newhire_id]
       @newhirereason.reviewer_id = current_user.id

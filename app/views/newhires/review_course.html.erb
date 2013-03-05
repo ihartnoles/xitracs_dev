@@ -199,6 +199,7 @@
 		 			<fieldset class="round">
 						<legend>Review:</legend>    
 						 	<%#= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
+						 
 						 	<%= form_for @newhirereason, :url => '/newhires/approve_course' do |f| %>
 								<%#= f.hidden_field  :newhirereason, :newhire_id %>
 								<%= hidden_field_tag 'newhirereason[newhire_id]', params[:newhire_id] %>
@@ -216,14 +217,24 @@
 								<%= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %> Justification Docs
 
 								<br/>
-							 		<% @reviewreason.each do |reviewreason| %>
-										<%= check_box_tag "newhirereason[reviewreason_ids][]", reviewreason.id, 'test',:class => "check", :onclick => "do_checkbox();" %>
+								
+								<%#= f.check_box :qualificationreason_id, "2" %> <br>
 
-										 <%= reviewreason.name %> <br/>
+							 		<% @reviewreason.each do |reviewreason| %>
+										<%#= check_box_tag "newhirereason[reviewreason_ids][]", reviewreason.id, 'test',:class => "check", :onclick => "do_checkbox();" %>
+										
+										<%= check_box_tag "newhirereason[qualificationreason_ids][]", reviewreason.id, @newhire_reason_state.include?(reviewreason.id.to_s), :class => "check", :onclick => "do_checkbox();"%> 
+
+										<%#= check_box_tag "newhirereason[qualificationreason_ids][]", reviewreason.id %>
+
+										<%#= f.check_box :qualificationreason_id %> 
+
+										<%= reviewreason.name %><br>
 
 
 										 <%# Reviewreason.all.each do |reviewreason| -%>
-						<%#= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, @reviewreason_ids.include?(reviewreason.id), :class => "check", :onclick => "do_checkbox();" %> 				<% end %>
+						<%#= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, @reviewreason_ids.include?(reviewreason.id), :class => "check", :onclick => "do_checkbox();" %> 				
+								<% end %>
 							
 								<br/>
 								<label> Comments: </label>
