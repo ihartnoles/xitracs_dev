@@ -1,51 +1,74 @@
-<%= @newhire.details %> <br>
+<%#= @newhire.details %> <br>
+
+<div id="wrapper">
+	<div id="middle">
+		<div id="container">
+
 
 <% if @newhire_docs_added.count > 0 %>
-			 <fieldset class="round">
-				<legend>Documents uploaded:</legend>
-					<table  class="profile">
-						<th>Name</th>
-						<th>Location</th>
-						<th>Type</th>
-						<% @newhire_docs_added.each do |d| %>
-			    			<tr>
-				    			<td><%=  d.name %></td>  
-			 					<td><%=  d.location %></td>  
-			 					<td>
-			 						<%= d.newhiredoctype.name %>
-		 						
-			 					</td> 
-			 				</tr>
-			 			<% end %>	
-					</table>
-			</fieldset>
+				<div id="content">		
+					<fieldset class="round">
+						<legend>Documents:</legend>
+							<table  class="no-zebra no-hover">
+								<tr>
+								<td><strong>The following documents have been submitted to the Provost's office:</strong></td>
+								</tr>
+								
+									<% Newhiredoctype.all.each do |dt| %>
+					    				<tr>
+					 						<td><%=  dt.name.humanize %></td>
+					 						<td><%= link_to "[upload]", 
+						 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id, :newhire_id => params[:newhire_id]}, 
+			        							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" 
+										%></td>
+					 					</tr>
+									<% end %>		
+
+								<tr>
+									<td colspan="2">Click
+			<input type="button" name="Continue" value="Contine"  onclick="window.location.href='newhirecredentials'">
+			to finish this section and continue precredentialing.</td>
+								</tr>
+							</table>
+
+				</div>
+
+
+			<div id="content">	
+				 <fieldset class="round">
+					<legend>Documents uploaded:</legend>
+						<table  class="profile">
+							<th>Name</th>
+							<th>Location</th>
+							<th>Type</th>
+							<% @newhire_docs_added.each do |d| %>
+				    			<tr>
+					    			<td><%=  d.name %></td>  
+				 					<td><%=  d.location %></td>  
+				 					<td>
+				 						<%= d.newhiredoctype.name %>
+			 						
+				 					</td> 
+				 				</tr>
+				 			<% end %>	
+						</table>
+				</fieldset>
+			</div>
 		<% end %>
 
-	<div>		
-		<fieldset class="round">
-			<legend>Documents:</legend>
-				<table  class="no-zebra no-hover">
-					<tr>
-					<td><strong>The following documents have been submitted to the Provost's office:</strong></td>
-					</tr>
-					
-						<% Newhiredoctype.all.each do |dt| %>
-		    				<tr>
-		 						<td><%=  dt.name.humanize %></td>
-		 						<td><%= link_to "[upload]", 
-			 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id, :newhire_id => params[:newhire_id]}, 
-        							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" 
-							%></td>
-		 					</tr>
-						<% end %>		
 
-					<tr>
-						<td colspan="2">Click
-<input type="button" name="Continue" value="Contine"  onclick="window.location.href='newhirecredentials'">
-to finish this section and continue precredentialing.</td>
-					</tr>
-				</table>
 
-	</div>
 
-		
+
+</div><!-- #container-->
+
+
+		<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;">
+    		<%= @newhire.details %>
+    	</div>
+
+	</div><!-- #middle-->
+</div><!-- #wrapper -->

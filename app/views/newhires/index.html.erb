@@ -1,28 +1,33 @@
-<div class="wrappersmall">
-<div class="coursework">
-		<fieldset class="round">
-			<legend>Instructor Name:</legend>
-				<table class="no-zebra no-hover">
-					<%= form_for @newhire do |f| %>
-					<tr>
-						<td><strong>Firstname:</strong></td>
-						<td><%= text_field_tag 'first_name'%></td>
-					</tr>
+<div id="wrapper">
+	<div id="middle">
+		<div id="container">
 
-					<tr>
-						<td><strong>Middle name:</strong></td>
-						<td><%= text_field_tag 'middle_name'%></td>
-					</tr>
+			<div class="content">
+					<fieldset class="round">
+						<legend>Instructor Name:</legend>
+							<table class="no-zebra no-hover">
+								<%= form_for @newhire do |f| %>
+								<tr>
+									<td width="10%"><strong>Firstname:</strong></td>
+									<td><%= text_field_tag 'first_name'%></td>
+								</tr>
 
-					<tr>
-						<td><strong>Last name:</strong> </td>
-						<td><%= text_field_tag 'last_name'%></td>
-					</tr>
+								<tr>
+									<td><strong>Middle name:</strong></td>
+									<td><%= text_field_tag 'middle_name'%></td>
+								</tr>
 
-				</table>
-				<%= f.submit "Save & Continue" %>
-				<% end %>
-		</fieldset>
-</div>
-</div>
+								<tr>
+									<td><strong>Last name:</strong> </td>
+									<td><%= text_field_tag 'last_name'%></td>
+								</tr>
+
+							</table>
+							<%= f.submit "Save & Continue" %>
+							<% end %>
+					</fieldset>
+			</div>
+		</div><!-- #container -->
+	</div><!-- #middle -->
+</div><!-- #wrapper -->
 	

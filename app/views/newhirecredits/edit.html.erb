@@ -1,49 +1,76 @@
-<%= @newhire.details %> <br>
+<%#= @newhire.details %> <br>
+
+<div id="wrapper">
+	<div id="middle">
+		<div id="container">
+
+			<div id="content">
+				<fieldset class="round">
+					<legend>
+						Add Relevant Coursework: 
+					</legend>
+					<%= form_for(@newhirecredits) do |f| %>
+						<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+						<table class="no-zebra no-hover">
+							<tr>	
+								<th>Course ID (ex: CDA 6031)</th>
+								<th>Course Name (ex: Data Mining)</th>
+								<th>Course Year (ex: 1995)</th>
+								<!-- <th>Institution</th> -->
+								<th>Course Credits (ex: 3)</th>
+								
+							</tr>
+							<tr>
+								<td><%= f.text_field :course_name,  :class => "text" %></td>
+								<td><%= f.text_field :course_description,  :class => "text"  %></td>
+								<td><%= f.text_field :course_year,  :class => "text"  %></td>
+								<!-- <td>
+									<%#= collection_select(:newhirecredit,
+														   :newhireinstitution_id,		   
+														   @newhireinstitutions,
+														   :id,
+														   :name
+															)%> </td> -->
+								<td><%= f.text_field :course_credits, :class => "text"  %></td>
+								
+							</tr>
+							<tr>
+								<td colspan="4">
+									<strong>Institution:<strong><br>
+									<%= collection_select(:newhirecredit,
+														   :newhireinstitution_id,		   
+														   @newhireinstitutions,
+														   :id,
+														   :name,
+														   {:selected => @newhirecredits.newhireinstitution_id}
+															)%>
+								</td>
+							</tr>
+							<tr>
+								<td><br/><br/></td>
+							</tr>
+						</table>
+						<table class="no-zebra no-hover">
+							<tr>
+						    	<td colspan="2"> 	
+						 			Click <%= f.submit 'Update', :id => "Update" , :disabled => current_user.ro %> to save this course.<br/><br/>
+						 		</td>
+					 		</tr>
+							
+						</table>
+					<% end %>
+					</fieldset>
+				</div>
+
+			</div><!-- #container-->
 
 
-<fieldset class="round">
-	<legend>
-		Add Relevant Coursework: 
-	</legend>
-	<%= form_for(@newhirecredits) do |f| %>
-		<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
-		<table class="no-zebra no-hover">
-			<tr>	
-				<th>Course ID (ex: CDA 6031)</th>
-				<th>Course Name (ex: Data Mining)</th>
-				<th>Course Year (ex: 1995)</th>
-				<th>Institution</th>
-				<th>Course Credits (ex: 3)</th>
-				
-				</tr>
-			<tr>
-				<td><%= f.text_field :course_name,  :class => "text" %></td>
-				<td><%= f.text_field :course_description,  :class => "text"  %></td>
-				<td><%= f.text_field :course_year,  :class => "text"  %></td>
-				<td>
-					<%= collection_select(:newhirecredit,
-										  :newhireinstitution_id,		
-										  Newhireinstitution.all,
-										  :id,
-										  :name,
-										   {:selected => @newhirecredits.newhireinstitution_id}
-										
-										)%> 
-				</td>
-				<td><%= f.text_field :course_credits, :class => "text"  %></td>
-				
-			</tr>
-			<tr>
-				<td><br/><br/></td>
-			</tr>
-		</table>
-		<table class="no-zebra no-hover">
-			<tr>
-		    	<td colspan="2"> 	
-		 			Click <%= f.submit 'Update', :id => "Update" , :disabled => current_user.ro %> to save this course.<br/><br/>
-		 		</td>
-	 		</tr>
-			
-		</table>
-	<% end %>
-	</fieldset>
+			<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
+	    -webkit-border-radius: 20px;
+	    -khtml-border-radius: 20px;
+	    border-radius: 20px;">
+	    		<%= @newhire.details %>
+	    	</div>
+
+	</div><!-- #middle-->
+</div><!-- #wrapper -->

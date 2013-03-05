@@ -1,25 +1,40 @@
-<%= @newhire.details %> <br>
+<%#= @newhire.details %> <br>
+
+<div id="wrapper">
+  <div id="middle">
+    <div id="container">
+      <div id="content">
+          <fieldset class="round">
+                <legend>Instructor Credentials:</legend>
+                <br><strong>The instructor is credentialed to teach:</strong><br>
+                 <%= form_for @newhirecredential do |c| %>
+                 <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+                            <% @qualificationreasons.each do |qr| %>
+                                <br><%= radio_button_tag  'qualificationreason_id',  qr.id, @newhirecredential.qualificationreason_id == qr.id %>
+                              <%=  qr.name.humanize %>
+                            <% end %> 
+                      <br />
+                      <br />
+                      <p>
+                      <strong>Explanation of instructor's qualifications:</strong><br>
+                           <%= c.text_area :qualification_explanation %>          
+                      </p>
+                      <p>
+                       Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
+
+                      </p>
+                 <% end %>
+          </fieldset>
+        </div>
+  </div><!-- #container-->
 
 
-<fieldset class="round">
-      <legend>Instructor Credentials:</legend>
-      <br><strong>The instructor is credentialed to teach:</strong><br>
-       <%= form_for @newhirecredential do |c| %>
-       <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
-                  <% @qualificationreasons.each do |qr| %>
-                      <br><%= radio_button_tag  'qualificationreason_id',  qr.id, @newhirecredential.qualificationreason_id == qr.id %>
-                    <%=  qr.name.humanize %>
-                  <% end %> 
-            <br />
-            <br />
-            <p>
-            <strong>Explanation of instructor's qualifications:</strong><br>
-                 <%= c.text_area :qualification_explanation %>          
-            </p>
-            <p>
-             Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
+    <div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;">
+        <%= @newhire.details %>
+      </div>
 
-            </p>
-       <% end %>
-</fieldset>
-
+  </div><!-- #middle-->
+</div><!-- #wrapper -->

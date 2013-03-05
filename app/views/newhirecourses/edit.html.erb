@@ -1,5 +1,11 @@
-<%= @newhire.details %> <br>
 
+<%#= @newhire.details %> <br>
+
+<div id="wrapper">
+	<div id="middle">
+		<div id="container">
+
+	<div id="content">
 		<fieldset class="round">
 			<legend>To Teach:</legend>
 			<%= form_for(@newhirecourse) do |f| %>
@@ -34,3 +40,17 @@
 				</table>
 			<% end %>
 		</fieldset>
+	</div>
+
+</div><!-- #container-->
+
+
+		<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;">
+    		<%= @newhire.details %>
+    	</div>
+
+	</div><!-- #middle-->
+</div><!-- #wrapper -->
