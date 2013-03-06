@@ -55,13 +55,16 @@
 						 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
 						 		</td>
 					 		</tr>
+							
+							<!--
 							<tr>
 								<td colspan="2">
 									Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro %> to complete this credential.
 					 			</td>
 				 			</tr>
+				 		    -->
 						</table>
-					<% end %>
+					
 					</fieldset>
 				</div>
 
@@ -101,6 +104,11 @@
 						
 					<% end %>
 				</div>
+
+				<div id="content">
+					Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro %> to complete this credential.
+				</div>
+			<% end %>
 
 		</div><!-- #container-->
 

@@ -10,7 +10,7 @@
                  <%= form_for @newhirecredential do |c| %>
                  <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
                             <% @qualificationreasons.each do |qr| %>
-                                <br><%= radio_button_tag  'qualificationreason_id',  qr.id, @newhirecredential.qualificationreason_id == qr.id %>
+                                <br><%= radio_button_tag  'newhirecredential[qualificationreason_id]',  qr.id, @newhirecredential.qualificationreason_id == qr.id %>
                               <%=  qr.name.humanize %>
                             <% end %> 
                       <br />

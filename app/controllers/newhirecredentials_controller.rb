@@ -74,8 +74,9 @@ class NewhirecredentialsController < ApplicationController
   def update
     @newhirecredential = Newhirecredential.find(params[:id])
 
+    #@newhirecredential.qualificationreason_id =
     
-      if @newhirecredential.update_attributes(:newhirecredential => params[:newhirecredential], :qualificationreason_id => params[:qualificationreason_id])
+      if @newhirecredential.update_attributes(params[:newhirecredential])
          flash[:notice] = "Credential successfully updated."
       else
         flash[:notice] = "There was a problem updating the credential."

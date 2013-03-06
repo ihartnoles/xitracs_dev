@@ -20,13 +20,21 @@
                       <strong>Explanation of instructor's qualifications:</strong><br>
                            <%= text_area_tag 'qualification_explanation' %>          
                       </p>
+                      
+                      <!--
                       <p>
                        Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
 
                       </p>
-                 <% end %>
+                    -->
+                 
           </fieldset>
         </div>
+
+        <div id="content">
+           Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
+        </div>
+        <% end %>
 
 </div><!-- #container-->
 

@@ -1,5 +1,5 @@
 class Newhirecredential < ActiveRecord::Base
-  attr_accessible :name, :qualificationreason_id, :qualification_explanation, :newhire_id
+  attr_accessible :newhire_id, :qualificationreason_id, :qualification_explanation, :created_at, :updated_at
 
   belongs_to :newhire
   
