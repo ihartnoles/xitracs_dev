@@ -75,8 +75,8 @@ class NewhiresController < ApplicationController
       @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:id])
 
       #pull user id to for @credentialed_bu
-      user_id = @newhire_comments_added.map(&:user_id)
-      @credentialed_by = User.find(user_id).map(&:name).join("")
+      #user_id = @newhire_comments_added.map(&:user_id)
+      #@credentialed_by = User.find(user_id).map(&:name).join("")
 
       @reason = Reason.new
       @newhirereason = Newhirereason.new
@@ -103,8 +103,8 @@ class NewhiresController < ApplicationController
       @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:newhire_id])
 
       #pull user id to for @credentialed
-      user_id = @newhire_comments_added.map(&:user_id)
-      @credentialed_by = User.find(user_id).map(&:name).join("")
+      #user_id = @newhire_comments_added.map(&:user_id)
+      #@credentialed_by = User.find(user_id).map(&:name).join("")
 
       @reason = Reason.new
       @reviewreason = Reviewreason.all

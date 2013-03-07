@@ -28,22 +28,7 @@
 	 					<td><strong>Department:</strong></td>
 	 					<td><%= @newhire_dept.name %></td>
 	 				</tr>	
-	 				<tr>	
-	 					<td><strong>Credentialed by:</strong></td>
-	 					<td><%= @credentialed_by %>
-	 						<%#= @newhire_comments_added.user.name  %>
-	 					</td>
-	 				</tr>
-	 				
-	 				<tr>	
-	 					<td><strong>Reviewed by:</strong></td>
-	 					<td>N/A</td>
-	 				</tr>
-	 				<tr>	
-	 					<td><strong>Dean Signoff by:</strong></td>
-	 					<td>N/A</td>
-	 				</tr>
-					<tr>
+	 				<tr>
 	 					<td><strong>Status:</strong></td> 	 
 	 					<td><%=  @newhirereason.review_state_name(@newhire_review_state) %></td>					
 	 				</tr>			 			
