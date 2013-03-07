@@ -56,15 +56,19 @@ class NewhirecredentialsController < ApplicationController
 
           if @newhirecredential.save
             
-            redirect_to newhirecredits_path
-
-            #format.html { redirect_to @newhirecredential, notice: 'Newhirecredential was successfully created.' }
-            #format.json { render json: @newhirecredential, status: :created, location: @newhirecredential }
+            # Force Relevant Coursework entries if (a) for all options except: “Terminal degree in teaching discipline” & “Other terminal degree – credential by research/experience/creative activity
+            if ( params[:qualificationreason_id] == "1" || params[:qualificationreason_id] == "2")
+              
+              #go to comments
+               redirect_to newhirecomment_index_path
+            else
+              #go to credits (relevant coursework)            
+              redirect_to newhirecredits_path
+            end
+           
           else
              flash[:notice] = "A problem occurred saving the credential."
-          #else
-           # format.html { render action: "new" }
-           # format.json { render json: @newhirecredential.errors, status: :unprocessable_entity }
+         
           end
       end
   end

@@ -10,7 +10,7 @@ class NewhiredocumentsController < ApplicationController
     #@newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
     @newhire_docs_added = Newhiredocument.where(:newhire_id => params[:newhire_id])
 
-    #render :layout => 'simple'
+    render :layout => 'simple'
   end
 
   def create
@@ -89,6 +89,7 @@ class NewhiredocumentsController < ApplicationController
         newhirelname = Newhire.find(params[:newhire_id]).last_name
         newhirefname = Newhire.find(params[:newhire_id]).first_name
         newhireid    = Newhire.find(params[:newhire_id]).id
+        courseid     = params[:course_id]
         
         #determine doc type
         doctype     = params[:doc_type]
@@ -101,7 +102,7 @@ class NewhiredocumentsController < ApplicationController
          end 
        
         #set the dynamic directory name
-        dir = "public/data/#{newhirelname}_#{newhirefname}_#{newhireid}/#{doctypedir}"
+        dir = "public/data/#{newhirelname}_#{newhirefname}_#{newhireid}/course_#{courseid}/#{doctypedir}"
         
         #create the file path
         path = File.join(dir, params[:file_upload][:filename].original_filename)
@@ -126,6 +127,7 @@ class NewhiredocumentsController < ApplicationController
           d.newhiredoctype_id = params[:doc_type]
           #d.newhire_id = session[:newhire_id]
           d.newhire_id = params[:newhire_id]
+          d.course_id = params[:course_id]
           d.save
         else
           @newhiredocument = Newhiredocument.find(params[:id])
@@ -134,6 +136,7 @@ class NewhiredocumentsController < ApplicationController
           @newhiredocument.newhiredoctype_id = params[:doc_type]
           #@newhiredocument.newhire_id = session[:newhire_id]
           @newhiredocument.newhire_id = params[:newhire_id]
+          @newhiredocument.course_id = params[:course_id]
           @newhiredocument.save
         end
 

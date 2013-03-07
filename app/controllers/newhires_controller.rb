@@ -92,7 +92,7 @@ class NewhiresController < ApplicationController
 
       @newhirecourses = Newhirecourse.where(:newhire_id => params[:newhire_id])
 
-      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:newhire_id])
+      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
       @newhire_dept = Department.find(@newhire.department_id)
       
@@ -254,11 +254,30 @@ class NewhiresController < ApplicationController
       	  end	 
        end
   end
+ 
+  def review_msg 
+     @message = Newhirereviewmessage.new    
+  end
 
+  def send_review_msg
 
-  def send_review_email
-    @newhire = Newhire.find(params[:newhire_id])
-    WizardMailer.send_review_email(@newhire).deliver
+     #set up the message object
+     message = Newhirereviewmessage.new
+     message.newhire_id = params[:newhire_id]
+     message.course_id = params[:course_id]
+     message.from = current_user.name
+     message.to = 'TEST TO'
+     message.body = params[:newhirereviewmessage][:body]
+     message.save
+
+     #find the newhire
+     @newhire = Newhire.find(params[:newhire_id])
+
+     #set the msg argument     
+     @msg = message.body
+    
+     #pass argumetns to the send_review_msg mailer function
+     WizardMailer.send_review_msg(@newhire,@msg).deliver
 
      flash[:notice] = "Notification sent to Review Team"
 

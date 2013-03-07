@@ -12,6 +12,7 @@ class NewhirecommentController < ApplicationController
 
 	  	 if @comment.save
 	  	 	flash[:notice] = "Comment added"
+        flash[:notice] = "You will need to upload documents for each course!"
 	  	 	#redirect_to newhires_show_path
 	  	 else
 	  	 	flash[:notice] = "There was a problem saving the comments."
@@ -21,12 +22,17 @@ class NewhirecommentController < ApplicationController
        if (params.has_key?(:source))
           redirect_to newhiredetails_path(params[:newhire_id])
        else
-          redirect_to newhires_list_path
+          #redirect_to newhires_list_path
+          redirect_to newhiredetails_path(:id => params[:newhire_id])
        end
 
 
   	else
-  		redirect_to newhires_list_path
+  		#redirect_to newhires_list_path
+      #newhiredetails_path(:id => params[:newhire_id])
+      redirect_to '/newhires/#{params[:newhire_id]}/displaydetails' 
+
+
   	end
   end
 

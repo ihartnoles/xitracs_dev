@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  newhire_id: 1
+  course_id: 1
+  from: MyString
+  to: MyString
+  body: MyText
+
+two:
+  newhire_id: 1
+  course_id: 1
+  from: MyString
+  to: MyString
+  body: MyText
