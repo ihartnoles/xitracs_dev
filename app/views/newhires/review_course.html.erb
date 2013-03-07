@@ -1,58 +1,8 @@
  <script type="text/javascript">
 
-	function do_checkbox() {
-		elem = document.getElementsByTagName("input");
-		pending = document.getElementById("newhirereason_review_state_0");
-		passed = document.getElementById("newhirereason_review_state_1");
-		failed = document.getElementById("newhirereason_review_state_2");
-		alert = document.getElementById("newhirereason_review_state_3");
-		justdocs = document.getElementById("newhirereason_review_state_4");
-
-		one_checked = false;
-		for (var i = 0 ; i < elem.length ; i++ ) {
-			if (elem[i].className == "check") {
-				if (elem[i].checked == true) {
-					pending.disabled = true;
-					passed.disabled = true;
-					if (alert.checked == false) {
-						failed.checked = true;
-					}
-					one_checked = true;
-				} 
-			} 
-		}	
-		if (one_checked == false) {
-			pending.disabled = false;
-			passed.disabled = false;
-			passed.checked = true;
-		}		
-	}
-	
-	function clear_all_checkboxes() {
-		elem = document.getElementsByTagName("input");
-		for (var i = 0 ; i < elem.length ; i++ ) {
-			if (elem[i].className == "check") {
-				elem[i].checked = false;
-			}
-		}
-	}
-	
-	function set_all_checkboxes(what_to_do) {
-		elem = document.getElementsByTagName("input");
-		for (var i = 0 ; i < elem.length ; i++ ) {
-			if (elem[i].className == "check") {
-				elem[i].disabled = what_to_do;
-			}
-		}
-	}
-	
-	function do_passed() {
-		clear_all_checkboxes();
-		set_all_checkboxes(true);		
-	}
-	
-	function do_failed() {
-		set_all_checkboxes(false);		
+	function comments_alert() {
+		/*set_all_checkboxes(false);		*/
+		alert('If the review status is \'Not Passed\' you must enter a comment.');
 	}
 
 	function do_alert() {
@@ -212,7 +162,7 @@
 
 								<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
 								<%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
-								<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "do_failed();"} %> Not Passed
+								<%= f.radio_button :review_state, Reason.review_failed, {:onclick => "comments_alert();"} %> Not Passed
 								<%#= f.radio_button :review_state, Reason.review_alert,  {:onclick => "do_alert();"}  %> 
 								<%#= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %>
 
@@ -235,14 +185,21 @@
 										 <%# Reviewreason.all.each do |reviewreason| -%>
 						<%#= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, @reviewreason_ids.include?(reviewreason.id), :class => "check", :onclick => "do_checkbox();" %> 				
 								<%# end %>
-							
-							
-								<label> Comments: </label>
-								<br/>	
-								<%= f.text_area :review_comments %><br/>
+							<table>
+								<tr>
+									<td><strong> Comments: </strong></td>
+								</tr>
+								<tr>
+									<td><%= f.text_area :review_comments %><br/></td>
+								</tr>
+								<tr>
+									<td><%= f.submit  "Submit", :id => "Submit" %></td>
+								</tr>
+
+
+							</table>
 								
-								<br/>
-								<%= f.submit  "Submit", :id => "Submit" %>
+								
 							<% end %>	   
 						</fieldset>
 

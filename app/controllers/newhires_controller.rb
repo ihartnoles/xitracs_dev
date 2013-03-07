@@ -140,63 +140,60 @@ class NewhiresController < ApplicationController
 
   def approve_course
     if (params[:commit] == 'Submit')
-      #if (params[:apply_comments_to_all])
-      #  apply_comments_to_all = params[:apply_comments_to_all]
-      #  params.delete(:apply_comments_to_all)
-      #end
-      
-      #@newhirereason = Newhirereason.new
      
-      #@newhirereason = Newhirereason.find(params[:newhirereason][:newhirereason_ids])
 
-      @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id], :course_id => params[:newhirereason][:course_id])
+      #if review status is NOT PASSED then require comments!
+      if (params[:newhirereason][:review_state] == 2 && params[:newhirereason][:review_comments].blank?) 
+
+          flash[:notice] = 'Please enter a comment'
+          redirect_to newhire_review_course_path(:newhire_id => params[:newhirereason][:newhire_id], :id => params[:newhirereason][:course_id])
+
+      else
+           @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id], :course_id => params[:newhirereason][:course_id])
+           
+           #if (params.has_key?(:newhirereason_id))
+           #   @newhirereason = Newhirereason.find(params[:newhirereason_id])
+           if ( @newhire_reasons_added.count > 0)
+              @newhirereason = @newhire_reasons_added.first
+           else
+              @newhirereason = Newhirereason.new 
+           end
+
+          params[:newhirereason][:qualificationreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
+          @newhirereason.qualificationreason_id = params[:newhirereason][:qualificationreason_ids].join(",")
+          @newhirereason.course_id = params[:newhirereason][:course_id]
+          @newhirereason.newhire_id = params[:newhirereason][:newhire_id]
+          @newhirereason.reviewer_id = current_user.id
+          @newhirereason.review_state = params[:newhirereason][:review_state]
+          
+          if (!params[:newhirereason][:review_comments].blank?)
+           @newhirereason.review_comments = params[:newhirereason][:review_comments]
+          end
+          
+          
+
+          #if (!apply_comments_to_all.nil?) 
+           # reasons = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id])
+           #reasons.each do |r|
+           #   if (r.review_state != Reason.review_passed)
+           #     r.update_attributes(:review_comments => params[:newhirereason][:review_comments]) 
+           #     r.update_attributes(:reviewer_id => params[:newhirereason][:reviewer_id]) 
+           #   end
+           # end
+          #end
+          
+          @newhirereason.save
+
        
-       #if (params.has_key?(:newhirereason_id))
-       #   @newhirereason = Newhirereason.find(params[:newhirereason_id])
-       if ( @newhire_reasons_added.count > 0)
-          @newhirereason = @newhire_reasons_added.first
-       else
-          @newhirereason = Newhirereason.new 
-       end
+          redirect_to newhire_review_course_path(:newhire_id => params[:newhirereason][:newhire_id], :id => params[:newhirereason][:course_id])
+         end
 
-      params[:newhirereason][:qualificationreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
-      @newhirereason.qualificationreason_id = params[:newhirereason][:qualificationreason_ids].join(",")
-      @newhirereason.course_id = params[:newhirereason][:course_id]
-      @newhirereason.newhire_id = params[:newhirereason][:newhire_id]
-      @newhirereason.reviewer_id = current_user.id
-      @newhirereason.review_state = params[:newhirereason][:review_state]
-      
-      if (!params[:newhirereason][:review_comments].blank?)
-       @newhirereason.review_comments = params[:newhirereason][:review_comments]
       end
-      
+
       
 
-      #if (!apply_comments_to_all.nil?) 
-       # reasons = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id])
-       #reasons.each do |r|
-       #   if (r.review_state != Reason.review_passed)
-       #     r.update_attributes(:review_comments => params[:newhirereason][:review_comments]) 
-       #     r.update_attributes(:reviewer_id => params[:newhirereason][:reviewer_id]) 
-       #   end
-       # end
-      #end
-      
-      @newhirereason.save
 
-    #  redirect_to :action => 'approve_course'  
-    # else
-    #  @faculty = Faculty.find(params[:faculty_id])
-    #  @course = Course.find(params[:course_id])
-    #  @reason = Reason.where(:faculty_id => @faculty.id, :course_id => @course.id).first
-    #  if (@reason != nil)
-    #    @reviewreason_ids = @reason.reviewreason_ids      
-    #    @credits = Credit.where(:faculty_id => @faculty.id)        
-    #  end  
-    #  session[:faculty_id] = params[:faculty_id]
-    #  session[:course_id] = params[:course_id]
-      redirect_to newhire_review_course_path(:newhire_id => params[:newhirereason][:newhire_id], :id => params[:newhirereason][:course_id])
-     end
+      
   end 
 
   def process_justification_deansignoff
