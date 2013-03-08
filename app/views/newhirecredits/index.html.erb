@@ -10,7 +10,10 @@
 						Add Relevant Coursework: 
 					</legend>
 					<%= form_for @newhirecredits,  :url => '/newhirecredits'  do |f| %>
-						<%= hidden_field  :credit, :faculty_id %>
+						
+						<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+                 		<%= hidden_field_tag 'course_id', params[:course_id] %>
+						
 						<table class="no-zebra no-hover">
 							<tr>	
 								<th>Course ID (ex: CDA 6031)</th>

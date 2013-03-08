@@ -10,7 +10,7 @@ class NewhiredocumentsController < ApplicationController
     #@newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
     @newhire_docs_added = Newhiredocument.where(:newhire_id => params[:newhire_id])
 
-    render :layout => 'simple'
+    #render :layout => 'simple'
   end
 
   def create

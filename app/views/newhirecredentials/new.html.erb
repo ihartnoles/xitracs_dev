@@ -1,5 +1,54 @@
-<h1>New newhirecredential</h1>
 
-<%= render 'form' %>
+<%#= @newhire.details %> <br>
 
-<%= link_to 'Back', newhirecredentials_path %>
+<div id="wrapper">
+  <div id="middle">
+    <div id="container">
+
+      <div id="content">  
+          <fieldset class="round">
+                <legend>Instructor Credentials:</legend>
+                <br><strong>The instructor is credentialed to teach:</strong><br>
+                <%= form_for @newhirecredential do |c| %>
+
+                 <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+                 <%= hidden_field_tag 'course_id', params[:course_id] %>
+
+                            <% @qualificationreasons.each do |qr| %>
+                                <br><%= radio_button_tag  'qualificationreason_id',  qr.id, {:onclick => "do_inst();"} %>
+                              <%=  qr.name.humanize %>
+                            <% end %> 
+                      <br />
+                      <br />
+                      <p>
+                      <strong>Explanation of instructor's qualifications:</strong><br>
+                           <%= text_area_tag 'qualification_explanation' %>          
+                      </p>
+                      
+                      <!--
+                      <p>
+                       Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
+
+                      </p>
+                    -->
+                 
+          </fieldset>
+        </div>
+
+        <div id="content">
+           <%= c.submit "Save & Continue" %>
+        </div>
+        <% end %>
+
+</div><!-- #container-->
+
+
+    <div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;">
+        <%= @newhire.details %>
+      </div>
+
+  </div><!-- #middle-->
+</div><!-- #wrapper -->

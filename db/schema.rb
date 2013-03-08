@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307193309) do
+ActiveRecord::Schema.define(:version => 20130308165912) do
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(:version => 20130307193309) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "course_id"
   end
 
   create_table "newhirecourses", :force => true do |t|
@@ -161,6 +162,7 @@ ActiveRecord::Schema.define(:version => 20130307193309) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "newhire_id"
+    t.integer  "course_id"
   end
 
   create_table "newhirecredentials", :force => true do |t|
@@ -169,6 +171,7 @@ ActiveRecord::Schema.define(:version => 20130307193309) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "qualification_explanation"
+    t.integer  "course_id"
   end
 
   create_table "newhirecredits", :force => true do |t|
@@ -181,6 +184,7 @@ ActiveRecord::Schema.define(:version => 20130307193309) do
     t.integer  "newhireinstitution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "course_id"
   end
 
   create_table "newhiredoctypes", :force => true do |t|
@@ -238,8 +242,11 @@ ActiveRecord::Schema.define(:version => 20130307193309) do
   end
 
   create_table "newhirereviewreasons", :force => true do |t|
-    t.string   "name"
-    t.integer  "review_passed"
+    t.integer  "newhire_id"
+    t.integer  "course_id"
+    t.integer  "review_state"
+    t.integer  "reviewer_id"
+    t.text     "review_comments"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

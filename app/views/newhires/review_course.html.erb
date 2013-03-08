@@ -27,9 +27,10 @@
 									{:controller => 'newhiredocuments', 
 										:action => 'index', 
 										:course_id => params[:id],
-										:newhire_id => params[:newhire_id],
-										:source => 'detailscreen'}, 
-										:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"%>
+										:newhire_id => params[:newhire_id]}
+										#,:source => 'detailscreen'}, 
+										#:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"
+										%>
 				</div>
 					<table  class="profile">
 						<% if @newhiredocuments.count > 0 %>
@@ -62,17 +63,35 @@
 			<div id="content">
 				<fieldset class="round">
 				<legend>Instructor Credentialed to Teach Based On:</legend>
+						<% if @newhirecredentials.count == 0 %>
+							<div align="right">
+								<%= link_to image_tag('/assets/Add_16x16.png'),  new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:id])  %>
+							</div>
+						<% end %>
 					<table  class="profile">
-						<th>Reason</th>
-						<th>Explanation</th>
-						
-						<% @newhirecredentials.each do |c| %>
-			    			<tr>
-				    			<td><%= c.qualificationreason.name %></td>  
-			 					<td><%=  c.qualification_explanation %></td> 
-			 					
-			 				</tr>
-			 			<% end %>	
+						<% if @newhirecredentials.count > 0 %>
+							<th>Reason</th>
+							<th>Explanation</th>
+							
+							<% @newhirecredentials.each do |c| %>
+				    			<tr>
+					    			<td><%= c.qualificationreason.name %></td>  
+				 					<td><%=  c.qualification_explanation %></td> 
+				 					
+				 				</tr>
+				 			<% end %>
+				 		<% else %>
+				 			<tr>
+						 			<td>
+						 				<div class="error round">
+					 						<div align="center">
+					 							Please enter the instructors credentials to teach
+					 						</div>
+					 					</div>
+						 			</td>
+						 		</tr>
+
+				 		<% end %>	
 						</table>
 				</fieldset>
 			</div><!-- #content-->
@@ -80,8 +99,9 @@
 			<div id="content">
 				<fieldset class="round">
 					<legend>Relevant Coursework:</legend>	
-					   <div align="right">
-						<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecredit_path(:newhire_id => params[:newhire_id])  %>
+					    
+					    <div align="right">
+						<%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id])  %>
 						</div>				
 						<table  class="profile">
 							<% if @newhire_credits_added.count > 0 %>
@@ -125,11 +145,24 @@
 				<fieldset class="round">
 					<legend>Additional Comments:</legend>
 						<table  class="profile">
-							<th>Comment</th>
-							<% @newhire_comments_added.each do |cm| %>
+							<% if @newhire_comments_added.count > 0 %>
+								<th>Comment</th>
+								<% @newhire_comments_added.each do |cm| %>
+									<tr>
+										<td><%= cm.comment %></td>							
+									</tr>
+								<% end %>
+							<% else %>
 								<tr>
-									<td><%= cm.comment %></td>							
-								</tr>
+						 			<td>
+						 				<div class="error round">
+					 						<div align="center">
+					 							No Comments Available!
+					 						</div>
+					 					</div>
+						 			</td>
+						 		</tr>
+
 							<% end %>
 						</table>
 					</fieldset>
@@ -183,19 +216,47 @@
 
 		 <%# if session[:review] && @newhire_reasons_added.count > 0%>
 		 <% if session[:review] && session[:group_name] == "admin" %>
+		 		
+
+
+		 		<% if (@newhire_reasons_added.count > 0) %>
+			 		<div id="content">
+			 			<fieldset class="round">
+							<legend>Review Comments:</legend>  
+							<table  class="profile">
+								<th>Status</th>
+								<th>Comment</th>
+								<th>Reviewed By</th>
+								<th>Reviewed On</th>								
+								<% @newhire_reasons_added.each do |nhr| %>
+									<tr>
+										<td><%= nhr.review_state_name(nhr.review_state) %></td>
+										<td><%= nhr.review_comments %></td>						
+										<td><%= nhr.reviewer_name(nhr.reviewer_id) %></td>
+
+										<td><%= nhr.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
+									</tr>	
+								<% end %>
+							</table>
+						</fieldset>	
+			 		</div>
+		 		<% end %>
+
+
+
 		 		<div id="content">
 		 			<fieldset class="round">
-						<legend>Review:</legend>    
+						<legend>New Review Comments:</legend>    
 						 	<%#= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
 						 
 						 	<%= form_for @newhirereason, :url => '/newhires/approve_course' do |f| %>
 								<%#= f.hidden_field  :newhirereason, :newhire_id %>
-								<%= hidden_field_tag 'newhirereason[newhire_id]', params[:newhire_id] %>
-								<%= hidden_field_tag 'newhirereason[course_id]', params[:id] %>
+								<%= hidden_field_tag 'newhirereviewreason[newhire_id]', params[:newhire_id] %>
+								<%= hidden_field_tag 'newhirereviewreason[course_id]', params[:id] %>
 								<%#= hidden_field  :newhirereason, :id %>
 
 								<% @newhire_reasons_added.each do |nhc| %>
-									<%= hidden_field_tag  'newhirereason[newhirereason_id]', nhc.id %>
+									<%= hidden_field_tag  'newhirereviewreason[newhirereason_id]', nhc.id %>
 								<% end %>
 
 								<%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending

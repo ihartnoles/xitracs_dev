@@ -1,9 +1,9 @@
 class NewhirecreditsController < ApplicationController
 	def index
-	   @newhire = Newhire.find(session[:newhire_id])
+	  @newhire = Newhire.find(params[:newhire_id])
       @newhirecredits = Newhirecredit.new
       @newhireinstitutions = Newhireinstitution.all
-      @newhire_credits_added  = Newhirecredit.where(:newhire_id => session[:newhire_id])
+      @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id])
     end
 
     def edit
@@ -67,8 +67,8 @@ class NewhirecreditsController < ApplicationController
 					  end
 	    		else
 	    	 	  @newhirecredit   = Newhirecredit.new(params[:newhirecredit])
-			 	  @newhirecredit.newhire_id =  session[:newhire_id]
-			 	  #@newhirecredit.department_id = session[:department_id]
+			 	  @newhirecredit.newhire_id =  params[:newhire_id]
+			 	  @newhirecredit.course_id = params[:course_id]
 
 			  	  if @newhirecredit.save
 				    
@@ -79,15 +79,17 @@ class NewhirecreditsController < ApplicationController
 				  end
 
 				  if (params.has_key?(:source))
-				  	redirect_to newhiredetails_path(params[:newhire_id])
+				  	redirect_to newhiredetails_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
 				  else
-				  	redirect_to newhirecredits_path
+				  	redirect_to newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
 				  end
 
 				end
 
 	    else
-	    	redirect_to newhirecomment_index_path
+	    	#redirect_to newhirecomment_index_path
+	    	#redirect_to newhiredetails_path(:newhire_id => params[:newhire_id])
+	    	redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id] , :id => params[:course_id])
 		end
     end
 end

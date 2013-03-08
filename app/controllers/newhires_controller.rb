@@ -96,46 +96,30 @@ class NewhiresController < ApplicationController
 
       @newhire_dept = Department.find(@newhire.department_id)
       
-      @newhirecredentials = Newhirecredential.where(:newhire_id => params[:newhire_id])
+      @newhirecredentials = Newhirecredential.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
-      @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id])
+      @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
       
-      @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:newhire_id])
+      @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
-      #pull user id to for @credentialed
-      #user_id = @newhire_comments_added.map(&:user_id)
-      #@credentialed_by = User.find(user_id).map(&:name).join("")
+     
 
       @reason = Reason.new
       @reviewreason = Reviewreason.all
 
-      #if (@reviewreason != nil)
-        #@reviewreason_ids = @reviewreason.reviewreason_ids      
-        #@credits = Credit.where(:faculty_id => @faculty.id)        
-      #end  
-      
-      #begin
-       @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
+     
+       @newhire_reasons_added = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
-       @newhire_review_state = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
+       @newhire_review_state = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
 
-       @newhire_reason_state = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:qualificationreason_id).join(',')
-       #if (params.has_key?(:newhirereason_id) )
-       #   @newhirereason = Newhirereason.find(params[:newhirereason_id])
-       if ( @newhire_reasons_added.count > 0)
-          @newhirereason = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).first
-          
-       else
-          @newhirereason = Newhirereason.new 
-       end
-        
-        @newhirereason_array =  @newhirereason.qualificationreason_id
        
-       #@newhirereason.review_state = 4
-
-      #rescue
-        #@newhirereason = Newhirereason.new
-      #end
+       #if ( @newhire_reasons_added.count > 0)
+       #   @newhirereason = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).first
+          
+       #else
+          @newhirereason = Newhirereviewreason.new 
+       #end        
+     
   end
 
   def approve_course
@@ -143,31 +127,30 @@ class NewhiresController < ApplicationController
      
 
       #if review status is NOT PASSED then require comments!
-      if (params[:newhirereason][:review_state] == 2 && params[:newhirereason][:review_comments].blank?) 
+      if (params[:newhirereviewreason][:review_state] == 2 && params[:newhirereviewreason][:review_comments].blank?) 
 
           flash[:notice] = 'Please enter a comment'
-          redirect_to newhire_review_course_path(:newhire_id => params[:newhirereason][:newhire_id], :id => params[:newhirereason][:course_id])
+          redirect_to newhire_review_course_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
 
       else
-           @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id], :course_id => params[:newhirereason][:course_id])
+           @newhire_reviewreasons_added = Newhirereviewreason.where(:newhire_id => params[:newhirereviewreason][:newhire_id], :course_id => params[:newhirereviewreason][:course_id])
            
-           #if (params.has_key?(:newhirereason_id))
-           #   @newhirereason = Newhirereason.find(params[:newhirereason_id])
-           if ( @newhire_reasons_added.count > 0)
-              @newhirereason = @newhire_reasons_added.first
-           else
-              @newhirereason = Newhirereason.new 
-           end
-
-          params[:newhirereason][:qualificationreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
-          @newhirereason.qualificationreason_id = params[:newhirereason][:qualificationreason_ids].join(",")
-          @newhirereason.course_id = params[:newhirereason][:course_id]
-          @newhirereason.newhire_id = params[:newhirereason][:newhire_id]
-          @newhirereason.reviewer_id = current_user.id
-          @newhirereason.review_state = params[:newhirereason][:review_state]
           
-          if (!params[:newhirereason][:review_comments].blank?)
-           @newhirereason.review_comments = params[:newhirereason][:review_comments]
+           #if ( @newhire_reviewreasons_added.count > 0)
+           #   @newhirereason = @newhire_reviewreasons_added.first
+           #else
+              @newhirereason = Newhirereviewreason.new 
+           #end
+
+          #params[:newhirereason][:qualificationreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
+          #@newhirereason.qualificationreason_id = params[:newhirereason][:qualificationreason_ids].join(",")
+          @newhirereason.course_id = params[:newhirereviewreason][:course_id]
+          @newhirereason.newhire_id = params[:newhirereviewreason][:newhire_id]
+          @newhirereason.reviewer_id = current_user.id
+          @newhirereason.review_state = params[:newhirereviewreason][:review_state]
+          
+          if (!params[:newhirereviewreason][:review_comments].blank?)
+           @newhirereason.review_comments = params[:newhirereviewreason][:review_comments]
           end
           
           
@@ -185,7 +168,7 @@ class NewhiresController < ApplicationController
           @newhirereason.save
 
        
-          redirect_to newhire_review_course_path(:newhire_id => params[:newhirereason][:newhire_id], :id => params[:newhirereason][:course_id])
+          redirect_to newhire_review_course_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
          end
 
       end

@@ -29,6 +29,8 @@ class NewhirecredentialsController < ApplicationController
   # GET /newhirecredentials/new
   # GET /newhirecredentials/new.json
   def new
+    @newhire = Newhire.find(session[:newhire_id])
+    @qualificationreasons = Qualificationreason.all
     @newhirecredential = Newhirecredential.new
 
     respond_to do |format|
@@ -51,7 +53,10 @@ class NewhirecredentialsController < ApplicationController
           flash[:notice] = 'Please fill out all fields'
           redirect_to newhirecredentials_path
     else 
-          @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_id], :qualification_explanation => params[:qualification_explanation], :newhire_id => session[:newhire_id])
+          @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_id], 
+                                                     :qualification_explanation => params[:qualification_explanation], 
+                                                     :newhire_id => params[:newhire_id],
+                                                     :course_id => params[:course_id])
           #@newhirecredential.save
 
           if @newhirecredential.save
@@ -60,10 +65,10 @@ class NewhirecredentialsController < ApplicationController
             if ( params[:qualificationreason_id] == "1" || params[:qualificationreason_id] == "2")
               
               #go to comments
-               redirect_to newhirecomment_index_path
+              redirect_to newhirecomment_index_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
             else
               #go to credits (relevant coursework)            
-              redirect_to newhirecredits_path
+              redirect_to newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
             end
            
           else

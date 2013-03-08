@@ -28,10 +28,12 @@
 	 					<td><strong>Department:</strong></td>
 	 					<td><%= @newhire_dept.name %></td>
 	 				</tr>	
+	 				<!--
 	 				<tr>
 	 					<td><strong>Status:</strong></td> 	 
-	 					<td><%=  @newhirereason.review_state_name(@newhire_review_state) %></td>					
-	 				</tr>			 			
+	 					<td><%#=  @newhirereason.review_state_name(@newhire_review_state) %></td>					
+	 				</tr>
+	 				-->			 			
 	 				<tr>
 	 					<td colspan="2">Send a Notification 
 	 						<%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => @newhire_course_to_review.id) %>

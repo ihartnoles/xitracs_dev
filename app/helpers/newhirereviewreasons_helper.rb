@@ -1,0 +1,2 @@
+module NewhirereviewreasonsHelper
+end
