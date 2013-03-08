@@ -124,6 +124,7 @@ XitracsRoster::Application.routes.draw do
   get   "newhires/list_by_school"
   
   post "/newhires/process_justification_deansignoff"
+  post "/newhires/process_signoff"
 
   get  "/newhires/review_msg"
 

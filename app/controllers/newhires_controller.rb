@@ -108,9 +108,8 @@ class NewhiresController < ApplicationController
       @reviewreason = Reviewreason.all
 
      
-       @newhire_reasons_added = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
-
-       @newhire_review_state = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
+      @newhire_reasons_added = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
+      @newhire_review_state = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
 
        
        #if ( @newhire_reasons_added.count > 0)
@@ -119,6 +118,8 @@ class NewhiresController < ApplicationController
        #else
           @newhirereason = Newhirereviewreason.new 
        #end        
+
+       @newhiresignoff = Newhiresignoff.new
      
   end
 
@@ -172,12 +173,21 @@ class NewhiresController < ApplicationController
          end
 
       end
-
-      
-
-
-      
+     
   end 
+ 
+  def process_signoff
+      @signoff = Newhiresignoff.new
+      @signoff.newhire_id = params[:newhire_id]
+      @signoff.course_id = params[:course_id]
+      @signoff.user_id = current_user.id
+      @signoff.signed_off = params[:newhiresignoff][:signed_off]
+      @signoff.comment = params[:newhiresignoff][:comment]
+      @signoff.save
+
+      redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+  end
+
 
   def process_justification_deansignoff
     #@faculty = Faculty.find(session[:faculty_id])

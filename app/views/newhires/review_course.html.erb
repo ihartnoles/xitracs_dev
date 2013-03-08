@@ -200,6 +200,7 @@
 						<% else %>
 							
 								<% @newhire_reasons_added.each do |nhc| %>
+									
 									<div align="right">
 										<%= link_to image_tag('/assets/Edit_16x16.png'), newhire_review_course_path(:id => nhc.course_id , :newhire_id => params[:newhire_id], :newhirereason_id => nhc.id) %>
 									</div>
@@ -213,6 +214,9 @@
 				</fieldset>
 			</div>
 		 <% end %>
+
+
+		
 
 		 <%# if session[:review] && @newhire_reasons_added.count > 0%>
 		 <% if session[:review] && session[:group_name] == "admin" %>
@@ -289,7 +293,7 @@
 									<td><strong> Comments: </strong></td>
 								</tr>
 								<tr>
-									<td><%= f.text_area :review_comments %><br/></td>
+									<td><%= f.text_area :review_comments, :rows=>5, :cols=>40 %><br/></td>
 								</tr>
 								<tr>
 									<td><%= f.submit  "Submit", :id => "Submit" %></td>
@@ -304,6 +308,47 @@
 
 		 		</div>
 		 <% end %>
+
+
+		  <div id="content">
+				<fieldset class="round">
+					<legend>Signoff:</legend>  
+						<table class="profile">
+							<%= form_for @newhiresignoff,  :url => '/newhires/process_signoff'  do |f| %>
+							<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+							<%= hidden_field_tag 'course_id', params[:id] %>
+
+							<% if params.has_key?(:newhirereason_id) %>
+								<%= hidden_field_tag  :newhirereason_id, params[:newhirereason_id] %>
+							<% end %>
+							<tr>
+								<td>
+									<%= f.radio_button :signed_off , "1"%> <%=current_user.group.name.humanize %> Signoff and send to ...  							<br>
+
+									<%= f.radio_button :signed_off , "0" %> Return to ... for corrections
+								</td>								
+							</tr>
+							<tr>
+								<td>
+									<strong>Comments:</strong>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<%= f.text_area :comment, :rows=>5, :cols=>20  %>
+								</td>
+							</tr>
+							<tr>
+								<td>
+								<%= f.submit  "Submit", :id => "Submit", :disabled => current_user.ro %>
+								</td>
+							</tr>
+							<% end %>
+
+						</table>					
+				</fieldset>
+			</div>
+
 
 		</div><!-- #container-->
 

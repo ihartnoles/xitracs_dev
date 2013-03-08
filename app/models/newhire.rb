@@ -31,4 +31,12 @@ class Newhire < ActiveRecord::Base
 
 		return school
 	end
+
+	def course_name(course_id)
+		#newhire_dept = Department.find(self.department_id)
+		coursename = Newhirecourse.find(course_id).name
+
+		return coursename
+	end
+
 end
