@@ -17,11 +17,7 @@
 
 
 <div id="wrapper">
-
-	
-
 	<div id="middle">
-
 		<div id="container">
 			<div id="content">
 				 <fieldset class="round">
@@ -36,6 +32,7 @@
 										:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"%>
 				</div>
 					<table  class="profile">
+						<% if @newhiredocuments.count > 0 %>
 							<th>Name</th>
 							<th>Location</th>
 							<th>Type</th>
@@ -47,6 +44,17 @@
 				 					
 				 				</tr>
 				 			<% end %>	
+				 		<% else %>
+				 			<tr>
+				 				<td>
+				 					<div class="error round">
+				 						<div align="center">
+				 							Please ADD documents!
+				 						</div>
+				 					</div>
+				 				</td>
+				 			</tr>
+				 		<% end %>
 					</table>
 				</fieldset>
 			</div>
@@ -71,7 +79,10 @@
 
 			<div id="content">
 				<fieldset class="round">
-					<legend>Relevant Coursework:</legend>					
+					<legend>Relevant Coursework:</legend>	
+					   <div align="right">
+						<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecredit_path(:newhire_id => params[:newhire_id])  %>
+						</div>				
 						<table  class="profile">
 							<% if @newhire_credits_added.count > 0 %>
 								<th>Course ID</th>
@@ -79,7 +90,7 @@
 								<th>Year Taken</th>
 								<th>Institution</th>
 								<th>Credits</th>
-							
+								<th width="10%">Actions</th>
 									<% @newhire_credits_added.each do |cr| %>
 						    			<tr>
 							    			<td><%=  cr.course_name %></td>  
@@ -87,11 +98,22 @@
 						 					<td><%=  cr.course_year %></td> 
 						 					<td><%=  cr.newhireinstitution.name %></td>
 						 					<td><%=  cr.course_credits %></td>
+						 					<td><%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecredit_path(cr , :newhire_id => params[:newhire_id] )  %>
+
+						 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecredit_path(cr , :newhire_id => params[:newhire_id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this coursework?"
+							 						%>
+						 					</td>
 						 				</tr>
 						 			<% end %>	
 						 	<% else %>
 						 		<tr>
-						 			<td>Not Applicable</td>
+						 			<td>
+						 				<div class="error round">
+					 						<div align="center">
+					 							Relevant Coursework N/A
+					 						</div>
+					 					</div>
+						 			</td>
 						 		</tr>
 
 						 	<% end %>

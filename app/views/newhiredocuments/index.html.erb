@@ -69,12 +69,15 @@
 </div><!-- #container-->
 
 
+ <% if (!params.has_key?(:source)) %>
 		<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     -khtml-border-radius: 20px;
     border-radius: 20px;">
     		<%= @newhire.details %>
-    	</div>
+  	 	</div>  	 	
+ <% end %>
 
-	</div><!-- #middle-->
+</div><!-- #middle-->
+	
 </div><!-- #wrapper -->
