@@ -1,3 +1,5 @@
+
+
  <script type="text/javascript">
 
 	function comments_alert() {
@@ -21,13 +23,16 @@
 		<div id="container">
 			<div id="content">
 				 <fieldset class="round">
-				<legend>Documents submitted to Provost:</legend>
+				<legend class="heading">Documents submitted to Provost:</legend>
 				<div align="right">
 					<%= link_to image_tag('/assets/Add_16x16.png'), 
 									{:controller => 'newhiredocuments', 
 										:action => 'index', 
 										:course_id => params[:id],
-										:newhire_id => params[:newhire_id]}
+										:newhire_id => params[:newhire_id]
+									},
+									:title => 'Add documents', :rel => 'tooltip'
+										
 										#,:source => 'detailscreen'}, 
 										#:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"
 										%>
@@ -62,10 +67,10 @@
 
 			<div id="content">
 				<fieldset class="round">
-				<legend>Instructor Credentialed to Teach Based On:</legend>
+				<legend class="heading">Instructor Credentialed to Teach Based On:</legend>
 						<% if @newhirecredentials.count == 0 %>
 							<div align="right">
-								<%= link_to image_tag('/assets/Add_16x16.png'),  new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:id])  %>
+								<%= link_to image_tag('/assets/Add_16x16.png'),  new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:id]),:title => 'Add credentials', :rel => 'tooltip'  %>
 							</div>
 						<% end %>
 					<table  class="profile">
@@ -98,10 +103,10 @@
 
 			<div id="content">
 				<fieldset class="round">
-					<legend>Relevant Coursework:</legend>	
+					<legend class="heading">Relevant Coursework:</legend>	
 					    
 					    <div align="right">
-						<%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id])  %>
+						<%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id]), :title => 'Add coursework', :rel => 'tooltip'  %>
 						</div>				
 						<table  class="profile">
 							<% if @newhire_credits_added.count > 0 %>
@@ -143,7 +148,7 @@
 
 			<div id="content">
 				<fieldset class="round">
-					<legend>Additional Comments:</legend>
+					<legend class="heading">Additional Comments:</legend>
 						<table  class="profile">
 							<% if @newhire_comments_added.count > 0 %>
 								<th>Comment</th>
@@ -172,7 +177,7 @@
 	    <% if session[:group_name] == "dean" %>
 			<div id="content">
 				<fieldset class="round">
-					<legend>Dean Signoff:</legend>  
+					<legend class="heading">Dean Signoff:</legend>  
 
 						<% if @newhire_reasons_added.count == 0 || params.has_key?(:newhirereason_id) %>
 
@@ -226,7 +231,7 @@
 		 		<% if (@newhire_reasons_added.count > 0) %>
 			 		<div id="content">
 			 			<fieldset class="round">
-							<legend>Review Comments:</legend>  
+							<legend class="heading">Review Comments:</legend>  
 							<table  class="profile">
 								<th>Status</th>
 								<th>Comment</th>
@@ -250,7 +255,7 @@
 
 		 		<div id="content">
 		 			<fieldset class="round">
-						<legend>New Review Comments:</legend>    
+						<legend class="heading">New Review Comments:</legend>    
 						 	<%#= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
 						 
 						 	<%= form_for @newhirereason, :url => '/newhires/approve_course' do |f| %>
@@ -312,18 +317,23 @@
 
 		  <div id="content">
 				<fieldset class="round">
-					<legend>Signoff:</legend>  
-						<table class="profile">
-							<%= form_for @newhiresignoff,  :url => '/newhires/process_signoff'  do |f| %>
+					<legend class="heading">Signoff:</legend>  
+						<table class="profile no-zebra no-hover">
+							<%= form_for @newhiresignoff,  :url => '/newhires/process_signoff' do |f| %>
 							<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
 							<%= hidden_field_tag 'course_id', params[:id] %>
 
 							<% if params.has_key?(:newhirereason_id) %>
 								<%= hidden_field_tag  :newhirereason_id, params[:newhirereason_id] %>
 							<% end %>
+
 							<tr>
 								<td>
-									<%= f.radio_button :signed_off , "1"%> <%=current_user.group.name.humanize %> Signoff and send to ...  							<br>
+									<%= f.radio_button :signed_off , "1"%> <%=current_user.group.name.humanize %> Signoff and notify  <%#= @newhiresignoff.send_to(current_user.id) %> 					
+
+
+
+									<br>
 
 									<%= f.radio_button :signed_off , "0" %> Return to ... for corrections
 								</td>								
@@ -362,3 +372,16 @@
 	</div><!-- #middle-->
 
 </div><!-- #wrapper -->
+
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  //jQuery(".profile").hide();
+  //toggle the componenet with class msg_body
+  //jQuery(".heading").click(function()
+  //{
+    //alert('OH BABY!');
+  //  jQuery(this).nextAll("table").slideToggle(500);
+  //});
+	jQuery(.tooltip).tooltip();
+});
+</script>

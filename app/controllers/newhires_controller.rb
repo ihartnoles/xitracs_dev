@@ -116,7 +116,7 @@ class NewhiresController < ApplicationController
        #   @newhirereason = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).first
           
        #else
-          @newhirereason = Newhirereviewreason.new 
+       @newhirereason = Newhirereviewreason.new 
        #end        
 
        @newhiresignoff = Newhiresignoff.new

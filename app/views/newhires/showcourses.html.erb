@@ -1,3 +1,5 @@
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
 <div id="wrapper">
 
 	<div id="middle">
@@ -6,7 +8,9 @@
 			<div id="content">
 				<fieldset class="round">
 					<legend>Courses To Teach:</legend>
-					
+						<div align="right">
+							<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id])  %>
+						</div>
 						<table  class="profile">
 							<th>Prefix & Number</th>
 							<th>Title</th>
@@ -19,7 +23,12 @@
 					 					<td><%=  ca.description.humanize %></td> 	
 					 					<td>
 
-					 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]) %>	 						
+					 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]) %>	 	
+
+					 						<%= link_to image_tag('/assets/Edit_16x16.png'),  edit_newhirecourse_path(ca , :newhire_id => params[:id]) %>		
+
+					 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecourse_path(ca , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this course?"
+			 						%>			
 					 					</td> 					
 					 				</tr>
 					 			<% end %>

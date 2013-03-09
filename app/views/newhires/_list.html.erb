@@ -12,7 +12,7 @@
 				  <th>First</th>
 				  <th>School</th>
 				  <th>Department</th>
-				  <th>Status</th>
+				  <th>Added on</th>
 				  <th width="10%">Actions</th>
 				    <% @newhires.each do |newhire| %>
 						  <tr>
@@ -20,7 +20,7 @@
 						  	<td><%= newhire.first_name %></td>
 						  	<td><%= newhire.school_name %></td>
 						  	<td><%= newhire.dept_name %></td>
-						    <td> N/A</td>
+						    <td><%= newhire.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
 						  	<td>
 						  		<%#= link_to '[Edit]', edit_newhire_path(newhire) %>
 						  		<%#= link_to '[View]', newhiredetails_path(newhire) %>
