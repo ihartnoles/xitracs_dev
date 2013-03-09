@@ -3,7 +3,9 @@ class NewhirecreditsController < ApplicationController
 	  @newhire = Newhire.find(params[:newhire_id])
       @newhirecredits = Newhirecredit.new
       @newhireinstitutions = Newhireinstitution.all
-      @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id])
+      @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
+      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id], :course_id => params[:course_id])   
+      @newhire_dept = Department.find(@newhire.department_id) 
     end
 
     def edit
@@ -21,8 +23,8 @@ class NewhirecreditsController < ApplicationController
          flash[:notice] = "There was a problem updating the coursework."
       	end
     
-      	redirect_to newhiredetails_path(params[:newhire_id])
-
+      	#redirect_to newhiredetails_path(params[:newhire_id])
+      	 redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
     end 
 
     def new
@@ -34,6 +36,8 @@ class NewhirecreditsController < ApplicationController
    		@newhire = Newhire.find(params[:newhire_id])
     	@newhirecredits = Newhirecredit.new
     	@newhireinstitutions = Newhireinstitution.all
+    	@newhirecourses = Newhirecourse.where(:newhire_id => params[:id])   
+        @newhire_dept = Department.find(@newhire.department_id) 
     end
 
     def destroy
@@ -45,7 +49,7 @@ class NewhirecreditsController < ApplicationController
 	    #  format.json { head :ok }
 	    #end
 
-	    redirect_to newhiredetails_path(params[:newhire_id])
+	    redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
 	  end
 
     def create
@@ -79,9 +83,10 @@ class NewhirecreditsController < ApplicationController
 				  end
 
 				  if (params.has_key?(:source))
-				  	redirect_to newhiredetails_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
+				  	redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
 				  else
-				  	redirect_to newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
+				  	#redirect_to newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
+				  	redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id] , :id => params[:course_id])
 				  end
 
 				end

@@ -3,8 +3,8 @@
     -khtml-border-radius: 20px;
     border-radius: 20px;">
 			<fieldset class="round" >
-			<legend>Instructor Info:</legend>
-				<table>					
+			<legend >Instructor Info:</legend>
+				<table class="profile no-zebra">					
 	    			<tr>
 	    				<td><strong>Firstname:</strong></td> 
 	    				<td><%= @newhire.first_name %></td>
@@ -41,7 +41,7 @@
 	 				-->			 			
 	 				<tr>
 	 					<td colspan="2">Send a Notification 
-	 						<%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => @newhire_course_to_review.id) %>
+	 						<%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => @newhire_course_to_review.id), :title => 'Send a system notification ', :rel => 'tooltip'  %>
 	 					</td>
 	 				</tr>
 				</table>

@@ -1,14 +1,26 @@
-<%#= @newhire.details %> <br>
+<div class="container-fluid">
+  <div class="row-fluid">
+   
+      <div class="span3">
+        <!--Sidebar content-->
+           <div class="well sidebar-nav">
+              <ul class="nav nav-list">
+                <li class="nav-header">Instructor Info:</li>
+                <!--<li class="active"><a href="#">Link</a></li>-->
+                <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+                <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+                
 
-<div id="wrapper">
-  <div id="middle">
-    <div id="container">
-      <div id="content">
-          <fieldset class="round">
+              </ul>
+            </div><!--/.well -->
+      </div>
+      <div class="span9">
+         <%= form_for @newhirecredential do |c| %>
+        <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+        <fieldset class="round">
                 <legend>Instructor Credentials:</legend>
                 <br><strong>The instructor is credentialed to teach:</strong><br>
-                 <%= form_for @newhirecredential do |c| %>
-                 <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+               
                             <% @qualificationreasons.each do |qr| %>
                                 <br><%= radio_button_tag  'newhirecredential[qualificationreason_id]',  qr.id, @newhirecredential.qualificationreason_id == qr.id %>
                               <%=  qr.name.humanize %>
@@ -23,18 +35,11 @@
                        Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
 
                       </p>
-                 <% end %>
+                 
           </fieldset>
-        </div>
-  </div><!-- #container-->
-
-
-    <div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;">
-        <%= @newhire.details %>
+          <% end %>
       </div>
 
-  </div><!-- #middle-->
-</div><!-- #wrapper -->
+
+  </div>
+</div>

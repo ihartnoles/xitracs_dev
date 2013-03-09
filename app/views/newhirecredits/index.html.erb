@@ -1,90 +1,77 @@
-<%#= @newhire.details %> <br>
-
-<div id="wrapper">
-  <div id="middle">
-    <div id="container">
-
-    	 <div id="content">  
-				<fieldset class="round">
-					<legend>
-						Add Relevant Coursework: 
-					</legend>
-					<%= form_for @newhirecredits,  :url => '/newhirecredits'  do |f| %>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <!--Sidebar content-->
+      <!--Sidebar content-->
+      <%= render 'newhires/instructorinfo_basic' %>
+    </div>
+    <div class="span9">
+      <!--Body content-->
+     <%= form_for(@newhirecredits) do |f| %>
+		<fieldset class="round">
+			<legend>
+				Add Relevant Coursework: 
+			</legend>
 						
-						<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
-                 		<%= hidden_field_tag 'course_id', params[:course_id] %>
+				<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+                <%= hidden_field_tag 'course_id', params[:course_id] %>
+				<%= hidden_field_tag 'source', 'New' %>
+
+				<table class="profile no-zebra">
+					<tr>	
+						<th>Course ID (ex: CDA 6031)</th>
+						<th>Course Name (ex: Data Mining)</th>
+						<th>Course Year (ex: 1995)</th>
 						
-						<table class="no-zebra no-hover">
-							<tr>	
-								<th>Course ID (ex: CDA 6031)</th>
-								<th>Course Name (ex: Data Mining)</th>
-								<th>Course Year (ex: 1995)</th>
-								<!-- <th>Institution</th> -->
-								<th>Course Credits (ex: 3)</th>
-								
-								</tr>
-							<tr>
-								<td><%= f.text_field :course_name,  :class => "text" %></td>
-								<td><%= f.text_field :course_description,  :class => "text"  %></td>
-								<td><%= f.text_field :course_year,  :class => "text"  %></td>
-								<!-- <td>
-									<%#= collection_select(:newhirecredit,
-														   :newhireinstitution_id,		   
-														   @newhireinstitutions,
-														   :id,
-														   :name
-															)%> </td> -->
-								<td><%= f.text_field :course_credits, :class => "text"  %></td>
-								
-							</tr>
-							<tr>
-								<td colspan="4">
-									<strong>Institution:<strong><br>
-									<%= collection_select(:newhirecredit,
-														   :newhireinstitution_id,		   
-														   @newhireinstitutions,
-														   :id,
-														   :name
-															)%>
-								</td>
-							</tr>
-							<tr>
-								<td><br/><br/></td>
-							</tr>
-						</table>
-						<table class="no-zebra no-hover">
-							<tr>
-						    	<td colspan="2"> 	
-						 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
-						 		</td>
-					 		</tr>
-							
-							<!--
-							<tr>
-								<td colspan="2">
-									Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro %> to complete this credential.
+						<th>Course Credits (ex: 3)</th>
+						
+						</tr>
+					<tr>
+						<td><%= f.text_field :course_name,  :class => "text" %></td>
+						<td><%= f.text_field :course_description,  :class => "text"  %></td>
+						<td><%= f.text_field :course_year,  :class => "text"  %></td>
+						
+						<td><%= f.text_field :course_credits, :class => "text"  %></td>
+						
+					</tr>
+					<tr>
+						<td colspan="4">
+							<strong>Institution:</strong><br>
+							<%= collection_select(:newhirecredit,
+												   :newhireinstitution_id,		   
+												   @newhireinstitutions,
+												   :id,
+												   :name
+													)%> </td>
+					</tr>
+					<tr>
+				    	<td colspan="4"> 	
+				 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => "btn" %> to save this course.<br/><br/>
+
+									Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro,  :class => "btn" %> to complete this credential.
 					 			</td>
-				 			</tr>
-				 		    -->
-						</table>
-					
-					</fieldset>
-				</div>
+				 			
+				 		</td>
+			 		</tr>			
+				</table>
+			
+			</fieldset>
+		<% end %>
 
-				<div id="content">  
+		<form>  
 					<% if @newhire_credits_added.count > 0 %>
 						<fieldset class="round">
 							<legend>Relevant Coursework Added:</legend>
 							<table>
 							<tr>
-								
-								<th>Course ID (ex: CDA 6031)</th>
-								<th>Course Name (ex: Data Mining)</th>
-								<th>Course Year (ex: 1995)</th>
+
+								<th>Course ID</th>
+								<th>Course Name</th>
+								<th>Course Year </th>
 								<th>Institution</th>
-								<th>Course Credits (ex: 3)</th>
-								
-								
+								<th>Course Credits</th>
+
+
 							<tr>
 
 							<% @newhire_credits_added.each do |cr| %>
@@ -94,34 +81,19 @@
 								<td><%=  cr.course_year %> </td>
 								<td><%=  cr.newhireinstitution.name %></td>
 								<td><%=  cr.course_credits %> </td>
-								
+
 							</tr>
 
-							
+
 
 							<% end %>
 
 							</table>
 					   </fieldset>
 
-						
+
 					<% end %>
-				</div>
-
-				<div id="content">
-					Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro %> to complete this credential.
-				</div>
-			<% end %>
-
-		</div><!-- #container-->
-
-
-		    <div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-		    -webkit-border-radius: 20px;
-		    -khtml-border-radius: 20px;
-		    border-radius: 20px;">
-		        <%= @newhire.details %>
-		     </div>
-
-  </div><!-- #middle-->
-</div><!-- #wrapper -->
+			</form>
+    </div>
+  </div>
+</div>

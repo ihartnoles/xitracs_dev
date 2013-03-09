@@ -1,49 +1,68 @@
-<%= @newhire.details %> <br>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <!--Sidebar content-->
+      	 <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Instructor Info:</li>
+              <!--<li class="active"><a href="#">Link</a></li>-->
+              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+              <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+              
 
-
-<fieldset class="round">
-	<legend>
-		Add Relevant Coursework: 
-	</legend>
-	
-	<%= form_for(@newhirecredits) do |f| %>
-		
-		<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
-		<%= hidden_field_tag 'source', 'New' %>
-
-		<table class="no-zebra no-hover">
-			<tr>	
-				<th>Course ID (ex: CDA 6031)</th>
-				<th>Course Name (ex: Data Mining)</th>
-				<th>Course Year (ex: 1995)</th>
-				<th>Institution</th>
-				<th>Course Credits (ex: 3)</th>
+            </ul>
+          </div><!--/.well -->
+    </div>
+    <div class="span9">
+      <!--Body content-->
+      <%= form_for(@newhirecredits) do |f| %>
 				
-				</tr>
-			<tr>
-				<td><%= f.text_field :course_name,  :class => "text" %></td>
-				<td><%= f.text_field :course_description,  :class => "text"  %></td>
-				<td><%= f.text_field :course_year,  :class => "text"  %></td>
-				<td>
-					<%= collection_select(:newhirecredit,
-										   :newhireinstitution_id,		   
-										   @newhireinstitutions,
-										   :id,
-										   :name
-											)%> </td>
-				<td><%= f.text_field :course_credits, :class => "text"  %></td>
-				
-			</tr>
-			<tr>
-				<td><br/><br/></td>
-			</tr>
-		</table>
-		<table class="no-zebra no-hover">
-			<tr>
-		    	<td colspan="2"> 	
-		 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
-		 		</td>
-	 		</tr>			
-		</table>
-	<% end %>
-	</fieldset>
+				<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+				<%= hidden_field_tag 'source', 'New' %>
+
+		<fieldset class="round">
+			<legend>
+				Add Relevant Coursework: 
+			</legend>
+			
+			
+				<table class="profile">
+					<tr>	
+						<th>Course ID (ex: CDA 6031)</th>
+						<th>Course Name (ex: Data Mining)</th>
+						<th>Course Year (ex: 1995)</th>
+						<th>Institution</th>
+						<th>Course Credits (ex: 3)</th>
+						
+						</tr>
+					<tr>
+						<td><%= f.text_field :course_name,  :class => "text" %></td>
+						<td><%= f.text_field :course_description,  :class => "text"  %></td>
+						<td><%= f.text_field :course_year,  :class => "text"  %></td>
+						<td>
+							<%= collection_select(:newhirecredit,
+												   :newhireinstitution_id,		   
+												   @newhireinstitutions,
+												   :id,
+												   :name
+													)%> </td>
+						<td><%= f.text_field :course_credits, :class => "text"  %></td>
+						
+					</tr>
+					<tr>
+						<td><br/><br/></td>
+					</tr>
+				</table>
+				<table class="no-zebra no-hover">
+					<tr>
+				    	<td colspan="2"> 	
+				 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.<br/><br/>
+				 		</td>
+			 		</tr>			
+				</table>
+			
+			</fieldset>
+		<% end %>
+    </div>
+  </div>
+</div>

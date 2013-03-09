@@ -1,11 +1,10 @@
-
-<%#= @newhire.details %> <br>
-
-<div id="wrapper">
-	<div id="middle">
-		<div id="container">
-
-			<div id="content">
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <!--Sidebar content-->
+      	 <%= render 'newhires/instructorinfo_basic' %>
+    </div>
+    <div class="span9">    	
 				<%= form_for(@newhirecourse) do |f| %>
 					
 						 <%= hidden_field_tag 'source', 'New' %>
@@ -13,7 +12,7 @@
 
 						<fieldset class="round">
 							<legend>To Teach:</legend>
-							<table  class="no-zebra no-hover">
+							<table  class="profile">
 								<tr>
 									<td><strong>Course Prefix and Number:</strong></td>
 									<td> <%= text_field_tag 'course_name' %></td>
@@ -43,16 +42,8 @@
 						</fieldset>
 					
 				<% end %>
-			</div>
-</div><!-- #container-->
+			
 
-
-		<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;">
-    		<%= @newhire.details %>
-    	</div>
-
-	</div><!-- #middle-->
-</div><!-- #wrapper -->
+ 	</div>
+  </div>
+</div>

@@ -33,6 +33,7 @@ class NewhirecoursesController < ApplicationController
     end
     @newhire = Newhire.find(params[:newhire_id])
   	@newhirecourse = Newhirecourse.new
+    @newhire_dept = Department.find(@newhire.department_id)
   end
 
 

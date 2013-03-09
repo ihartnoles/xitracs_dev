@@ -29,9 +29,13 @@ class NewhirecredentialsController < ApplicationController
   # GET /newhirecredentials/new
   # GET /newhirecredentials/new.json
   def new
-    @newhire = Newhire.find(session[:newhire_id])
+    #@newhire = Newhire.find(session[:newhire_id])
     @qualificationreasons = Qualificationreason.all
     @newhirecredential = Newhirecredential.new
+
+    @newhire = Newhire.find(params[:newhire_id])
+    @newhirecourse = Newhirecourse.new
+    @newhire_dept = Department.find(@newhire.department_id)
 
     respond_to do |format|
       format.html # new.html.erb

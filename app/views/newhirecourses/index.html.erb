@@ -1,17 +1,28 @@
 
-<%#= @newhire.details %> <br>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <!--Sidebar content-->
+      	 <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Instructor Info:</li>
+              <!--<li class="active"><a href="#">Link</a></li>-->
+              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+              <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+              
 
-<div id="wrapper">
-	<div id="middle">
-		<div id="container">
-
-			<%= form_for @newhirecourse do |f| %>
+            </ul>
+          </div><!--/.well -->
+    </div>
+    <div class="span9">
+      <!--Body content-->
+     <%= form_for @newhirecourse do |f| %>
 				
-				<%= hidden_field_tag 'newhire_id', @newhire.id %>
-					<div id="content">
-							<fieldset class="round">
+									<%= hidden_field_tag 'newhire_id', @newhire.id %>
+      	<fieldset class="round">
 								<legend>To Teach:</legend>
 								<table  class="no-zebra no-hover">
+								
 									<tr>
 										<td><strong>Course Prefix and Number:</strong></td>
 										<td> <%= text_field_tag 'course_name' %></td>
@@ -35,48 +46,17 @@
 									</tr>	
 									<tr>
 										<td colspan="2">
-										Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.</p>
+										Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => 'btn' %> to save this course.</p>
 									</tr>
+									<tr>
+										<td colspan="2">
+											Click <%= f.submit 'Continue', :id => "Continue" , :class => 'btn' %> to finish this section and continue precredentialing.
+										</td>
+									</tr>
+									
 								</table>
 							</fieldset>
-						</div>
-
-					<% if @newhire_courses_added.count > 0 %>
-						<br>
-							<div id="content">
-								<fieldset class="round">
-									<legend>Courses Added:</legend>
-										<table  class="no-zebra no-hover">
-											<th>Course Prefix and Number:</th>
-											<th>Course title:</th>
-											<th>Brief Course Description:</th>
-																						
-												<% @newhire_courses_added.each do |ca| %>
-									    			<tr>
-									    				<td><%=  ca.name %> </td>
-									    				<td><%=  ca.title.humanize %></td>
-									    				<td><%=  ca.description.humanize %></td>
-									    			</tr>
-									 			<% end %>
-									 		
-											
-										</table>
-							   </fieldset>
-
-								Click <%= f.submit 'Continue', :id => "Continue" %> to finish this section and continue precredentialing.
-							</div>
-					<% end %>
-			<% end %>
-
-		</div><!-- #container-->
-
-
-		<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;">
-    		<%= @newhire.details %>
-    	</div>
-
-	</div><!-- #middle-->
-</div><!-- #wrapper -->
+     <% end %>
+    </div>
+  </div>
+</div>

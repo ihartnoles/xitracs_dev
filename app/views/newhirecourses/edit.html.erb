@@ -1,17 +1,28 @@
 
-<%#= @newhire.details %> <br>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <!--Sidebar content-->
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Instructor Info:</li>
+              <!--<li class="active"><a href="#">Link</a></li>-->
+              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+              <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+              
 
-<div id="wrapper">
-	<div id="middle">
-		<div id="container">
-
-	<div id="content">
-		<fieldset class="round">
+            </ul>
+          </div><!--/.well -->
+    </div>
+    <div class="span9">
+      <!--Body content-->
+      <%= form_for(@newhirecourse) do |f| %>
+				<%= hidden_field_tag :newhire_id, params[:newhire_id] %>		
+      	<fieldset class="round">
 			<legend>To Teach:</legend>
-			<%= form_for(@newhirecourse) do |f| %>
-				<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+			
 
-				<table  class="no-zebra no-hover">
+				<table  class="table table-striped">
 					<tr>
 						<td><strong>Course Prefix and Number:</strong></td>
 						<td> <%= f.text_field :name %></td>
@@ -24,33 +35,20 @@
 
 
 					<tr>
-						<td><strong>Brief Course Description:</strong></td>
-						<td><%= f.text_area :description %></td>
+						<td colspan="2"><strong>Brief Course Description:</strong>
+							<%= f.text_area :description %></td>
 					</tr>
 
-					<tr>
-						<td colspan="2">
-							&nbsp;
-						</td>
-					</tr>	
 					<tr>
 						<td colspan="2">
 						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro %> to save this course.</p>
 					</tr>
 				</table>
-			<% end %>
+			
 		</fieldset>
-	</div>
 
-</div><!-- #container-->
+      <% end %>
 
-
-		<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;">
-    		<%= @newhire.details %>
-    	</div>
-
-	</div><!-- #middle-->
-</div><!-- #wrapper -->
+ 	</div>
+  </div>
+</div>

@@ -1,54 +1,41 @@
-
-<%#= @newhire.details %> <br>
-
-<div id="wrapper">
-  <div id="middle">
-    <div id="container">
-
-      <div id="content">  
-          <fieldset class="round">
-                <legend>Instructor Credentials:</legend>
-                <br><strong>The instructor is credentialed to teach:</strong><br>
-                <%= form_for @newhirecredential do |c| %>
-
-                 <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
-                 <%= hidden_field_tag 'course_id', params[:course_id] %>
-
-                            <% @qualificationreasons.each do |qr| %>
-                                <br><%= radio_button_tag  'qualificationreason_id',  qr.id, {:onclick => "do_inst();"} %>
-                              <%=  qr.name.humanize %>
-                            <% end %> 
-                      <br />
-                      <br />
-                      <p>
-                      <strong>Explanation of instructor's qualifications:</strong><br>
-                           <%= text_area_tag 'qualification_explanation' %>          
-                      </p>
-                      
-                      <!--
-                      <p>
-                       Click <%= c.submit "Save & Continue" %> to finish this section and continue precredentialing.
-
-                      </p>
-                    -->
-                 
-          </fieldset>
-        </div>
-
-        <div id="content">
-           <%= c.submit "Save & Continue" %>
-        </div>
-        <% end %>
-
-</div><!-- #container-->
-
-
-    <div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;">
-        <%= @newhire.details %>
+<div class="container-fluid">
+  <div class="row-fluid">
+   
+      <div class="span3">
+         <!--Sidebar content-->
+         <%= render 'newhires/instructorinfo_basic' %>
       </div>
+      <div class="span9">
+        <!--Body content-->
+        <%= form_for @newhirecredential do |c| %>
 
-  </div><!-- #middle-->
-</div><!-- #wrapper -->
+                   <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+                   <%= hidden_field_tag 'course_id', params[:course_id] %>
+          <fieldset class="round">
+                  <legend>Instructor Credentials:</legend>
+                  <br><strong>The instructor is credentialed to teach:</strong><br>
+                  
+
+                              <% @qualificationreasons.each do |qr| %>
+                                  <br><%= radio_button_tag  'qualificationreason_id',  qr.id, {:onclick => "do_inst();"}, :class => "radio" %>
+                                <%=  qr.name.humanize %>
+                              <% end %> 
+                        <br />
+                        <br />
+                        <p>
+                        <strong>Explanation of instructor's qualifications:</strong><br>
+                             <%= text_area_tag 'qualification_explanation', '', :cols=>40,:rows=>5 %>        
+
+                        </p>
+                        
+                        <p>
+                         <%= c.submit "Save & Continue" %>
+
+                        </p>
+                          
+                               
+            </fieldset>
+        <% end %>
+      </div>
+  </div>
+</div>

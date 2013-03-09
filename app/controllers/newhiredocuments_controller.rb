@@ -9,7 +9,8 @@ class NewhiredocumentsController < ApplicationController
   	@newhiredoctypes = Newhiredoctype.new
     #@newhire_docs_added = Newhiredocument.where(:newhire_id => session[:newhire_id])
     @newhire_docs_added = Newhiredocument.where(:newhire_id => params[:newhire_id])
-
+    @newhirecourse = Newhirecourse.new
+    @newhire_dept = Department.find(@newhire.department_id)
     #render :layout => 'simple'
   end
 

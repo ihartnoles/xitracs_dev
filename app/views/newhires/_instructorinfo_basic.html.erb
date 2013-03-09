@@ -1,11 +1,22 @@
-<!-- .sidebar#sideLeft -->
+ <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Instructor Info:</li>
+              <!--<li class="active"><a href="#">Link</a></li>-->
+              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+              <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+              <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
+              <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
+            </ul>
+          </div><!--/.well -->
+
+<!-- .sidebar#sideLeft 
 	<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     -khtml-border-radius: 20px;
     border-radius: 20px;">
 			<fieldset class="round" >
 			<legend>Instructor Info:</legend>
-				<table  class="profile">					
+				<table  class="profile  no-zebra">					
 	    			<tr>
 	    				<td><strong>Firstname:</strong></td> 
 	    				<td><%= @newhire.first_name %></td>
@@ -32,3 +43,4 @@
 				</table>
 			</fieldset>
 		</div>
+		-->
