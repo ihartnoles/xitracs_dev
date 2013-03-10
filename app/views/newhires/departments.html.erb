@@ -1,3 +1,17 @@
+
+<% @departments.each do |department| %>
+<div class="row-fluid">
+            <div class="span4">
+              <h4><%= department.name %> </h4>
+              <p><%= department.count_by_dept(department.id) %></p>
+              <p><a class="btn" href="#" onclick="window.location.href='<%= url_for :action => 'list_by_dept', :department_id => department.id %>'">View details &raquo;</a></p>
+            </div><!--/span-->
+<% end %>
+
+
+
+<hr>
+
 <%# provide(:title, 'Departments') %>
 <% if current_user.group.name == "admin" %>
 	<%= link_to "Return to Colleges", '/start', :class => "xbutton" %>
@@ -16,6 +30,7 @@
 	<% @departments.each do |department| %>
 		<tr onclick="window.location.href='<%= url_for :action => 'list_by_dept', :department_id => department.id %>'">    
  			<td><%= department.name %> 
+ 				
  				
  					<%= department.count_by_dept(department.id) %>
  				

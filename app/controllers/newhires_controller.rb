@@ -14,10 +14,11 @@ class NewhiresController < ApplicationController
 
      elsif current_user.group.name == "admin"
 
-       @newhires = Newhire.all
-       @newhire_count = @newhires.count     
-       @departments =  Department.where(:school_id => session[:school_id])
+       #@newhires = Newhire.all
+       #@newhire_count = @newhires.count     
+       #@departments =  Department.where(:school_id => session[:school_id])
 
+       redirect_to newhire_schools_path
      else
       
       #otherwise you are dean OR admin and you need to be able to see list of dept.
@@ -49,6 +50,10 @@ class NewhiresController < ApplicationController
   def departments
      #session[:school_id] = params[:school_id] if !params[:school_id].nil?
      @departments =  Department.where(:school_id => session[:school_id]) 
+  end
+
+  def schools
+    @schools = School.where(:enabled => 1)
   end
 
 
