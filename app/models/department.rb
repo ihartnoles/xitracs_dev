@@ -21,7 +21,7 @@ class Department < ActiveRecord::Base
   		#return " <strong>(<em>#{newhires_by_dept_count} NEW</em>)</strong>".html_safe
       return "<div class='alert alert-success'><em>#{newhires_by_dept_count} NEW</em></div>".html_safe
   	else
-  		return "<div class='alert alert-error'>No new hires</div>".html_safe
+  		return "<div class='alert alert-info'>No new hires</div>".html_safe
   	end 
   end 
 end

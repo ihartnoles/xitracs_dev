@@ -49,7 +49,15 @@ class NewhiresController < ApplicationController
 
   def departments
      #session[:school_id] = params[:school_id] if !params[:school_id].nil?
-     @departments =  Department.where(:school_id => session[:school_id]) 
+    
+
+     if current_user.group.name == "admin"
+        @departments =  Department.where(:school_id => params[:school_id]) 
+        @school_name = School.find(params[:school_id]).description
+     else
+        @departments =  Department.where(:school_id => session[:school_id]) 
+        @school_name = School.find(session[:school_id]).description
+     end 
   end
 
   def schools
@@ -107,7 +115,8 @@ class NewhiresController < ApplicationController
       
       @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
-     
+      @newhire_messages_added = Newhirereviewmessage.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
+      #@newhire_messages_added = Newhiresignoff.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
       @reason = Reason.new
       @reviewreason = Reviewreason.all
@@ -116,7 +125,8 @@ class NewhiresController < ApplicationController
       @newhire_reasons_added = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
       @newhire_review_state = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
 
-       
+      
+      @newhire_signoffs = Newhiresignoff.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
        #if ( @newhire_reasons_added.count > 0)
        #   @newhirereason = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).first
           
@@ -124,8 +134,32 @@ class NewhiresController < ApplicationController
        @newhirereason = Newhirereviewreason.new 
        #end        
 
-       @newhiresignoff = Newhiresignoff.new
+       
      
+  end
+  
+  def review_dialog
+     @newhirereason = Newhirereviewreason.new
+     @newhire_reasons_added = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]) 
+
+     render :layout => 'simple'
+  end
+
+  def save_review
+
+
+    #redirect_to 
+  end
+
+
+  def signoff_dialog
+     @newhiresignoff = Newhiresignoff.new
+     render :layout => 'simple'
+  end
+
+  def save_signoff
+    
+    #redirect_to
   end
 
   def approve_course
@@ -190,7 +224,8 @@ class NewhiresController < ApplicationController
       @signoff.comment = params[:newhiresignoff][:comment]
       @signoff.save
 
-      redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+      render :layout => 'simple'
+      #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 
 
@@ -264,7 +299,7 @@ class NewhiresController < ApplicationController
      message.newhire_id = params[:newhire_id]
      message.course_id = params[:course_id]
      message.from = current_user.name
-     message.to = 'TEST TO'
+     message.to = params[:send_to]
      message.body = params[:newhirereviewmessage][:body]
      message.save
 
@@ -277,7 +312,7 @@ class NewhiresController < ApplicationController
      #pass argumetns to the send_review_msg mailer function
      WizardMailer.send_review_msg(@newhire,@msg).deliver
 
-     flash[:notice] = "Notification sent to Review Team"
+     flash[:notice] = "Notification Sent!"
 
      redirect_to newhiredetails_path(@newhire.id)
   end

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :department
   belongs_to :school
 	has_many	:reasons
-
+ 
   before_create :set_defaults
  
   def User.authenticate(name, password)

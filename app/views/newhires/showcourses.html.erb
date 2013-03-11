@@ -10,7 +10,7 @@
       <!--Body content-->
      
 				<fieldset class="round">
-					<legend>Courses To Teach: <%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id]), :title => 'Add a course', :rel => 'tooltip'  %></legend>
+					<legend> <%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id]), :title => 'Add a course', :rel => 'tooltip'  %> Courses To Teach:</legend>
 						
 						<table class="profile">
 							<th>Prefix & Number</th>
@@ -35,7 +35,10 @@
 					 			<% end %>
 						</table>
 					</fieldset>	
-			
+
+				<%#= render 'notification_messages' %>
+
+				
     </div>
   </div>
 </div>

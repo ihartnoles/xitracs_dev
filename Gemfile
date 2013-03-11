@@ -18,7 +18,7 @@ platforms :jruby do
 	gem 'therubyrhino'
 end
 
-
+gem 'ckeditor_rails'
 gem 'jquery-rails', '~> 2.1'
 gem 'awesome_print'   # Pretty Printer
 
@@ -29,8 +29,6 @@ gem 'kaminari'        # Pagination
 gem 'rubycas-client'  # CAS Authentication 
 gem 'simple_enum'     # Enumerations
 gem 'foreigner'       # Foreign Keys Support
-#gem 'carrierwave'	  # Uploads
-#gem 'wicked'		  # Wizard
 
 # Gems used only for assets and not required
 # in production environments by default.

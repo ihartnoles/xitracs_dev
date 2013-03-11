@@ -1,0 +1,28 @@
+<fieldset class="round">
+  <legend class="heading">New Review Comments:</legend>    
+
+  <%= form_for @newhirereason, :url => '/newhires/approve_course' do |f| %>
+   
+    <%= hidden_field_tag 'newhirereviewreason[newhire_id]', params[:newhire_id] %>
+    <%= hidden_field_tag 'newhirereviewreason[course_id]', params[:id] %>
+    
+    <% @newhire_reasons_added.each do |nhc| %>
+      <%= hidden_field_tag  'newhirereviewreason[newhirereason_id]', nhc.id %>
+  <% end %>
+
+  <table class="profile no-zebra no-hover">
+    <tr>
+      <td>
+         <%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
+    <%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
+    <%= f.radio_button :review_state, Reason.review_failed, {:onclick => "comments_alert();"} %> Not Passed <br><br>
+        <strong> Comments: </strong>
+        <%= f.text_area :review_comments, :class => 'ckeditor' %><br/>
+       <%= f.submit  "Submit", :id => "Submit" %>
+     </td>
+    </tr>
+  </table>
+    
+    
+  <% end %>    
+</fieldset>

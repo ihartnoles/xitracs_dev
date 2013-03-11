@@ -1,10 +1,16 @@
-
+<div class="row-fluid">
+     <div class="span5">
+     	<h4><%=@school_name %> Departments</h4>
+     </div><!--/span-->
+</div>
 <% @departments.each do |department| %>
 <div class="row-fluid">
             <div class="span4">
-              <h4><%= department.name %> </h4>
+              <div class="well sidebar-nav"  style="background-color:#fcf8e3;">
+              <h5><%= department.name %> </h5>
               <p><%= department.count_by_dept(department.id) %></p>
               <p><a class="btn" href="#" onclick="window.location.href='<%= url_for :action => 'list_by_dept', :department_id => department.id %>'">View details &raquo;</a></p>
+          		</div>
             </div><!--/span-->
 <% end %>
 

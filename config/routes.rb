@@ -26,6 +26,10 @@ XitracsRoster::Application.routes.draw do
         put  'approve_course'
         get  'review_msg'
         get  'schools'
+        get  'review_dialog'
+        get  'signoff_dialog'
+        post 'save_review'
+        post 'save_signoff'
        end
   end
 
@@ -131,6 +135,13 @@ XitracsRoster::Application.routes.draw do
 
   get  "/newhires/review_msg"
 
+  get  "/newhires/review_dialog"
+  post "/newhires/save_review"
+
+  get  "/newhires/signoff_dialog"
+  post "/newhires/save_signoff"
+
+
   get  "/newhiredocuments/uploadform"
   post "/newhiredocuments/uploadform"
 
@@ -141,7 +152,7 @@ XitracsRoster::Application.routes.draw do
   #post  "/newhiredocuments/file_download"
 
   get  "/newhiredocuments/uploadstatus"
-  post  "/newhiredocuments/uploadstatus"
+  post "/newhiredocuments/uploadstatus"
 
   get  "newhirecomment/index"
   get  "newhirecomment/create"

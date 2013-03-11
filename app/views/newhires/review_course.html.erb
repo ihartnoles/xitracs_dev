@@ -2,24 +2,72 @@
   <div class="row-fluid">
     <div class="span3">
       <!--Sidebar content-->
-      <div class="well sidebar-nav">
+          <div class="well sidebar-nav" style="background-color:#fcf8e3;">
             <ul class="nav nav-list">
-              <li class="nav-header">Instructor Info:</li>
+              <li class="nav-header" >Instructor Info:</li>
               <!--<li class="active"><a href="#">Link</a></li>-->
               <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
               <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
               <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
               <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
               <li><strong>Course:</strong> <%= @newhire.course_name(@newhire_course_to_review.id) %></li>
+              
+              <li><strong>Send Notification:</strong> <%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id) %></li>
+              
+               <li><%= link_to '[REVIEW]',
+                        {:controller => 'newhires', :action => 'review_dialog',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
+                            :onClick=>"window.open(this.href,'Review Team Review','height=500, width=700'); return false;" ,
+                              :title => 'Review Team Review', :rel => 'tooltip'%></li>
+
+                <li><%= link_to '[SIGN OFF]',
+                        {:controller => 'newhires', :action => 'signoff_dialog',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
+                            :onClick=>"window.open(this.href,'Sign off','height=500, width=700'); return false;" ,
+                              :title => 'Sign off on this credential', :rel => 'tooltip'%></li>
             </ul>
           </div><!--/.well -->
+
+     <% if false %>
+           <div class="well sidebar-nav" style="background-color:#fcf8e3;">
+            <ul class="nav nav-list">
+              <li class="nav-header" >Reviewed by:</li>
+              <!--<li class="active"><a href="#">Link</a></li>-->
+                           <!--
+              <li><strong>Send Notification:</strong> <%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id) %></li>
+               -->
+              
+            </ul>
+          </div><!--/.well -->
+
+           <div class="well sidebar-nav" style="background-color:#fcf8e3;">
+            <ul class="nav nav-list">
+              <li class="nav-header" >Signoff By:</li>
+                <% @newhire_signoffs.each do |s| %>
+                  <li><%=  s.signed_off_by(s.user_id) %> <%= s.created_at.strftime('%m/%d/%Y %l:%M %P') %></li>
+                 <% end %>             
+            </ul>
+          </div><!--/.well -->
+      <% end %>
     </div>
+
     <div class="span9">
       <!--Body content-->
       <form>
-              <fieldset>
-                <legend>Documents submitted to Provost:</legend>
-                <div align="right">
+              <!--<fieldset>
+                <legend class="heading">Documents submitted to Provost:</legend>-->
+                <h4 style="font-color:blue"> <%= link_to image_tag('/assets/Add_16x16.png'), 
+                          {:controller => 'newhiredocuments', 
+                            :action => 'index', 
+                            :course_id => params[:id],
+                            :newhire_id => params[:newhire_id]
+                          },
+                          :title => 'Add documents', :rel => 'tooltip'
+                            
+                            #,:source => 'detailscreen'}, 
+                            #:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"
+                            %>
+                            Documents submitted to Provost:
+                </h4>
+                <!--<div align="right">
                   <%= link_to image_tag('/assets/Add_16x16.png'), 
                           {:controller => 'newhiredocuments', 
                             :action => 'index', 
@@ -31,8 +79,8 @@
                             #,:source => 'detailscreen'}, 
                             #:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"
                             %>
-                </div>
-                  <table  class="profile">
+                </div>-->
+                  <table class="table">
                     <% if @newhiredocuments.count > 0 %>
                       <th>Name</th>
                       <th>Location</th>
@@ -57,17 +105,19 @@
                       </tr>
                     <% end %>
                   </table>
-                </fieldset>
-            </form>
+              <!--  </fieldset>
+            </form> -->
             <form>
               <fieldset>
-                <legend class="heading">Instructor Credentialed to Teach Based On:</legend>
-                      <% if @newhirecredentials.count == 0 %>
-                        <div align="right">
-                          <%= link_to image_tag('/assets/Add_16x16.png'),  new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:id]),:title => 'Add credentials', :rel => 'tooltip'  %>
-                        </div>
-                      <% end %>
-                        <table  class="profile">
+               <!-- <legend class="heading">Instructor Credentialed to Teach Based On:</legend> -->
+                  <h4> 
+                    <% if @newhirecredentials.count == 0 %>
+                        <%= link_to image_tag('/assets/Add_16x16.png'),  new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:id]),:title => 'Add credentials', :rel => 'tooltip'  %>
+                    <% end %>
+                    Instructor Credentialed to Teach Based On:
+                  </h4>
+                      
+                        <table  class="table">
                           <% if @newhirecredentials.count > 0 %>
                             <th>Reason</th>
                             <th>Explanation</th>
@@ -97,12 +147,12 @@
 
             <form>
                 <fieldset class="round">
-                    <legend class="heading">Relevant Coursework:</legend> 
-                        
-                        <div align="right">
-                      <%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id]), :title => 'Add coursework', :rel => 'tooltip'  %>
-                      </div>        
-                      <table  class="profile">
+                    <h4>
+                       <%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id]), :title => 'Add coursework', :rel => 'tooltip'  %>
+                      Relevant Coursework:                      
+                    </h4>                         
+                             
+                      <table  class="table">
                         <% if @newhire_credits_added.count > 0 %>
                           <th>Course ID</th>
                           <th>Course Name</th>
@@ -142,8 +192,8 @@
 
             <form>
                 <fieldset class="round">
-                  <legend class="heading">Additional Comments:</legend>
-                    <table  class="profile">
+                 <h4>Additional Comments:</h4>
+                    <table  class="table">
                       <% if @newhire_comments_added.count > 0 %>
                         <th>Comment</th>
                         <% @newhire_comments_added.each do |cm| %>
@@ -167,7 +217,7 @@
                   </fieldset>
             </form>
 
-            
+           <%= render 'notification_messages' %>
 
 
        <% if session[:review] && session[:group_name] == "admin" %>
@@ -177,8 +227,8 @@
         <% if (@newhire_reasons_added.count > 0) %>
           <form>
             <fieldset class="round">
-              <legend class="heading">Review Comments:</legend>  
-              <table  class="profile">
+              <h4>Review Comments:</h4>  
+              <table  class="table">
                 <th>Status</th>
                 <th>Comment</th>
                 <th>Reviewed By</th>
@@ -197,132 +247,8 @@
           </form>
         <% end %>
 
-
-
-        <form>
-          <fieldset class="round">
-            <legend class="heading">New Review Comments:</legend>    
-              <%#= form_for @reason, :url => '/wizard/approve_course_for' do |f| %>
-             
-              <%= form_for @newhirereason, :url => '/newhires/approve_course' do |f| %>
-                <%#= f.hidden_field  :newhirereason, :newhire_id %>
-                <%= hidden_field_tag 'newhirereviewreason[newhire_id]', params[:newhire_id] %>
-                <%= hidden_field_tag 'newhirereviewreason[course_id]', params[:id] %>
-                <%#= hidden_field  :newhirereason, :id %>
-
-                <% @newhire_reasons_added.each do |nhc| %>
-                  <%= hidden_field_tag  'newhirereviewreason[newhirereason_id]', nhc.id %>
-                <% end %>
-
-                <%= f.radio_button :review_state, Reason.review_pending,{:onclick => "do_pending();"}%> Pending
-                <%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
-                <%= f.radio_button :review_state, Reason.review_failed, {:onclick => "comments_alert();"} %> Not Passed
-                <%#= f.radio_button :review_state, Reason.review_alert,  {:onclick => "do_alert();"}  %> 
-                <%#= f.radio_button :review_state, Reason.review_justdocs,  {:onclick => "do_justdocs();"}  %>
-
-                <br/>
-                
-                <%#= f.check_box :qualificationreason_id, "2" %> <br>
-
-                  <%# @reviewreason.each do |reviewreason| %>
-                    <%#= check_box_tag "newhirereason[reviewreason_ids][]", reviewreason.id, 'test',:class => "check", :onclick => "do_checkbox();" %>
-                    
-                    <%#= check_box_tag "newhirereason[qualificationreason_ids][]", reviewreason.id, @newhire_reason_state.include?(reviewreason.id.to_s), :class => "check", :onclick => "do_checkbox();"%> 
-
-                    <%#= check_box_tag "newhirereason[qualificationreason_ids][]", reviewreason.id %>
-
-                    <%#= f.check_box :qualificationreason_id %> 
-
-                    <%#= reviewreason.name %><br>
-
-
-                     <%# Reviewreason.all.each do |reviewreason| -%>
-            <%#= check_box_tag "reason[reviewreason_ids][]", reviewreason.id, @reviewreason_ids.include?(reviewreason.id), :class => "check", :onclick => "do_checkbox();" %>         
-                <%# end %>
-              <table>
-                <tr>
-                  <td><strong> Comments: </strong></td>
-                </tr>
-                <tr>
-                  <td><%= f.text_area :review_comments, :rows=>5, :cols=>40 %><br/></td>
-                </tr>
-                <tr>
-                  <td><%= f.submit  "Submit", :id => "Submit" %></td>
-                </tr>
-
-
-              </table>
-                
-                
-              <% end %>    
-            </fieldset>
-
-        </form>
      <% end %>
 
-
-      <form>
-        <fieldset class="round">
-          <legend class="heading">Signoff:</legend>  
-            <table class="profile no-zebra no-hover">
-              <%= form_for @newhiresignoff,  :url => '/newhires/process_signoff' do |f| %>
-              <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
-              <%= hidden_field_tag 'course_id', params[:id] %>
-
-              <% if params.has_key?(:newhirereason_id) %>
-                <%= hidden_field_tag  :newhirereason_id, params[:newhirereason_id] %>
-              <% end %>
-
-              <tr>
-                <td>
-                  <%= f.radio_button :signed_off , "1"%> Signoff and notify 
-                  
-                  <% if session[:group_name] == "chair" %>          
-                   Dean's office
-                  <% end %>
-                  <% if session[:group_name] == "dean" %>          
-                   Provost's office
-                  <% end %>
-                  <% if session[:group_name] == "admin" %>          
-                   Provost's office
-                  <% end %>
-
-                  <br>
-
-                  <%= f.radio_button :signed_off , "0" %> Return to
-                  <% if session[:group_name] == "chair" %>          
-                   Department
-                  <% end %>
-                  <% if session[:group_name] == "dean" %>          
-                   Department Chair
-                  <% end %>
-                  <% if session[:group_name] == "admin" %>          
-                   Dean's office
-                  <% end %>
-
-                  for corrections
-                </td>               
-              </tr>
-              <tr>
-                <td>
-                  <strong>Comments:</strong>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <%= f.text_area :comment, :rows=>5, :cols=>20  %>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                <%= f.submit  "Submit", :id => "Submit", :disabled => current_user.ro, :class => "btn" %>
-                </td>
-              </tr>
-              <% end %>
-
-            </table>          
-        </fieldset>
-      </form>
 
 
 
