@@ -1,10 +1,10 @@
 <fieldset class="round">
   <legend class="heading">New Review Comments:</legend>    
 
-  <%= form_for @newhirereason, :url => '/newhires/approve_course' do |f| %>
+  <%= form_for @newhirereason, :url => '/newhires/save_review' do |f| %>
    
     <%= hidden_field_tag 'newhirereviewreason[newhire_id]', params[:newhire_id] %>
-    <%= hidden_field_tag 'newhirereviewreason[course_id]', params[:id] %>
+    <%= hidden_field_tag 'newhirereviewreason[course_id]', params[:course_id] %>
     
     <% @newhire_reasons_added.each do |nhc| %>
       <%= hidden_field_tag  'newhirereviewreason[newhirereason_id]', nhc.id %>

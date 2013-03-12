@@ -87,6 +87,8 @@ class NewhiresController < ApplicationController
       
       @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:id])
 
+      @newhire_messages_added = Newhirereviewmessage.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
+
       #pull user id to for @credentialed_bu
       #user_id = @newhire_comments_added.map(&:user_id)
       #@credentialed_by = User.find(user_id).map(&:name).join("")
@@ -126,6 +128,7 @@ class NewhiresController < ApplicationController
       @newhire_review_state = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).map(&:review_state).join(',')
 
       
+      @newhiresignoff=Newhiresignoff.new
       @newhire_signoffs = Newhiresignoff.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
        #if ( @newhire_reasons_added.count > 0)
        #   @newhirereason = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).first
@@ -137,6 +140,14 @@ class NewhiresController < ApplicationController
        
      
   end
+
+  def signoff
+     @newhiresignoff=Newhiresignoff.new
+     
+     render :layout => 'simple'
+  end
+
+
   
   def review_dialog
      @newhirereason = Newhirereviewreason.new
@@ -147,20 +158,40 @@ class NewhiresController < ApplicationController
 
   def save_review
 
+    if (params[:newhirereviewreason][:review_state] == 2 && params[:newhirereviewreason][:review_comments].blank?) 
 
-    #redirect_to 
+        flash[:notice] = 'Please enter a comment'
+        redirect_to newhire_review_course_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
+
+    else
+        @newhire_reviewreasons_added = Newhirereviewreason.where(:newhire_id => params[:newhirereviewreason][:newhire_id], :course_id => params[:newhirereviewreason][:course_id])
+        @newhirereason = Newhirereviewreason.new 
+        
+        @newhirereason.course_id = params[:newhirereviewreason][:course_id]
+        @newhirereason.newhire_id = params[:newhirereviewreason][:newhire_id]
+        @newhirereason.reviewer_id = current_user.id
+        @newhirereason.review_state = params[:newhirereviewreason][:review_state]
+        
+        if (!params[:newhirereviewreason][:review_comments].blank?)
+         @newhirereason.review_comments = params[:newhirereviewreason][:review_comments]
+        end
+        
+             
+        @newhirereason.save
+
+        
+        #redirect_to newhire_review_course_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
+       end
+
+    end
   end
 
 
-  def signoff_dialog
-     @newhiresignoff = Newhiresignoff.new
-     render :layout => 'simple'
-  end
-
-  def save_signoff
+  
+  #def save_signoff
     
     #redirect_to
-  end
+  #end
 
   def approve_course
     if (params[:commit] == 'Submit')
@@ -209,7 +240,7 @@ class NewhiresController < ApplicationController
 
        
           redirect_to newhire_review_course_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
-         end
+         
 
       end
      
@@ -314,7 +345,8 @@ class NewhiresController < ApplicationController
 
      flash[:notice] = "Notification Sent!"
 
-     redirect_to newhiredetails_path(@newhire.id)
+     #redirect_to newhiredetails_path(@newhire.id)
+     redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 
 end

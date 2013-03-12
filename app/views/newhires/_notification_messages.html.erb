@@ -1,6 +1,6 @@
 <fieldset class="round">
 	<h4>
-		Notification Messages:
+		Notifications:
 	</h4>
 
 	
@@ -25,7 +25,7 @@
 					<tr>
 						<td><%= msg.from %></td>
 						<td><%= msg.to %></td>
-						<td><%= msg.body %></td>
+						<td><%= msg.body.html_safe %></td>
 						<td><%= msg.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
 					</tr>
 				<% end %>

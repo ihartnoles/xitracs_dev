@@ -1,0 +1,34 @@
+<fieldset class="round">
+          <legend class="heading">Signoff:</legend>  
+            <table class="profile no-zebra no-hover">
+             <%= form_for @newhiresignoff, :url => '/newhires/approve_course' do |f| %>
+                <%#= f.hidden_field  :newhirereason, :newhire_id %>
+                <%= hidden_field_tag 'newhirereviewreason[newhire_id]', params[:newhire_id] %>
+                <%= hidden_field_tag 'newhirereviewreason[course_id]', params[:id] %>
+                <%#= hidden_field  :newhirereason, :id %>
+
+              
+                <!-- TO DO: add a status value to DB and change these fieldnames -->
+                <%= f.radio_button :signed_off, "0" %> Pending
+                <%= f.radio_button :signed_off, "1" %> Passed
+                <%= f.radio_button :signed_off, "2", {:onclick => "comments_alert();"} %> Not Passed
+            
+                <br/>
+              
+             
+                <tr>
+                  <td><strong> Comments: </strong></td>
+                </tr>
+                <tr>
+                  <td><%= f.text_area :comment, :class => 'ckeditor' %><br/></td>
+                </tr>
+                <tr>
+                  <td><%= f.submit  "Submit", :id => "Submit" %></td>
+                </tr>
+
+
+              </table>
+                
+                
+              <% end %>    
+            </fieldset>

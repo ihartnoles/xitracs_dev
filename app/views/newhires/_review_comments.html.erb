@@ -1,0 +1,23 @@
+
+        <% if (@newhire_reasons_added.count > 0) %>
+          <form>
+            <fieldset class="round">
+              <h4>Review Comments:</h4>  
+              <table  class="table">
+                <th>Status</th>
+                <th>Comment</th>
+                <th>Reviewed By</th>
+                <th>Reviewed On</th>                
+                <% @newhire_reasons_added.each do |nhr| %>
+                  <tr>
+                    <td><%= nhr.review_state_name(nhr.review_state) %></td>
+                    <td><%= nhr.review_comments.html_safe %></td>           
+                    <td><%= nhr.reviewer_name(nhr.reviewer_id) %></td>
+
+                    <td><%= nhr.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
+                  </tr> 
+                <% end %>
+              </table>
+            </fieldset> 
+          </form>
+        <% end %>
