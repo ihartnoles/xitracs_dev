@@ -13,16 +13,6 @@
               <li><strong>Course:</strong> <%= @newhire.course_name(@newhire_course_to_review.id) %></li>
               
               <li><strong>Send Notification:</strong> <%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => params[:id]) %></li>
-              
-               <li><%= link_to '[REVIEW]',
-                        {:controller => 'newhires', :action => 'review_dialog',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
-                            :onClick=>"window.open(this.href,'Review Team Review','height=500, width=700'); return false;" ,
-                              :title => 'Review Team Review', :rel => 'tooltip'%></li>
-
-                <li><%= link_to '[SIGN OFF]',
-                        {:controller => 'newhires', :action => 'signoff',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
-                            :onClick=>"window.open(this.href,'Sign off','height=500, width=700'); return false;" ,
-                              :title => 'Sign off on this credential', :rel => 'tooltip'%></li>
             </ul>
           </div><!--/.well -->
 
@@ -54,7 +44,7 @@
       <form>
               <!--<fieldset>
                 <legend class="heading">Documents submitted to Provost:</legend>-->
-                <h4 style="font-color:blue"> <%= link_to image_tag('/assets/Add_16x16.png'), 
+                <h4 > <%= link_to image_tag('/assets/Add_16x16.png'), 
                           {:controller => 'newhiredocuments', 
                             :action => 'index', 
                             :course_id => params[:id],
@@ -80,7 +70,7 @@
                             #:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"
                             %>
                 </div>-->
-                  <table class="table">
+                  <table class="table table-condensed">
                     <% if @newhiredocuments.count > 0 %>
                       <th>Name</th>
                       <th>Location</th>
@@ -107,6 +97,7 @@
                   </table>
               <!--  </fieldset>
             </form> -->
+            <br>
             <form>
               <fieldset>
                <!-- <legend class="heading">Instructor Credentialed to Teach Based On:</legend> -->
@@ -117,7 +108,7 @@
                     Instructor Credentialed to Teach Based On:
                   </h4>
                       
-                        <table  class="table">
+                        <table  class="table table-condensed">
                           <% if @newhirecredentials.count > 0 %>
                             <th>Reason</th>
                             <th>Explanation</th>
@@ -144,29 +135,37 @@
                           </table>
                 </fieldset>
             </form>
-
+            <br>
             <form>
                 <fieldset class="round">
                     <h4>
-                       <%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id]), :title => 'Add coursework', :rel => 'tooltip'  %>
+                       <%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id])  %>
                       Relevant Coursework:                      
                     </h4>                         
                              
-                      <table  class="table">
+                      <table  class="table table-condensed">
                         <% if @newhire_credits_added.count > 0 %>
                           <th>Course ID</th>
                           <th>Course Name</th>
                           <th>Year Taken</th>
                           <th>Institution</th>
                           <th>Credits</th>
+                          <th>Credit Type</th>
                           <th width="10%">Actions</th>
                             <% @newhire_credits_added.each do |cr| %>
                                 <tr>
-                                  <td><%=  cr.course_name %></td>  
+                                 <td><%=  cr.course_name %></td>  
                                 <td><%=  cr.course_description %></td>  
                                 <td><%=  cr.course_year %></td> 
                                 <td><%=  cr.newhireinstitution.name %></td>
                                 <td><%=  cr.course_credits %></td>
+                                 <td>                                  
+                                   <% if cr.semester_credits == 1 %>
+                                      semester
+                                  <% else %>
+                                      quarter
+                                  <% end %>
+                                </td>
                                 <td><%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecredit_path(cr , :newhire_id => params[:newhire_id], :course_id => params[:id]), :title => 'Edit course', :rel => 'tooltip'  %>
 
                                   <%= link_to image_tag('/assets/Delete_16x16.png'), newhirecredit_path(cr , :newhire_id => params[:newhire_id], :course_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this coursework?",:title => 'Delete course', :rel => 'tooltip'
@@ -174,6 +173,14 @@
                                 </td>
                               </tr>
                             <% end %> 
+                          
+                            <tr <% if @total_credits >= 18 %>class="success"<% else %>class="error"<% end %>>
+                              <td colspan="7">
+                                <div align="right" >
+                                  <strong>Total Semester Hours: <%= @total_credits.to_s  %></strong>
+                                </div>
+                              </td>
+                            </tr>
                         <% else %>
                           <tr>
                             <td>
@@ -189,11 +196,11 @@
                         </table>
                   </fieldset>
             </form>
-
+            <br>
             <% if @newhire_comments_added.count > 0 %>
                <fieldset class="round">
                  <h4>Coursework Comments:</h4>
-                    <table  class="table">                     
+                    <table  class="table table-condensed">                     
                         <th>Comment</th>
                         <% @newhire_comments_added.each do |cm| %>
                           <tr>
@@ -202,21 +209,18 @@
                         <% end %>
                     </table>
                   </fieldset>
+                  <br>
             <% end %>
 
            <%= render 'notification_messages' %>
+           <br>
 
-
-           <% if session[:review] && session[:group_name] == "admin" %>
+           <%# if session[:review] && session[:group_name] == "admin" %>
              <%= render 'review_comments' %>
-           <% end %>
-
+             <br>
+           <%# end %>
 
            <%= render 'signoff_info' %>
-
-
-
-
 
     </div> 
   </div>

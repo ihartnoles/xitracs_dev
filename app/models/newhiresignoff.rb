@@ -6,4 +6,15 @@ class Newhiresignoff < ActiveRecord::Base
 		return username
 	end
 
+	def status(val)
+
+		if val == 1
+			status = "Approved"
+		else
+			status = "Returned for Corrections"
+		end
+
+		return status
+	end
+
 end

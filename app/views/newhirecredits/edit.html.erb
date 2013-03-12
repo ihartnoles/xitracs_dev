@@ -2,16 +2,7 @@
   <div class="row-fluid">
     <div class="span3">
       <!--Sidebar content-->
-      	 <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Instructor Info:</li>
-              <!--<li class="active"><a href="#">Link</a></li>-->
-              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
-              <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
-              
-
-            </ul>
-          </div><!--/.well -->
+      	 <%= render 'newhires/instructorinfo_basic' %>
     </div>
     <div class="span9">
     	<%= form_for(@newhirecredits) do |f| %>
@@ -19,56 +10,60 @@
         	<%= hidden_field_tag 'course_id', params[:course_id] %>
 		    	<fieldset class="round">
 							<legend>
-								Add Relevant Coursework: 
+								Add Relevant Coursework 3: 
 							</legend>
 							
-								<table class="no-zebra no-hover">
-									<tr>	
-										<th>Course ID (ex: CDA 6031)</th>
-										<th>Course Name (ex: Data Mining)</th>
-										<th>Course Year (ex: 1995)</th>
-										<!-- <th>Institution</th> -->
-										<th>Course Credits (ex: 3)</th>
-										
-									</tr>
-									<tr>
-										<td><%= f.text_field :course_name,  :class => "text" %></td>
-										<td><%= f.text_field :course_description,  :class => "text"  %></td>
-										<td><%= f.text_field :course_year,  :class => "text"  %></td>
-										<!-- <td>
-											<%#= collection_select(:newhirecredit,
-																   :newhireinstitution_id,		   
-																   @newhireinstitutions,
-																   :id,
-																   :name
-																	)%> </td> -->
-										<td><%= f.text_field :course_credits, :class => "text"  %></td>
-										
-									</tr>
-									<tr>
-										<td colspan="4">
-											<strong>Institution:<strong><br>
-											<%= collection_select(:newhirecredit,
-																   :newhireinstitution_id,		   
-																   @newhireinstitutions,
-																   :id,
-																   :name,
-																   {:selected => @newhirecredits.newhireinstitution_id}
-																	)%>
-										</td>
-									</tr>
-									<tr>
-										<td><br/><br/></td>
-									</tr>
-								</table>
-								<table class="no-zebra no-hover">
-									<tr>
-								    	<td colspan="2"> 	
-								 			Click <%= f.submit 'Update', :id => "Update" , :disabled => current_user.ro %> to save this course.<br/><br/>
-								 		</td>
-							 		</tr>
-									
-								</table>							
+									<table class="table table-striped">
+					<tr>	
+						<th>Course ID (ex: CDA 6031)</th>
+						<th>Course Name (ex: Data Mining)</th>
+						<th>Course Year (ex: 1995)</th>
+						
+					</tr>
+					<tr>
+						<td><%= f.text_field :course_name, :class => "text" %></td>
+						<td><%= f.text_field :course_description,  :class => "text"  %></td>
+						<td><%= f.text_field :course_year,  :class => "text"  %></td>
+						
+						
+					</tr>
+					<tr>
+						<td>
+
+							<strong>Course Credits (ex: 3)</strong><br>
+							
+							<%= f.text_field :course_credits, :class => "text" %>
+						</td>
+						<td>
+							<strong>Semester/Quarter</strong><br>
+							<%= f.radio_button :semester_credits, "1" %> Semester<br/>
+							<%= f.radio_button :semester_credits, "0" %> Quarter<br/>
+						</td>
+						<td>
+							<strong>Institution:</strong><br>
+							<%= collection_select(:newhirecredit,
+												   :newhireinstitution_id,		   
+												   @newhireinstitutions,
+												   :id,
+												   :name,
+												    {:selected => @newhirecredits.newhireinstitution_id}
+													)%> 
+						</td>
+					</tr>
+					<tr>
+				    	<td colspan="5"> 	
+				    		<br>
+				 			Click <%= f.submit 'Update', :id => "Update" , :disabled => current_user.ro, :class => "btn" %> to save this course.<br/><br/>
+
+				 				<!--
+									Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro,  :class => "btn" %> to complete this credential.
+								-->
+					 			</td>
+				 			
+				 		</td>
+			 		</tr>			
+				</table>
+			
 							</fieldset>
 					<% end %>
 

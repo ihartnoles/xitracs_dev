@@ -1,17 +1,40 @@
 <fieldset class="round">
-          <legend class="heading">Signoff:</legend>  
-            <table class="profile no-zebra no-hover">
+          <h4>
+           Signoff:
+          </h4>  
+            <table class="table table-condensed">
              <%= form_for @newhiresignoff, :url => '/newhires/approve_course' do |f| %>
-                <%#= f.hidden_field  :newhirereason, :newhire_id %>
-                <%= hidden_field_tag 'newhirereviewreason[newhire_id]', params[:newhire_id] %>
-                <%= hidden_field_tag 'newhirereviewreason[course_id]', params[:id] %>
-                <%#= hidden_field  :newhirereason, :id %>
+                <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+                <%= hidden_field_tag 'course_id', params[:course_id] %>
 
               
                 <!-- TO DO: add a status value to DB and change these fieldnames -->
-                <%= f.radio_button :signed_off, "0" %> Pending
-                <%= f.radio_button :signed_off, "1" %> Passed
-                <%= f.radio_button :signed_off, "2", {:onclick => "comments_alert();"} %> Not Passed
+                 <%= f.radio_button :signed_off , "1"%> Signoff and notify 
+                  
+                  <% if session[:group_name] == "chair" %>          
+                   Dean's office
+                  <% end %>
+                  <% if session[:group_name] == "dean" %>          
+                   Provost's office
+                  <% end %>
+                  <% if session[:group_name] == "admin" %>          
+                   Provost's office
+                  <% end %>
+
+                  <br>
+
+                  <%= f.radio_button :signed_off , "0" %> Return to
+                  <% if session[:group_name] == "chair" %>          
+                   Department
+                  <% end %>
+                  <% if session[:group_name] == "dean" %>          
+                   Department Chair
+                  <% end %>
+                  <% if session[:group_name] == "admin" %>          
+                   Dean's office
+                  <% end %>
+
+                  for corrections
             
                 <br/>
               

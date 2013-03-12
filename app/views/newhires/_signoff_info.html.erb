@@ -2,19 +2,24 @@
         <% if (@newhire_reasons_added.count > 0) %>
           <form>
             <fieldset class="round">
-              <h4>Sign-off Log:</h4>  
-              <table  class="table">
-                <th>Status</th>
+              <h4>
+                 <%= link_to image_tag('/assets/Add_16x16.png'),
+                        {:controller => 'newhires', :action => 'signoff',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
+                            :onClick=>"window.open(this.href,'Sign off','height=500, width=700'); return false;" ,
+                              :title => 'Sign off on this credential', :rel => 'tooltip'%>
+                Sign-off Status:
+             </h4>  
+              <table  class="table table-condensed">
+                <th>Signoff Status</th>
                 <th>Comment</th>
-                <th>Reviewed By</th>
-                <th>Reviewed On</th>                
-                <% @newhire_reasons_added.each do |nhr| %>
-                  <tr>
-                    <td><%= nhr.review_state_name(nhr.review_state) %></td>
-                    <td><%= nhr.review_comments.html_safe %></td>           
-                    <td><%= nhr.reviewer_name(nhr.reviewer_id) %></td>
-
-                    <td><%= nhr.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
+                <th>Created By</th>
+                <th>Created On</th>                
+                <% @newhire_signoffs.each do |nhs| %>
+                  <tr  <% if nhs.signed_off == 1 %>class="success"<% else %>class="error"<% end %> >
+                    <td><%= nhs.status(nhs.signed_off) %></td>
+                    <td><%= nhs.comment.html_safe %></td>
+                    <td><%= nhs.signed_off_by(nhs.user_id) %></td>
+                    <td><%= nhs.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
                   </tr> 
                 <% end %>
               </table>

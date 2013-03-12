@@ -1,54 +1,68 @@
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span3">
+    
+   <div class="span3">
       <!--Sidebar content-->
-      <!--Sidebar content-->
-      <%= render 'newhires/instructorinfo_basic' %>
-    </div>
+      <%= render 'newhires/instructorinfo_basic' %>        
+    </div>   
+
     <div class="span9">
       <!--Body content-->
-     <%= form_for(@newhirecredits) do |f| %>
+     <%= form_for @newhirecredits , :url => '/newhirecredits'  do |f| %>
 		<fieldset class="round">
-			<legend>
-				Add Relevant Coursework: 
-			</legend>
+			<h4>
+				Add Relevant Coursework 2: 
+			</h4>
 						
 				<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
                 <%= hidden_field_tag 'course_id', params[:course_id] %>
 				<%= hidden_field_tag 'source', 'New' %>
 
-				<table class="profile no-zebra">
+				<table class="table table-striped">
 					<tr>	
 						<th>Course ID (ex: CDA 6031)</th>
 						<th>Course Name (ex: Data Mining)</th>
 						<th>Course Year (ex: 1995)</th>
 						
-						<th>Course Credits (ex: 3)</th>
-						
-						</tr>
+					</tr>
 					<tr>
-						<td><%= f.text_field :course_name,  :class => "text" %></td>
+						<td><%= f.text_field :course_name, :class => "text" %></td>
 						<td><%= f.text_field :course_description,  :class => "text"  %></td>
 						<td><%= f.text_field :course_year,  :class => "text"  %></td>
 						
-						<td><%= f.text_field :course_credits, :class => "text"  %></td>
 						
 					</tr>
 					<tr>
-						<td colspan="4">
+						<td>
+
+							<strong>Course Credits (ex: 3)</strong><br>
+							
+							<%= f.text_field :course_credits, :class => "text" %>
+						</td>
+						<td>
+							<strong>Semester/Quarter</strong><br>
+							<%= f.radio_button :semester_credits, "1" %> Semester<br/>
+							<%= f.radio_button :semester_credits, "0" %> Quarter<br/>
+						</td>
+						<td>
 							<strong>Institution:</strong><br>
 							<%= collection_select(:newhirecredit,
 												   :newhireinstitution_id,		   
 												   @newhireinstitutions,
 												   :id,
-												   :name
-													)%> </td>
+												   :name,
+												    :prompt => true
+													)%> 
+						</td>
 					</tr>
 					<tr>
-				    	<td colspan="4"> 	
+				    	<td colspan="5"> 	
+				    		<br>
 				 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => "btn" %> to save this course.<br/><br/>
 
+				 				<!--
 									Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro,  :class => "btn" %> to complete this credential.
+								-->
 					 			</td>
 				 			
 				 		</td>
@@ -57,43 +71,49 @@
 			
 			</fieldset>
 		<% end %>
-
-		<form>  
+ 			
+ 			<%# if false %>
 					<% if @newhire_credits_added.count > 0 %>
+						<br>
 						<fieldset class="round">
-							<legend>Relevant Coursework Added:</legend>
-							<table>
-							<tr>
-
-								<th>Course ID</th>
-								<th>Course Name</th>
-								<th>Course Year </th>
-								<th>Institution</th>
-								<th>Course Credits</th>
-
-
-							<tr>
-
+							<h4>Existing Coursework:</h4>
+							<table class="table table-striped">
+							<th>Course ID</th>
+							<th>Course Name</th>
+							<th>Course Year </th>
+							<th>Institution</th>
+							<th>Credits</th>
+							<th>Credit Type</th>
+							
 							<% @newhire_credits_added.each do |cr| %>
-							<tr>
-								<td><%=  cr.course_name %> </td>
-								<td><%=  cr.course_description %> </td>
-								<td><%=  cr.course_year %> </td>
-								<td><%=  cr.newhireinstitution.name %></td>
-								<td><%=  cr.course_credits %> </td>
-
-							</tr>
-
-
-
+								<tr>
+									<td><%=  cr.course_name %> </td>
+									<td><%=  cr.course_description %> </td>
+									<td><%=  cr.course_year %> </td>
+									<td><%=  cr.newhireinstitution.name %></td>
+									<td><%=  cr.course_credits %> </td>
+									 <td>                                  
+	                                   <% if cr.semester_credits %>
+	                                      semester
+	                                  <% else %>
+	                                      quarter
+	                                  <% end %>
+	                                </td>
+								</tr>
 							<% end %>
-
+								 <tr>
+                              <td colspan="7">
+                                <div align="right">
+                                  <strong>Total Semester Hours: <%= @total_credits.to_s  %></strong>
+                                </div>
+                              </td>
+                            </tr>
 							</table>
 					   </fieldset>
 
 
 					<% end %>
-			</form>
+		   <%# end %>
     </div>
   </div>
 </div>

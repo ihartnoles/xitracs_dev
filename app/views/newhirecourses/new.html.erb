@@ -11,8 +11,8 @@
 						 <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
 
 						<fieldset class="round">
-							<legend>To Teach:</legend>
-							<table  class="profile">
+							<h4>To Teach:</h4>
+							<table  class="table table-condensed">
 								<tr>
 									<td><strong>Course Prefix and Number:</strong></td>
 									<td> <%= text_field_tag 'course_name' %></td>
@@ -36,7 +36,7 @@
 								</tr>	
 								<tr>
 									<td colspan="2">
-									Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro %> to save this course.</p>
+									Click <%= f.submit 'Add', :id => "Add" , :class => 'btn' %> to save this course.</p>
 								</tr>
 							</table>
 						</fieldset>

@@ -115,6 +115,21 @@ class NewhiresController < ApplicationController
 
       @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
       
+      #Tally total credis
+      @total_credits=0.0
+       if @newhire_credits_added.count > 0
+         @newhire_credits_added.each do |idx|
+            if idx.semester_credits == 1
+              #calculate semester hours
+              @total_credits = @total_credits + idx.course_credits.to_f
+            else
+              #calculate quarter hours
+              @total_credits = @total_credits + (idx.course_credits.to_f * 2.0) / 3.0
+            end
+         end
+      end
+
+
       @newhire_comments_added = Newhirecomment.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
 
       @newhire_messages_added = Newhirereviewmessage.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
@@ -136,8 +151,6 @@ class NewhiresController < ApplicationController
        #else
        @newhirereason = Newhirereviewreason.new 
        #end        
-
-       
      
   end
 

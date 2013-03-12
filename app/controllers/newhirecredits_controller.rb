@@ -4,14 +4,33 @@ class NewhirecreditsController < ApplicationController
       @newhirecredits = Newhirecredit.new
       @newhireinstitutions = Newhireinstitution.all
       @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
+      
+      #Tally total credis
+      @total_credits=0.0
+       if @newhire_credits_added.count > 0
+         @newhire_credits_added.each do |idx|
+            if idx.semester_credits
+              #calculate semester hours
+              @total_credits = @total_credits + idx.course_credits.to_f
+            else
+              #calculate quarter hours
+              @total_credits = @total_credits + (idx.course_credits.to_f * 2.0) / 3.0
+            end
+         end
+      end
+
       @newhirecourses = Newhirecourse.where(:newhire_id => params[:id], :course_id => params[:course_id])   
       @newhire_dept = Department.find(@newhire.department_id) 
+      @newhire_course_to_review = Newhirecourse.find(params[:course_id])
+
+      #render :layout => 'simple'
     end
 
     def edit
       @newhire = Newhire.find(params[:newhire_id])
       @newhirecredits = Newhirecredit.find(params[:id])
       @newhireinstitutions = Newhireinstitution.all
+      @newhire_dept = Department.find(@newhire.department_id)
     end
 
     def update
@@ -64,11 +83,14 @@ class NewhirecreditsController < ApplicationController
 	    			)
 	    			 flash[:notice] = 'Please fill out all fields'
 	    			 
-	    			 if (params.has_key?(:source))
-					  	redirect_to new_newhirecredit_path(:newhire_id => params[:id])
-					  else
-					  	redirect_to newhirecredits_path
-					  end
+	    			  #if (params.has_key?(:source))
+					  #	redirect_to new_newhirecredit_path(:newhire_id => params[:id])
+					  #else
+					  #	redirect_to newhirecredits_path
+					  #end
+
+					redirect_to newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id]) 
+
 	    		else
 	    	 	  @newhirecredit   = Newhirecredit.new(params[:newhirecredit])
 			 	  @newhirecredit.newhire_id =  params[:newhire_id]
