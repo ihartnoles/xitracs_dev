@@ -3,13 +3,14 @@
   <div class="row-fluid">
     <div class="span3">
       <!--Sidebar content-->
-      	 <div class="well sidebar-nav">
+      	 <div class="well sidebar-nav"  style="background-color:#fcf8e3;">
             <ul class="nav nav-list">
               <li class="nav-header">Instructor Info:</li>
               <!--<li class="active"><a href="#">Link</a></li>-->
               <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
               <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
-              
+              <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
+              <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
 
             </ul>
           </div><!--/.well -->
@@ -46,11 +47,11 @@
 									</tr>	
 									<tr>
 										<td colspan="2">
-										Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => 'btn' %> to save this course.</p>
+										Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => 'btn btn-small btn-primary' %> to save this course.</p>
 									</tr>
 									<tr>
 										<td colspan="2">
-											Click <%= f.submit 'Continue', :id => "Continue" , :class => 'btn' %> to finish this section and continue precredentialing.
+											Click <%= f.submit 'Continue', :id => "Continue" , :class => 'btn btn-small btn-primary' %> to finish this section and continue precredentialing.
 										</td>
 									</tr>
 									

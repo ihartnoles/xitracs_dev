@@ -12,6 +12,7 @@ XitracsRoster::Application.routes.draw do
   #resources :precredentialing
   resources :newhires do
      collection do
+        post 'savename'
         get  'review_course'
         post 'review_course'
         get  'list'
@@ -139,6 +140,7 @@ XitracsRoster::Application.routes.draw do
   get  "/newhires/review_dialog"
   post "/newhires/save_review"
 
+  post "/newhires/savename"
   
 
   post "/newhires/save_signoff"
@@ -185,7 +187,8 @@ XitracsRoster::Application.routes.draw do
   match '/newhires/send_review_msg', to: 'newhires#send_review_msg' , :as => :newhire_send_review_msg
   match '/newhires/approve_course', to: 'newhires#approve_course' , :as => :newhire_approve_course
   match '/newhires/schools', to: 'newhires#schools' , :as => :newhire_schools
-  #match '/newhires/signoff', to: 'newhires#signoff' , :as => :newhire_signoff
+  #match '/newhires/create', to: 'newhires#create' , :as => :newhire_create
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

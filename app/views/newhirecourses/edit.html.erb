@@ -19,10 +19,10 @@
       <%= form_for(@newhirecourse) do |f| %>
 				<%= hidden_field_tag :newhire_id, params[:newhire_id] %>		
       	<fieldset class="round">
-			<legend>To Teach:</legend>
+			<h4>To Teach:</h4>
 			
 
-				<table  class="table table-striped">
+				<table  class="table">
 					<tr>
 						<td><strong>Course Prefix and Number:</strong></td>
 						<td> <%= f.text_field :name %></td>
@@ -35,13 +35,15 @@
 
 
 					<tr>
-						<td colspan="2"><strong>Brief Course Description:</strong>
-							<%= f.text_area :description %></td>
+						<td colspan="2">
+							<strong>Brief Course Description:</strong>
+							<%= f.text_area :description %>
+						</td>
 					</tr>
 
 					<tr>
 						<td colspan="2">
-						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro %> to save this course.</p>
+						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro , :class => 'btn btn-small btn-primary'%> to save this course.</p>
 					</tr>
 				</table>
 			

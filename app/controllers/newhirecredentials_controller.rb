@@ -1,4 +1,6 @@
 class NewhirecredentialsController < ApplicationController
+  
+  layout "precredentialing"
   # GET /newhirecredentials
   # GET /newhirecredentials.json
   def index

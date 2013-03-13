@@ -1,5 +1,6 @@
 class PrecredentialingController < ApplicationController
   
+  layout "precredentialing"
  
 
   def credentialsform

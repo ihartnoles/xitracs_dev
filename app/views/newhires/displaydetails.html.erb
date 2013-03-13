@@ -9,9 +9,9 @@
       	<!--Body content-->
       	<form>
       		<fieldset class="round">
-			<legend>
-				Courses To Teach: <%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id]) , :title => 'Add course', :rel => 'tooltip'  %>
-			</legend>
+			<h4>
+				<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id]) , :title => 'Add course', :rel => 'tooltip'  %> Courses To Teach: 
+			</h4>
 			
 				<table  class="table table-striped">
 					<th>Prefix & Number</th>

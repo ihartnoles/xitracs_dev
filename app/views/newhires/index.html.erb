@@ -4,27 +4,30 @@
 
 			<div class="content">
 					<fieldset class="round">
-						<legend>Instructor Name:</legend>
-							<table class="no-zebra no-hover">
-								<%= form_for @newhire do |f| %>
-								<tr>
-									<td width="10%"><strong>Firstname:</strong></td>
-									<td><%= text_field_tag 'first_name'%></td>
-								</tr>
+						<h4>New Instructor Name:</h4>
+							<table class="profile no-zebra no-hove">
+									<%= form_for @newhire, :url => "/newhires/savename" do |f| %>
+									<tr>
+										<td width="10%"><strong>First:</strong></td>
+										<td><%= text_field_tag 'first_name'%></td>
+									</tr>
 
-								<tr>
-									<td><strong>Middle name:</strong></td>
-									<td><%= text_field_tag 'middle_name'%></td>
-								</tr>
+									<tr>
+										<td><strong>Middle:</strong></td>
+										<td><%= text_field_tag 'middle_name'%></td>
+									</tr>
 
-								<tr>
-									<td><strong>Last name:</strong> </td>
-									<td><%= text_field_tag 'last_name'%></td>
-								</tr>
-
+									<tr>
+										<td><strong>Last:</strong> </td>
+										<td><%= text_field_tag 'last_name'%></td>
+									</tr>
+									<tr>
+										<td colspan="2"><%= f.submit "Save & Continue" , :class => 'btn btn-small btn-primary' %></td>
+									</tr>
+								<% end %>
 							</table>
-							<%= f.submit "Save & Continue" , :class => 'btn' %>
-							<% end %>
+								
+							
 					</fieldset>
 			</div>
 		</div><!-- #container -->

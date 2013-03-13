@@ -1,5 +1,8 @@
 class NewhirecreditsController < ApplicationController
-	def index
+	
+  layout "precredentialing"
+
+  def index
 	  @newhire = Newhire.find(params[:newhire_id])
       @newhirecredits = Newhirecredit.new
       @newhireinstitutions = Newhireinstitution.all

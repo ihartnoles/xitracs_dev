@@ -1,4 +1,7 @@
 class NewhirecommentController < ApplicationController
+  
+  layout "precredentialing"
+
   def index
     @newhire = Newhire.find(session[:newhire_id])
   	@comment = Newhirecomment.new

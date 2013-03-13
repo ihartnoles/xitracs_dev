@@ -1,6 +1,6 @@
 
-        <% if (@newhire_reasons_added.count > 0) %>
-          <form>
+        
+         
             <fieldset class="round">
               <h4><%= link_to image_tag('/assets/Add_16x16.png'),
                         {:controller => 'newhires', :action => 'review_dialog',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
@@ -9,27 +9,39 @@
                               Review Comments:
               </h4>  
               <table  class="table table-condensed">
-                <th>Review Status</th>
-                <th>Comment</th>
-                <th>Reviewed By</th>
-                <th>Reviewed On</th>                
-                <% @newhire_reasons_added.each do |nhr| %>
-                  <tr
+                <% if (@newhire_reasons_added.count > 0) %>
+                    <th>Review Status</th>
+                    <th>Comment</th>
+                    <th>Reviewed By</th>
+                    <th>Reviewed On</th>                
+                    <% @newhire_reasons_added.each do |nhr| %>
+                        <tr
 
-                      <% if nhr.review_state == 0 %>class="warning"<% end %>
-                      <% if nhr.review_state == 1 %>class="success"<% end %>
-                      <% if nhr.review_state == 2 %>class="error"<% end %>
+                            <% if nhr.review_state == 0 %>class="warning"<% end %>
+                            <% if nhr.review_state == 1 %>class="success"<% end %>
+                            <% if nhr.review_state == 2 %>class="error"<% end %>
 
 
-                  >
-                    <td><%= nhr.review_state_name(nhr.review_state) %></td>
-                    <td><%= nhr.review_comments.html_safe %></td>           
-                    <td><%= nhr.reviewer_name(nhr.reviewer_id) %></td>
+                        >
+                          <td><%= nhr.review_state_name(nhr.review_state) %></td>
+                          <td><%= nhr.review_comments.html_safe %></td>           
+                          <td><%= nhr.reviewer_name(nhr.reviewer_id) %></td>
 
-                    <td><%= nhr.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
-                  </tr> 
+                          <td><%= nhr.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
+                        </tr> 
+                      <% end %>
+                 <% else %>
+                   <tr>
+                      <td>
+                        <div class="alert alert-error">
+                          <div align="center">
+                            No review comments exist
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
                 <% end %>
               </table>
             </fieldset> 
-          </form>
-        <% end %>
+         
+       

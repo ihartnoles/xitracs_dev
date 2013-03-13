@@ -1,5 +1,6 @@
 class NewhiresController < ApplicationController
-    
+  layout "precredentialing"
+
   def index  	
     	@newhire = Newhire.new    
   end
@@ -45,6 +46,32 @@ class NewhiresController < ApplicationController
      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])   
      @newhire_dept = Department.find(@newhire.department_id)  
      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
+  end
+
+  def savename
+       if ( params[:first_name].blank? || params[:last_name].blank? ) 
+          flash[:notice] = 'Please provide both a firstname and a lastname'
+          redirect_to newhires_path
+      else
+          @newhire = Newhire.new(:first_name => params[:first_name], :middle_name => params[:middle_name],:last_name =>params[:last_name], :school_id => session[:school_id], :department_id => session[:department_id])
+      
+          if params[:middle_name].blank? 
+             @newhire.middle_name = nil
+          else 
+             @newhire.middle_name = params[:middle_name]
+          end
+
+          if @newhire.save
+            session[:newhire_id] = @newhire.id
+            session[:newhire_info] = @newhire
+            #redirect_to next_wizard_path
+             flash[:notice] = "Instructor successfully created."
+            redirect_to newhirecourses_path(:newhire_id => @newhire.id)
+          else
+            flash[:notice] = "Instructor NOT saved!"
+            redirect_to newhirecourses_path(:newhire_id => @newhire.id)
+          end  
+      end
   end
 
   def departments
@@ -307,31 +334,7 @@ class NewhiresController < ApplicationController
      redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 
-  def create
-       if ( params[:first_name].blank? || params[:last_name].blank? ) 
-          flash[:notice] = 'Please provide both a firstname and a lastname'
-          redirect_to newhires_path
-        else
-  	      @newhire = Newhire.new(:first_name => params[:first_name], :middle_name => params[:middle_name],:last_name =>params[:last_name], :school_id => session[:school_id], :department_id => session[:department_id])
-		  
-          if params[:middle_name].blank? 
-          	 @newhire.middle_name = nil
-          else 
-          	 @newhire.middle_name = params[:middle_name]
-          end
 
-      	  if @newhire.save
-      	    session[:newhire_id] = @newhire.id
-            session[:newhire_info] = @newhire
-      	    #redirect_to next_wizard_path
-             flash[:notice] = "Instructor successfully created."
-      	    redirect_to newhirecourses_path 
-      	  else
-      	    redirect_to newhirecourses_path
-      	  end	 
-       end
-  end
- 
   def review_msg 
      @message = Newhirereviewmessage.new    
   end

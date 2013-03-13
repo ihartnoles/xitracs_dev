@@ -7,9 +7,9 @@
     </div>
     <div class="span9">
       <!--Body content-->
-      <form>		
+     		
 					<fieldset class="round">
-						<legend>Documents:</legend>
+						<h4>Documents:</h4>
 							<table  class="table table-striped">
 								<tr>
 								<td colspan="2"><strong>The following documents are required by the Provost's office:</strong></td>
@@ -18,11 +18,14 @@
 									<% Newhiredoctype.all.each do |dt| %>
 					    				<tr>
 					 						<td><%=  dt.name.humanize %></td>
-					 						<td><%= link_to image_tag('/assets/Upload_16x16.png'),
-						 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id, :newhire_id => params[:newhire_id], :course_id => params[:course_id]}, 
-			        							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" ,
-			        							  :title => 'Upload', :rel => 'tooltip'
-										%></td>
+					 						<td>
+					 							<% if dt.id != 1 %>
+						 							<%= link_to image_tag('/assets/Upload_16x16.png'),
+							 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id, :newhire_id => params[:newhire_id], :course_id => params[:course_id]}, 
+				        							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" ,
+				        							:title => 'Upload', :rel => 'tooltip'%>
+				        						<% end %>
+			        						</td>
 					 					</tr>
 									<% end %>		
 
@@ -35,13 +38,13 @@
 							-->
 							</table>
 					</fieldset>
-				</form>
+			
 
 
 				 <% if @newhire_docs_added.count > 0 %>
-			<form>	
+			
 				 <fieldset class="round">
-					<legend>Documents uploaded:</legend>
+					<h4>Documents uploaded:</h4>
 						<table  class="table table-striped">
 							<th>Name</th>
 							<th>Location</th>
@@ -58,14 +61,14 @@
 				 			<% end %>	
 						</table>
 				</fieldset>
-			</form>
+			
 		<% end %>
 
-		<form>	
+			
 		Click
 			<input type="button" class="btn" name="Continue" value="Contine"  onclick="window.location.href='newhires/review_course?id=<%= params[:course_id]%>&newhire_id=<%= params[:newhire_id] %>'">
-			to finish this section and continue precredentialing.
-		</form>
+			to finish the upload process.
+		
     </div>
   </div>
 </div>

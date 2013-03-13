@@ -1,5 +1,7 @@
 class NewhirereviewreasonsController < ApplicationController
 
+	layout "precredentialing"
+	
 	def create
 		
         @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_id], 

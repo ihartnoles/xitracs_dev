@@ -1,12 +1,14 @@
 class NewhirecoursesController < ApplicationController
 
-
+  layout "precredentialing"
+  
   def index
     @newhire = Newhire.find(session[:newhire_id])
 
   	@newhirecourse = Newhirecourse.new
-  	#@newhire_courses_added = Newhirecourse.where(:newhire_id => params[:newhire_id])
-    @newhire_courses_added = Newhirecourse.where(:newhire_id => session[:newhire_id])
+  	@newhire_courses_added = Newhirecourse.where(:newhire_id => params[:newhire_id])
+    #@newhire_courses_added = Newhirecourse.where(:newhire_id => session[:newhire_id])
+    @newhire_dept = Department.find(@newhire.department_id)
   end
 
   def edit

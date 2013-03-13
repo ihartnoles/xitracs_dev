@@ -11,7 +11,7 @@
      <%= form_for @newhirecredits , :url => '/newhirecredits'  do |f| %>
 		<fieldset class="round">
 			<h4>
-				Add Relevant Coursework 2: 
+				Add Relevant Coursework: 
 			</h4>
 						
 				<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
@@ -58,7 +58,7 @@
 					<tr>
 				    	<td colspan="5"> 	
 				    		<br>
-				 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => "btn" %> to save this course.<br/><br/>
+				 			Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => 'btn btn-small btn-primary' %> to save this course.<br/><br/>
 
 				 				<!--
 									Click <%= f.submit 'Done', :id => "Done", :disabled => current_user.ro,  :class => "btn" %> to complete this credential.
