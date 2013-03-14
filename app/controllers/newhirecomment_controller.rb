@@ -3,14 +3,16 @@ class NewhirecommentController < ApplicationController
   layout "precredentialing"
 
   def index
-    @newhire = Newhire.find(session[:newhire_id])
+    @newhire = Newhire.find(params[:newhire_id])
   	@comment = Newhirecomment.new
+    @newhire_dept = Department.find(@newhire.department_id) 
+    @newhirecredential = Newhirecredential.new
   end
 
   def create
   	if (params[:commit] == 'Save') 
   		@comment = Newhirecomment.new(params[:newhirecomment])
-  		@comment.newhire_id = session[:newhire_id]
+  		@comment.newhire_id = params[:newhire_id]
   		@comment.user_id = current_user.id
 
 	  	 if @comment.save

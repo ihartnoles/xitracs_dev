@@ -3,13 +3,15 @@
   <div class="row-fluid">
     <div class="span3">
       <!--Sidebar content-->
-       <div class="well sidebar-nav">
+       <div class="well sidebar-nav" style="background-color:#fcf8e3;">
             <ul class="nav nav-list">
               <li class="nav-header">Instructor Info:</li>
               <!--<li class="active"><a href="#">Link</a></li>-->
               <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
               <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
-              
+              <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
+              <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
+                         
 
             </ul>
           </div><!--/.well -->
@@ -20,9 +22,10 @@
 				<%= hidden_field_tag :newhire_id, params[:newhire_id] %>		
       	<fieldset class="round">
 			<h4>To Teach:</h4>
-			
-
-				<table  class="table">
+				
+				<table  class="table table-condensed">
+					<th></th>
+				    <th></th>
 					<tr>
 						<td><strong>Course Prefix and Number:</strong></td>
 						<td> <%= f.text_field :name %></td>
@@ -36,14 +39,15 @@
 
 					<tr>
 						<td colspan="2">
-							<strong>Brief Course Description:</strong>
-							<%= f.text_area :description %>
+							<strong>Description:</strong>
+							<%= f.text_area :description, :class => 'ckeditor' %>
 						</td>
 					</tr>
 
 					<tr>
 						<td colspan="2">
 						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro , :class => 'btn btn-small btn-primary'%> to save this course.</p>
+						</td>
 					</tr>
 				</table>
 			

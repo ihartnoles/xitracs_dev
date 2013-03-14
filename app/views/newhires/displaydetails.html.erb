@@ -13,7 +13,7 @@
 				<%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id]) , :title => 'Add course', :rel => 'tooltip'  %> Courses To Teach: 
 			</h4>
 			
-				<table  class="table table-striped">
+				<table  class="table table-condensed">
 					<th>Prefix & Number</th>
 					<th>Title</th>
 					<th>Description</th>
@@ -22,7 +22,7 @@
 			    			<tr>
 			    				<td><%=  ca.name %></td> 
 			 					<td><%=  ca.title.humanize %></td>
-			 					<td><%=  ca.description.humanize %></td> 	
+			 					<td><%=  ca.description.humanize.html_safe %></td> 	
 			 					<td>
 
 			 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]),  :title => 'More details', :rel => 'tooltip' %>

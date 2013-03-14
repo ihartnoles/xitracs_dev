@@ -14,6 +14,7 @@ class NewhirecoursesController < ApplicationController
   def edit
    @newhire = Newhire.find(params[:newhire_id])
 	 @newhirecourse = Newhirecourse.find(params[:id])
+   @newhire_dept = Department.find(@newhire.department_id)
   end
 
   def update

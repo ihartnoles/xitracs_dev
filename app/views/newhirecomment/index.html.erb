@@ -1,12 +1,18 @@
-<%#= @newhire.details %> <br>
 
-<div id="wrapper">
-  <div id="middle">
-    <div id="container">
 
-		<div id="content">
-			<fieldset class="round">
-				<legend>
+<div class="container-fluid">
+  <div class="row-fluid">
+   
+      <div class="span3">
+         <!--Sidebar content-->
+         <%= render 'newhires/instructorinfo_basic' %>
+      </div>
+      <div class="span9">
+        <!--Body content-->
+        
+
+          <fieldset class="round">
+                  <legend>
 					Additional Comments: 
 				</legend>
 				<table>
@@ -16,10 +22,15 @@
 					<tr>
 						<td>
 							<%= form_for @comment,  :url => newhirecomment_create_path  do |f| %>
-							    <%= hidden_field_tag 'newhire_id', @newhire.id %>
-								<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications" %> 	
+							   
+
+
+                   <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+                   <%= hidden_field_tag 'course_id', params[:course_id] %>
+                   
+								<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications", :class => "ckeditor" %> 	
 								<br/>
-								Click <%= f.submit  "Save", :disabled => current_user.ro %> to save this Qualification/Comment and finish the form.
+								Click <%= f.submit  "Save", :disabled => current_user.ro, :class => 'btn btn-small btn-primary' %> to save this Qualification/Comment and finish the form.
 								<br/>
 								<!--
 								Click <%#= f.submit  "Finish", :disabled => current_user.ro %> to finish the Certification of Credentials and Qualifications
@@ -29,16 +40,10 @@
 						</td>
 					</tr>
 				</table>
-			</fieldset>
-		</div>
-	</div><!-- #container-->
-
-	 <div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-	    -webkit-border-radius: 20px;
-	    -khtml-border-radius: 20px;
-	    border-radius: 20px;">
-	        <%= @newhire.details %>
+                          
+                               
+            </fieldset>
+       
       </div>
-
-  </div><!-- #middle-->
-</div><!-- #wrapper -->
+  </div>
+</div>

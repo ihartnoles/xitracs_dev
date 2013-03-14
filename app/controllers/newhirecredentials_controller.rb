@@ -4,7 +4,7 @@ class NewhirecredentialsController < ApplicationController
   # GET /newhirecredentials
   # GET /newhirecredentials.json
   def index
-    @newhire = Newhire.find(session[:newhire_id])
+    @newhire = Newhire.find(params[:newhire_id])
     @newhirecredentials = Newhirecredential.all
 
     @qualificationreasons = Qualificationreason.all

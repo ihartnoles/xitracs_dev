@@ -71,7 +71,7 @@
                             #:onClick=>"window.open(this.href,'Details','height=550, width=600'); return false;"
                             %>
                 </div>-->
-                  <table class="table table-condensed">
+                  <table class="table table-condensed table-striped">
                     <% if @newhiredocuments.count > 0 %>
                       <th>Name</th>
                       <th>Location</th>
@@ -109,7 +109,7 @@
                     Instructor Credentialed to Teach Based On:
                   </h4>
                       
-                        <table  class="table table-condensed">
+                        <table  class="table table-condensed table-striped">
                           <% if @newhirecredentials.count > 0 %>
                             <th>Reason</th>
                             <th>Explanation</th>
@@ -117,7 +117,7 @@
                             <% @newhirecredentials.each do |c| %>
                                 <tr>
                                   <td><%= c.qualificationreason.name %></td>  
-                                <td><%=  c.qualification_explanation %></td> 
+                                <td><%=  c.qualification_explanation.html_safe %></td> 
                                 
                               </tr>
                             <% end %>
@@ -144,7 +144,7 @@
                       Relevant Coursework:                      
                     </h4>                         
                              
-                      <table  class="table table-condensed">
+                      <table  class="table table-condensed table-striped">
                         <% if @newhire_credits_added.count > 0 %>
                           <th>Course ID</th>
                           <th>Course Name</th>
@@ -201,7 +201,7 @@
             <% if @newhire_comments_added.count > 0 %>
                <fieldset class="round">
                  <h4>Coursework Comments:</h4>
-                    <table  class="table table-condensed">                     
+                    <table  class="table table-condensed table-striped">                     
                         <th>Comment</th>
                         <% @newhire_comments_added.each do |cm| %>
                           <tr>
