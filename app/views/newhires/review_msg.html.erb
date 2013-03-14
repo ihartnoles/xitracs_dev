@@ -5,7 +5,7 @@
 <fieldset class="round">
 	<legend>Notification Message:</legend>
 		<table class="no-zebra no-hover">
-			<%= form_for @message, :url => '/newhires/send_review_msg' do |m| %>
+			<%= form_for :newhirereviewmessage, :url => '/newhires/send_review_msg' do |m| %>
 
 			<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
 			<%= hidden_field_tag :course_id, params[:course_id] %>
@@ -19,13 +19,15 @@
 			<tr>
 				<td>
 					<strong>Message:</strong><br>
-					<%= m.text_area :body, :class => 'ckeditor' %>
+					<%#= m.text_area :body, :class => 'ckeditor' %>
+					<%= text_area_tag :body, '' ,:class => 'ckeditor' %>
 				</td>
 			</tr>
 
 			
 
 		</table>
-			<%= m.submit "Send Notification" %>
+			<%#= m.submit "Send Notification" %>
+			<%= submit_tag "Send Notification", :class => 'btn btn-small btn-primary' %>
 		<% end %>
 </fieldset>

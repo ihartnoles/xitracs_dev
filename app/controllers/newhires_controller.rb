@@ -336,7 +336,7 @@ class NewhiresController < ApplicationController
 
 
   def review_msg 
-     @message = Newhirereviewmessage.new    
+     #@message = Newhirereviewmessage.new    
   end
 
   def send_review_msg
