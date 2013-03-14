@@ -1,13 +1,13 @@
 <fieldset class="round">
-          <h4>
-           Signoff:
-          </h4>  
-            <table class="table table-condensed">
-             <%= form_for @newhiresignoff, :url => '/newhires/approve_course' do |f| %>
+          <legend>Signoff:</legend>  
+            <table class="profile no-zebra no-hover">
+             <%= form_for @newhiresignoff, :url => '/newhires/save_signoff' do |f| %>
                 <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
                 <%= hidden_field_tag 'course_id', params[:course_id] %>
 
-              
+                
+                <tr>
+                  <td>
                 <!-- TO DO: add a status value to DB and change these fieldnames -->
                  <%= f.radio_button :signed_off , "1"%> Signoff and notify 
                   
@@ -35,10 +35,15 @@
                   <% end %>
 
                   for corrections
-            
-                <br/>
-              
-             
+                </td>
+                </tr>         
+                <tr>
+                  <td>
+                    Send to:<br>
+                    <%= select_tag 'send_to', 
+                        options_for_select(@send_to.collect{ |u| [u.name, u.id] }) %>
+                  </td>
+                </tr>
                 <tr>
                   <td><strong> Comments: </strong></td>
                 </tr>
@@ -46,7 +51,7 @@
                   <td><%= f.text_area :comment, :class => 'ckeditor' %><br/></td>
                 </tr>
                 <tr>
-                  <td><%= f.submit  "Submit", :id => "Submit" %></td>
+                  <td><%= f.submit  "Submit", :id => "Submit" ,:class => 'btn btn-small btn-primary' %></td>
                 </tr>
 
 

@@ -2,6 +2,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3">
+      <a href="javascript:history.back();" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> Go Back
       <!--Sidebar content-->
        <div class="well sidebar-nav" style="background-color:#fcf8e3;">
             <ul class="nav nav-list">
@@ -18,42 +19,28 @@
     </div>
     <div class="span9">
       <!--Body content-->
-      <%= form_for(@newhirecourse) do |f| %>
-				<%= hidden_field_tag :newhire_id, params[:newhire_id] %>		
+     		
       	<fieldset class="round">
-			<h4>To Teach:</h4>
+			<legend>To Teach:</legend>				
+				 <%= form_for(@newhirecourse) do |f| %>
+				 <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
 				
-				<table  class="no-zebra no-hover">
-					<th></th>
-				    <th></th>
-					<tr>
-						<td><strong>Course Prefix and Number:</strong></td>
-						<td> <%= f.text_field :name %></td>
-					</tr>
-
-					<tr>
-						<td><strong>Course title:</strong> </td>
-						<td><%= f.text_field :title %></td>
-					</tr>
-
-
-					<tr>
-						<td colspan="2">
-							<strong>Description:</strong>
-							<%= f.text_area :description, :class => 'ckeditor' %>
-						</td>
-					</tr>
-
-					<tr>
-						<td colspan="2">
-						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro , :class => 'btn btn-small btn-primary'%> to save this course.</p>
-						</td>
-					</tr>
-				</table>
-			
+				
+						<label>Course Prefix and Number:</label>
+						<%= f.text_field :name %>
+					
+						<label>Course title:</label>
+						<%= f.text_field :title %>
+					
+						<label>Description:</label>
+						<%= f.text_area :description, :class => 'ckeditor' %>
+						
+						<br>
+						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro , :class => 'btn btn-small btn-primary'%> to save this course.
+			    <% end %>
 		</fieldset>
 
-      <% end %>
+   
 
  	</div>
   </div>

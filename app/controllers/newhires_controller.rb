@@ -74,6 +74,20 @@ class NewhiresController < ApplicationController
       end
   end
 
+   def save_signoff
+      signoff = Newhiresignoff.new
+      signoff.newhire_id = params[:newhire_id]
+      signoff.course_id = params[:course_id]
+      signoff.user_id = current_user.id
+      signoff.signed_off = params[:newhiresignoff][:signed_off]
+      signoff.comment = params[:newhiresignoff][:comment]
+      signoff.save
+
+      flash[:notice] = "Signoff processed!"
+      render :layout => 'simple'
+      #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+  end
+
   def departments
      #session[:school_id] = params[:school_id] if !params[:school_id].nil?
     
@@ -182,12 +196,51 @@ class NewhiresController < ApplicationController
   end
 
   def signoff
-     @newhiresignoff=Newhiresignoff.new
-     
+    @newhiresignoff=Newhiresignoff.new
+      
+      #1=admin 2=dean 3=chair    
+     if current_user.group.name == "admin"
+        @send_to=User.all          
+     elsif current_user.group.name == "dean"
+        #@send_to=User.where(:school_id => session[:school_id] ,:department_id => session[:department_id] )           
+       @send_to=User.find_by_sql(['select id, name from users where school_id = :sid',{:sid => session[:school_id]}])
+     else
+        @send_to=User.find_by_sql(['select id, name from users where school_id = :sid OR department_id = :did',{:sid => session[:school_id], :did => session[:department_id] }])       
+     end 
+   
      render :layout => 'simple'
   end
 
+  def review_msg 
+     @newhire = Newhire.find(params[:newhire_id])
+     @newhire_dept = Department.find(@newhire.department_id)  
+  end
 
+  def send_review_msg
+
+     #set up the message object
+     message = Newhirereviewmessage.new
+     message.newhire_id = params[:newhire_id]
+     message.course_id = params[:course_id]
+     message.from = current_user.name
+     message.to = params[:send_to]
+     message.body = params[:newhirereviewmessage][:body]
+     message.save
+
+     #find the newhire
+     @newhire = Newhire.find(params[:newhire_id])
+
+     #set the msg argument     
+     @msg = message.body
+    
+     #pass argumetns to the send_review_msg mailer function
+     WizardMailer.send_review_msg(@newhire,@msg).deliver
+
+     flash[:notice] = "Notification Sent!"
+
+     #redirect_to newhiredetails_path(@newhire.id)
+     redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+  end
   
   def review_dialog
      @newhirereason = Newhirereviewreason.new
@@ -227,11 +280,6 @@ class NewhiresController < ApplicationController
   end
 
 
-  
-  #def save_signoff
-    
-    #redirect_to
-  #end
 
   def approve_course
     if (params[:commit] == 'Submit')
@@ -254,7 +302,7 @@ class NewhiresController < ApplicationController
            #end
 
           #params[:newhirereason][:qualificationreason_ids] ||= [] # Handle condition where all checkboxes are unchecked. This will remove previous entries from db
-          #@newhirereason.qualificationreason_id = params[:newhirereason][:qualificationreason_ids].join(",")
+         
           @newhirereason.course_id = params[:newhirereviewreason][:course_id]
           @newhirereason.newhire_id = params[:newhirereviewreason][:newhire_id]
           @newhirereason.reviewer_id = current_user.id
@@ -264,105 +312,16 @@ class NewhiresController < ApplicationController
            @newhirereason.review_comments = params[:newhirereviewreason][:review_comments]
           end
           
-          
-
-          #if (!apply_comments_to_all.nil?) 
-           # reasons = Newhirereason.where(:newhire_id => params[:newhirereason][:newhire_id])
-           #reasons.each do |r|
-           #   if (r.review_state != Reason.review_passed)
-           #     r.update_attributes(:review_comments => params[:newhirereason][:review_comments]) 
-           #     r.update_attributes(:reviewer_id => params[:newhirereason][:reviewer_id]) 
-           #   end
-           # end
-          #end
-          
+                   
           @newhirereason.save
 
        
           redirect_to newhire_review_course_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
-         
-
-      end
-     
+      end     
   end 
  
-  def process_signoff
-      @signoff = Newhiresignoff.new
-      @signoff.newhire_id = params[:newhire_id]
-      @signoff.course_id = params[:course_id]
-      @signoff.user_id = current_user.id
-      @signoff.signed_off = params[:newhiresignoff][:signed_off]
-      @signoff.comment = params[:newhiresignoff][:comment]
-      @signoff.save
+ 
 
-      render :layout => 'simple'
-      #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
-  end
-
-
-  def process_justification_deansignoff
-    #@faculty = Faculty.find(session[:faculty_id])
-    #@course = Course.find(session[:course_id])
-    #@reason = Reason.find(session[:reason_id])   
-    #if (params.has_key?(params[:newhirereason][:id]))
-    #   @newhirereason = Newhirereason.find(params[:newhirereason][:id])
-    #else 
-
-       @newhire_reasons_added = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
-     
-       if (params.has_key?(:newhirereason_id))
-          @newhirereason = Newhirereason.find(params[:newhirereason_id])
-       else
-          @newhirereason = Newhirereason.new 
-       end  
-    
-      @newhirereason.dean_id = current_user.id
-      @newhirereason.newhire_id = params[:newhire_id]
-      @newhirereason.course_id = params[:course_id]
-      @newhirereason.dean_signoff = params[:newhirereason][:dean_signoff]
-      @newhirereason.dean_comments = params[:newhirereason][:dean_comments]
-   
-   #if (params.has_key?(params[:newhirereason][:id]))
-     
-   #   @newhirereason.update_attributes(:dean_signoff => params[:dean_signoff]) 
-   #   @newhirereason.update_attributes(:dean_comments => params[:dean_comments])
-   #else
-       @newhirereason.save
-   #end
-     # @reason.update_attributes(params[:reason])
-    
-     redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
-  end
-
-
-  def review_msg 
-     #@message = Newhirereviewmessage.new    
-  end
-
-  def send_review_msg
-
-     #set up the message object
-     message = Newhirereviewmessage.new
-     message.newhire_id = params[:newhire_id]
-     message.course_id = params[:course_id]
-     message.from = current_user.name
-     message.to = params[:send_to]
-     message.body = params[:newhirereviewmessage][:body]
-     message.save
-
-     #find the newhire
-     @newhire = Newhire.find(params[:newhire_id])
-
-     #set the msg argument     
-     @msg = message.body
-    
-     #pass argumetns to the send_review_msg mailer function
-     WizardMailer.send_review_msg(@newhire,@msg).deliver
-
-     flash[:notice] = "Notification Sent!"
-
-     #redirect_to newhiredetails_path(@newhire.id)
-     redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
-  end
+  
 
 end

@@ -5,6 +5,7 @@
    
       <div class="span3">
          <!--Sidebar content-->
+         <a href="javascript:history.back();" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> Go Back
          <%= render 'newhires/instructorinfo_basic' %>
       </div>
       <div class="span9">
@@ -22,11 +23,8 @@
 					<tr>
 						<td>
 							<%= form_for @comment,  :url => newhirecomment_create_path  do |f| %>
-							   
-
-
-                   <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
-                   <%= hidden_field_tag 'course_id', params[:course_id] %>
+							<%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+                   			<%= hidden_field_tag 'course_id', params[:course_id] %>
                    
 								<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications", :class => "ckeditor" %> 	
 								<br/>

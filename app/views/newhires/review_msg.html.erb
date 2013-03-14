@@ -1,33 +1,51 @@
-
+<div class="container-fluid">
+  <div class="row-fluid">
+	    <div class="span3">
+	      <!--Sidebar content-->
+	          <div class="well sidebar-nav" style="background-color:#fcf8e3;">
+	            <ul class="nav nav-list">
+	              <li class="nav-header" >Instructor Info:</li>
+	              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+              	  <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+              	  <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
+	              <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
+	              <li><strong>Course:</strong> <%= @newhire.course_name(params[:course_id]) %></li>
+	            </ul>
+	          </div>
+	      </div>
 	
 
-<div class="container">
-<fieldset class="round">
-	<legend>Notification Message:</legend>
-		<table class="no-zebra no-hover">
-			<%= form_for :newhirereviewmessage, :url => '/newhires/send_review_msg' do |m| %>
+		 <div class="span9">
+				<fieldset class="round">
+					<legend>Notification Message:</legend>
+						<table class="no-zebra no-hover">
+							<%= form_for :newhirereviewmessage, :url => '/newhires/send_review_msg' do |m| %>
 
-			<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
-			<%= hidden_field_tag :course_id, params[:course_id] %>
+							<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+							<%= hidden_field_tag :course_id, params[:course_id] %>
 
-			<tr>
-				<td><strong>Send to:</strong><br>
-				 	<%= select_tag :send_to, options_for_select([["Department", "department"], ["Chair", "chair"], ["Dean", "dean"], ["Provost", "provost"]]) %>
-				 </td>
-			</tr>
+							<tr>
+								<td><strong>Send to:</strong><br>
+								 	<%= select_tag :send_to, options_for_select([["Department", "department"], ["Chair", "chair"], ["Dean", "dean"], ["Provost", "provost"]]) %>
+								 </td>
+							</tr>
 
-			<tr>
-				<td>
-					<strong>Message:</strong><br>
-					<%#= m.text_area :body, :class => 'ckeditor' %>
-					<%= text_area_tag :body, '' ,:class => 'ckeditor' %>
-				</td>
-			</tr>
+							<tr>
+								<td>
+									<strong>Message:</strong><br>
+									<%= m.text_area :body, :class => 'ckeditor' %>
+									<%#= text_area_tag :body, '' ,:class => 'ckeditor' %>
+								</td>
+							</tr>
 
-			
+							
 
-		</table>
-			<%#= m.submit "Send Notification" %>
-			<%= submit_tag "Send Notification", :class => 'btn btn-small btn-primary' %>
-		<% end %>
-</fieldset>
+						</table>
+							<br>
+							<%= submit_tag "Send Notification", :class => 'btn btn-small btn-primary' %>
+						<% end %>
+				</fieldset>
+
+   			</div> 
+  </div>
+</div>

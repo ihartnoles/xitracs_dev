@@ -5,45 +5,31 @@
       	 <%= render 'newhires/instructorinfo_basic' %>
     </div>
     <div class="span9">    	
-				<%= form_for(@newhirecourse) do |f| %>
-					
+				<fieldset class="round">
+					<legend>To Teach:</legend>
+					<%= form_for(@newhirecourse) do |f| %>
+			
 						 <%= hidden_field_tag 'source', 'New' %>
 						 <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
 
-						<fieldset class="round">
-							<h4>To Teach:</h4>
-							<table  class="table table-condensed">
-								<tr>
-									<td><strong>Course Prefix and Number:</strong></td>
-									<td> <%= text_field_tag 'course_name' %></td>
-								</tr>
+						
+							<label>Course Prefix and Number:</label>
+								 <%= text_field_tag 'course_name' %>
+							
 
-								<tr>
-									<td><strong>Course title:</strong> </td>
-									<td><%= text_field_tag 'course_title' %></td>
-								</tr>
+							<label>Course title:</label>
+								<%= text_field_tag 'course_title' %>
 
 
-								<tr>
-									<td><strong>Brief Course Description:</strong></td>
-									<td><%= text_area_tag 'course_description' %></td>
-								</tr>
-
-								<tr>
-									<td colspan="2">
-										&nbsp;
-									</td>
-								</tr>	
-								<tr>
-									<td colspan="2">
-									Click <%= f.submit 'Add', :id => "Add" , :class => 'btn' %> to save this course.</p>
-								</tr>
-							</table>
-						</fieldset>
-					
-				<% end %>
-			
-
- 	</div>
-  </div>
+							<label>Brief Course Description:</label>
+							<%= text_area_tag 'course_description', '' , :class => 'ckeditor' %>
+							
+							<br>
+							Click <%= f.submit 'Add', :id => "Add" , :class => 'btn btn-small btn-primary' %> to save this course.</p>
+							
+						
+					<% end %>
+				</fieldset>
+		</div>
+  	</div>
 </div>

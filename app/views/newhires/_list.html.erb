@@ -1,5 +1,13 @@
 <fieldset class="round" >
-	<h4> <%= @newhire_count %> New Hires:</h4>
+	<h4> 
+		
+			<% if current_user.group.name != "chair" %>
+				<a href="javascript:history.back();" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> 
+			<% end %>
+			<%= @newhire_count %> New Hires:
+		
+	</h4>
+
 		<% if @newhires.nil? || @newhires.count == 0 %>
 			<div class="error round">
 		  			<center>No New Hires Available</center>

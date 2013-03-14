@@ -2,6 +2,7 @@
   <div class="row-fluid">
     <div class="span3">
       <!--Sidebar content-->
+      <a href="javascript:history.back();" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> Go Back
           <div class="well sidebar-nav" style="background-color:#fcf8e3;">
             <ul class="nav nav-list">
               <li class="nav-header" >Instructor Info:</li>
@@ -11,8 +12,6 @@
               <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
               <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
               <li><strong>Course:</strong> <%= @newhire.course_name(@newhire_course_to_review.id) %></li>
-              
-              <li><strong>Send Notification:</strong> <%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => params[:id]) %></li>
             </ul>
           </div><!--/.well -->
 
@@ -76,24 +75,30 @@
                       <th>Name</th>
                       <th>Location</th>
                       <th>Type</th>
+                      <th>Action</th>
                       <% @newhiredocuments.each do |d| %>
                           <tr>
-                            <td><%=  d.name %></td>  
+                          <td><%=  d.name %></td>  
                           <td><%=  d.location %></td>  
                           <td><%= d.newhiredoctype.name %></td> 
-                          
+                          <td> <%= link_to image_tag('/assets/Download_16x16.png'), 
+                            {:controller => 'newhiredocuments', 
+                              :action => 'file_download', 
+                              :doc_id => d.id,
+                              :newhire_id => params[:id], 
+                              :doc_type =>  d.newhiredoctype_id,
+                              :source => 'detailscreen'},
+                              :title => 'Download document', :rel => 'tooltip'%></td>
                         </tr>
                       <% end %> 
                     <% else %>
-                      <tr>
-                        <td>
+                      
                           <div class="alert alert-error">
                             <div align="center">
                               Please ADD documents!
                             </div>
                           </div>
-                        </td>
-                      </tr>
+                       
                     <% end %>
                   </table>
               <!--  </fieldset>
@@ -121,19 +126,18 @@
                                 
                               </tr>
                             <% end %>
+                           
                           <% else %>
-                            <tr>
-                                <td>
+                            
                                   <div class="alert alert-error">
                                     <div align="center">
                                       Please enter the instructors credentials to teach
                                     </div>
                                   </div>
-                                </td>
-                              </tr>
+                               
 
                           <% end %> 
-                          </table>
+                         </table>
                 </fieldset>
             </form>
             <br>
@@ -182,19 +186,18 @@
                                 </div>
                               </td>
                             </tr>
+                           
                         <% else %>
-                          <tr>
-                            <td>
+                          
                               <div class="alert alert-error">
                                 <div align="center">
                                   Relevant Coursework N/A
                                 </div>
                               </div>
-                            </td>
-                          </tr>
+                           
 
                         <% end %>
-                        </table>
+                         </table>
                   </fieldset>
             </form>
             <br>

@@ -1,7 +1,7 @@
-<%= link_to image_tag('/assets/Previous_16x16.png'), '/newhires/schools',  :title => 'Go to Colleges', :rel => 'tooltip'%>
+<%#= link_to image_tag('/assets/Previous_16x16.png'), '/newhires/schools',  :title => 'Go to Colleges', :rel => 'tooltip'%>
 <div class="row-fluid">
      <div class="span5">
-     	<h4><%=@school_name %> Departments</h4>
+     	<h4><a href="/newhires/schools" title="Go to Colleges" rel="tooltip"><i class="icon-arrow-left"></i></a> <%=@school_name %> Departments</h4>
      </div><!--/span-->
 </div>
 <% @departments.each do |department| %>

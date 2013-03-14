@@ -3,12 +3,16 @@
   <head>
     <%= render 'layouts/stylesheets' %> 
     <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tag %>
+    
+     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
   </head>
   <body>
     <div class="container">
       <section class="round">
         <%= yield %>
       </section>
+       <%= debug(session) %>
     </div>
   </body>
 </html>

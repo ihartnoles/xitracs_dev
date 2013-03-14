@@ -17,9 +17,8 @@
     </div>
     <div class="span9">
       <!--Body content-->
-     <%= form_for @newhirecourse do |f| %>
-				
-									<%= hidden_field_tag 'newhire_id', @newhire.id %>
+     			<%= form_for @newhirecourse do |f| %>
+				<%= hidden_field_tag 'newhire_id', @newhire.id %>
       	<fieldset class="round">
 								<legend>To Teach:</legend>
 								<table  class="no-zebra no-hover">
