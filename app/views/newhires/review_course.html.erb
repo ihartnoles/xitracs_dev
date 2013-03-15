@@ -40,7 +40,7 @@
 
     <div class="span9">
       <!--Body content-->
-      <form>
+      <form id="docs">
               <!--<fieldset>
                 <legend class="heading">Documents submitted to Provost:</legend>-->
                 <h4 > <%= link_to image_tag('/assets/Add_16x16.png'), 
@@ -72,23 +72,45 @@
                 </div>-->
                   <table class="table table-condensed table-striped">
                     <% if @newhiredocuments.count > 0 %>
+                      <th>Verified</th>
                       <th>Name</th>
                       <th>Location</th>
                       <th>Type</th>
                       <th>Action</th>
+
+                      <tr>
+                        <td></td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>Official transcript</td>
+                        <td></td>
+                      </tr>
+
                       <% @newhiredocuments.each do |d| %>
                           <tr>
-                          <td><%=  d.name %></td>  
-                          <td><%=  d.location %></td>  
-                          <td><%= d.newhiredoctype.name %></td> 
-                          <td> <%= link_to image_tag('/assets/Download_16x16.png'), 
-                            {:controller => 'newhiredocuments', 
-                              :action => 'file_download', 
-                              :doc_id => d.id,
-                              :newhire_id => params[:id], 
-                              :doc_type =>  d.newhiredoctype_id,
-                              :source => 'detailscreen'},
-                              :title => 'Download document', :rel => 'tooltip'%></td>
+                            <td><%#= check_box_tag "verify[#{d.id}]", '1' %>
+
+                              <% if d.verified == "1" %>
+                                <%= check_box_tag "#{d.id}", '1', true , { :class => 'verify' } %>
+                              <% else %>
+                                 <%= check_box_tag "#{d.id}", '1', false , { :class => 'verify' } %>
+                              <% end %>
+                              <!--
+                              <input class="verify" name="#{d.id}" type="checkbox" value="1">
+                              -->
+
+                            </td>
+                            <td><%= d.name %></td>  
+                            <td><%= d.location %></td>  
+                            <td><%= d.newhiredoctype.name %></td> 
+                            <td> <%= link_to image_tag('/assets/Download_16x16.png'), 
+                              {:controller => 'newhiredocuments', 
+                                :action => 'file_download', 
+                                :doc_id => d.id,
+                                :newhire_id => params[:id], 
+                                :doc_type =>  d.newhiredoctype_id,
+                                :source => 'detailscreen'},
+                                :title => 'Download document', :rel => 'tooltip'%></td>
                         </tr>
                       <% end %> 
                     <% else %>
@@ -229,3 +251,25 @@
     </div> 
   </div>
 </div>
+
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+     jQuery('.verify').change(function(){
+       //alert(this.id);
+         
+         var verified = this.checked ? '1' : '0';
+         //alert(verified);
+         //return false;
+        jQuery.post(
+          '/newhiredocuments/save_verified_doc', 
+           {id:this.id, verified:verified}, 
+           function(response) {
+            location.reload();
+          });
+
+       });
+
+
+});
+</script>

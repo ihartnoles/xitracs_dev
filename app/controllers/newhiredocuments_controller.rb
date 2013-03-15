@@ -15,6 +15,24 @@ class NewhiredocumentsController < ApplicationController
     #render :layout => 'simple'
   end
 
+  def save_verified_doc
+     @newhiredocument = Newhiredocument.find(params[:id])
+     @newhiredocument.verified= params[:verified]
+     @newhiredocument.save
+
+     if @newhiredocument.save
+       if params[:verified] == "1"
+        flash[:notice] = "Document verified!"
+       else
+        flash[:notice] = "Document unconfirmed!"
+       end
+     else
+       flash[:notice] = "There was a problem verifying the document."
+     end
+     
+     render :nothing => true     
+  end
+
   def create
  	if !params[:newhiredoctype_ids].nil?
 	  	params[:newhiredoctype_ids].split(",") do |idx|
