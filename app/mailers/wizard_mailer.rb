@@ -11,12 +11,15 @@ class WizardMailer < ActionMailer::Base
     mail(:from => '#{@username}@fau.edu', :to => 'ihartstein@fau.edu', :subject => "Failed Login: #{@username}")
   end
 
-  def send_review_msg(newhire, msg)
+  def send_review_msg(newhire,subject,msg,sendto)
   	@newhire = newhire
+    @subject = subject
     @msg = msg
+    @sendto = sendto
+    
 
     #TO DO: make TO and FROM dynamic to come from form
-    mail(:from => "#ihartstein@fau.edu", :to => 'ihartstein@fau.edu', :subject => "Test Notification")
+    mail(:from => "provost@fau.edu", :to => "#{@sendto}@fau.edu", :subject => "#{@subject}")
   end
 
 end

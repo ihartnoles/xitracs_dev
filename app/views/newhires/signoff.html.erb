@@ -39,9 +39,20 @@
                 </tr>         
                 <tr>
                   <td>
-                    Send to:<br>
-                    <%= select_tag 'send_to', 
-                        options_for_select(@send_to.collect{ |u| [u.name, u.id] }) %>
+                    <div id="notify">
+                      Send to:<br>
+                      <%= select_tag 'send_to', 
+                          options_for_select(@send_to_notify.collect{ |u| [u.displayname, u.id] }) %>
+                    </div>
+
+                    <div id="corrections" style="display:none">
+                      
+                      Send to:<br>
+                      <%= select_tag 'send_to_correct', 
+                          options_for_select(@send_to_correct.collect{ |u| [u.displayname, u.id] }) %>
+                       
+                    </div>
+
                   </td>
                 </tr>
                 <tr>
@@ -60,3 +71,23 @@
                 
               <% end %>    
             </fieldset>
+
+
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    
+       $("#notify").hide();
+       $("#corrections").hide();
+
+         jQuery('#newhiresignoff_signed_off_1').change(function(){
+              $("#corrections").hide();
+              $("#notify").show();
+        });
+
+         jQuery('#newhiresignoff_signed_off_0').change(function(){
+               $("#notify").hide();
+               $("#corrections").show();
+        });
+});
+</script>

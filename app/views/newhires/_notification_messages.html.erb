@@ -4,35 +4,26 @@
             :title => 'Send an Email Notification', :rel => 'tooltip' %> Notifications:
 	</h4>
 
-	
-		<% if @newhire_messages_added.count == 0%>
-			<table class="table table-condensed">
+		
+	<table class="table table-condensed">
+		<% if @newhire_messages_added.count == 0%>		
+			<div class="alert alert-info">
+				 <div align="center">No notification messages received</div>
+			</div>			
+		<% else %>			
+			<th>From</th>
+			<th>To</th>
+			<th>Message</th>
+			<th>Created on</th>
+			
+			<% @newhire_messages_added.each do |msg| %>
 				<tr>
-					<td>
-						<div class="alert alert-info">
-							 <div align="center">No notification messages received</div>
-						</div>
-					</td>
+					<td><%= msg.from %></td>
+					<td><%= msg.to %></td>
+					<td><%= msg.body.html_safe %></td>
+					<td><%= msg.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
 				</tr>
-			</table>
-		<% else %>
-			<table class="table table-condensed table-striped">
-				<th>From</th>
-				<th>To</th>
-				<th>Message</th>
-				<th>Created on</th>
-				
-				<% @newhire_messages_added.each do |msg| %>
-					<tr>
-						<td><%= msg.from %></td>
-						<td><%= msg.to %></td>
-						<td><%= msg.body.html_safe %></td>
-						<td><%= msg.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
-					</tr>
-				<% end %>
-
-
-			</table>
+			<% end %>		
 		<% end %>
 	</table>
 </fieldset>

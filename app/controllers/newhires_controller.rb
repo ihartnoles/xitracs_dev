@@ -48,6 +48,48 @@ class NewhiresController < ApplicationController
      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
   end
 
+  def save_signoff
+      signoff = Newhiresignoff.new
+      signoff.newhire_id = params[:newhire_id]
+      signoff.course_id = params[:course_id]
+      signoff.user_id = current_user.id
+      signoff.signed_off = params[:newhiresignoff][:signed_off]
+      signoff.comment = params[:newhiresignoff][:comment]
+      
+      if params.has_key?(:send_to)
+        signoff.sentto_id = params[:send_to]
+      end
+
+       if params.has_key?(:send_to_correct)
+        signoff.sentto_id = params[:send_to_correct]
+      end
+
+      signoff.save
+
+      #find the newhire
+      @newhire = Newhire.find(params[:newhire_id])
+
+      #set the msg argument     
+      @msg = signoff.comment
+     
+
+      if signoff.signed_off == "1"
+        @subject = "New Hire Signoff"
+      else
+        @subject = "Corrections Needed!"
+      end
+
+      #@sendto = "REALZ@fau.edu"
+      @sendto = User.find(signoff.sentto_id).name
+
+      #pass argumetns to the send_review_msg mailer function
+      WizardMailer.send_review_msg(@newhire,@subject,@msg,@sendto).deliver
+
+      flash[:notice] = "Signoff processed!"
+      render :layout => 'simple'
+      #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+  end
+
   def savename
        if ( params[:first_name].blank? || params[:last_name].blank? ) 
           flash[:notice] = 'Please provide both a firstname and a lastname'
@@ -74,19 +116,7 @@ class NewhiresController < ApplicationController
       end
   end
 
-   def save_signoff
-      signoff = Newhiresignoff.new
-      signoff.newhire_id = params[:newhire_id]
-      signoff.course_id = params[:course_id]
-      signoff.user_id = current_user.id
-      signoff.signed_off = params[:newhiresignoff][:signed_off]
-      signoff.comment = params[:newhiresignoff][:comment]
-      signoff.save
-
-      flash[:notice] = "Signoff processed!"
-      render :layout => 'simple'
-      #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
-  end
+   
 
   def departments
      #session[:school_id] = params[:school_id] if !params[:school_id].nil?
@@ -200,12 +230,20 @@ class NewhiresController < ApplicationController
       
       #1=admin 2=dean 3=chair    
      if current_user.group.name == "admin"
-        @send_to=User.all          
+        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
      elsif current_user.group.name == "dean"
-        #@send_to=User.where(:school_id => session[:school_id] ,:department_id => session[:department_id] )           
-       @send_to=User.find_by_sql(['select id, name from users where school_id = :sid',{:sid => session[:school_id]}])
+        #notify provost (admin)          
+        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where group_id=1',{:sid => session[:school_id]}])
+
+        #chairs for each department
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and group_id=3',{:did => session[:department_id] }])       
      else
-        @send_to=User.find_by_sql(['select id, name from users where school_id = :sid OR department_id = :did',{:sid => session[:school_id], :did => session[:department_id] }])       
+        #deans for the school
+        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and group_id=2',{:sid => session[:school_id], :did => session[:department_id] }])       
+        
+        #chairs for each department
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and group_id=3',{:did => session[:department_id] }])  
      end 
    
      render :layout => 'simple'

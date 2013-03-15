@@ -13,28 +13,28 @@
          <% if (@newhire_signoffs.count > 0) %>
               
                 <th>Signoff Status</th>
+                <th>Sent To</th>
+                <th>Sent By</th>
                 <th>Comment</th>
-                <th>Created By</th>
                 <th>Created On</th>                
                 <% @newhire_signoffs.each do |nhs| %>
                   <tr  <% if nhs.signed_off == 1 %>class="success"<% else %>class="error"<% end %> >
                     <td><%= nhs.status(nhs.signed_off) %></td>
-                    <td><%= nhs.comment.html_safe %></td>
+                    <td><%= nhs.signed_off_by(nhs.sentto_id) %></td>
                     <td><%= nhs.signed_off_by(nhs.user_id) %></td>
+                    <td><%= nhs.comment.html_safe %></td>
                     <td><%= nhs.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
                   </tr> 
                 <% end %>          
          
         <% else %>
-               <tr>
-                  <td>
+              
                     <div class="alert alert-error">
                       <div align="center">
                         No one has signed off on this entry
                       </div>
                     </div>
-                  </td>
-                </tr>
+                  
         <% end %>
          </table>
         </fieldset> 
