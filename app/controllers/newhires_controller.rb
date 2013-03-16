@@ -56,12 +56,12 @@ class NewhiresController < ApplicationController
       signoff.signed_off = params[:newhiresignoff][:signed_off]
       signoff.comment = params[:newhiresignoff][:comment]
       
-      if params.has_key?(:send_to)
-        signoff.sentto_id = params[:send_to]
-      end
-
-       if params.has_key?(:send_to_correct)
-        signoff.sentto_id = params[:send_to_correct]
+      if params[:newhiresignoff][:signed_off] == "1"
+        @subject = "New Hire Signoff"
+        signoff.sentto_id = params[:send_to][:notify]
+      else
+        @subject = "Corrections Needed!"
+        signoff.sentto_id = params[:send_to][:correct]
       end
 
       signoff.save
@@ -73,11 +73,7 @@ class NewhiresController < ApplicationController
       @msg = signoff.comment
      
 
-      if signoff.signed_off == "1"
-        @subject = "New Hire Signoff"
-      else
-        @subject = "Corrections Needed!"
-      end
+
 
       #@sendto = "REALZ@fau.edu"
       @sendto = User.find(signoff.sentto_id).name
@@ -228,6 +224,7 @@ class NewhiresController < ApplicationController
   def signoff
     @newhiresignoff=Newhiresignoff.new
       
+
       #1=admin 2=dean 3=chair    
      if current_user.group.name == "admin"
         @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     

@@ -41,15 +41,14 @@
                   <td>
                     <div id="notify">
                       Send to:<br>
-                      <%= select_tag 'send_to', 
-                          options_for_select(@send_to_notify.collect{ |u| [u.displayname, u.id] }) %>
+                      <%= select('send_to', 'notify',
+                          options_for_select(@send_to_notify.collect{ |u| [u.displayname, u.id]}), {:include_blank => 'None'})%>
                     </div>
 
                     <div id="corrections" style="display:none">
-                      
                       Send to:<br>
-                      <%= select_tag 'send_to_correct', 
-                          options_for_select(@send_to_correct.collect{ |u| [u.displayname, u.id] }) %>
+                      <%= select('send_to', 'correct',
+                          options_for_select(@send_to_correct.collect{ |u| [u.displayname, u.id]}), {:include_blank => 'None'})%>
                        
                     </div>
 
