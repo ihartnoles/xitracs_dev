@@ -48,15 +48,46 @@
 										<td colspan="2">
 										Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => 'btn btn-small btn-primary' %> to save this course.</p>
 									</tr>
+									<!--
 									<tr>
 										<td colspan="2">
 											Click <%= f.submit 'Continue', :id => "Continue" , :class => 'btn btn-small btn-primary' %> to finish this section and continue precredentialing.
 										</td>
 									</tr>
-									
+									-->
 								</table>
 							</fieldset>
      <% end %>
+
+     <br>
+
+     <% if @newhire_courses_added.count > 0 %>
+						<br>
+							<div id="content">
+								<fieldset class="round">
+									<legend>Courses Added:</legend>
+										<table  class="no-zebra no-hover">
+											<th>Course Prefix and Number:</th>
+											<th>Course title:</th>
+											<th>Brief Course Description:</th>
+
+												<% @newhire_courses_added.each do |ca| %>
+									    			<tr>
+									    				<td><%=  ca.name %> </td>
+									    				<td><%=  ca.title.humanize %></td>
+									    				<td><%=  ca.description.humanize %></td>
+									    			</tr>
+									 			<% end %>
+
+
+										</table>
+							   </fieldset>
+
+								Click <%= f.submit 'Continue', :id => "Continue" %> to finish this section and continue precredentialing.
+							</div>
+					<% end %>
+
+
     </div>
   </div>
 </div>

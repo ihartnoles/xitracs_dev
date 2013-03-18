@@ -46,6 +46,7 @@ class NewhiresController < ApplicationController
      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])   
      @newhire_dept = Department.find(@newhire.department_id)  
      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
+     #@reviewed_by_provost = Newhirereviewreason.where(:newhire_id => params[:id], :course_id =>  params[:course_id], :review_state => "1")
   end
 
   def save_signoff
@@ -82,9 +83,30 @@ class NewhiresController < ApplicationController
       WizardMailer.send_review_msg(@newhire,@subject,@msg,@sendto).deliver
 
       flash[:notice] = "Signoff processed!"
-      render :layout => 'simple'
+      
+       render :layout => 'simple'
       #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
+
+  def delete_review
+      reviewreason = Newhirereviewreason.find(params[:id])
+      reviewreason.destroy
+
+      flash[:notice] = "Review comment deleted!"
+
+      redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+  end
+
+  
+  def delete_signoff
+      signoff = Newhiresignoff.find(params[:id])
+      signoff.destroy
+
+      flash[:notice] = "Signoff entry deleted!"
+
+      redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+  end
+
 
   def savename
        if ( params[:first_name].blank? || params[:last_name].blank? ) 
@@ -288,8 +310,13 @@ class NewhiresController < ApplicationController
 
     if (params[:newhirereviewreason][:review_state] == 2 && params[:newhirereviewreason][:review_comments].blank?) 
 
-        flash[:notice] = 'Please enter a comment'
-        redirect_to newhire_review_course_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
+        flash[:alert] = 'Please enter a comment'
+        redirect_to newhires_review_dialog_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
+    
+    elsif (params[:newhirereviewreason][:review_state].blank? )
+        
+        flash[:alert] = 'Please select a status'
+        redirect_to newhires_review_dialog_path(:newhire_id => params[:newhirereviewreason][:newhire_id], :id => params[:newhirereviewreason][:course_id])
 
     else
         @newhire_reviewreasons_added = Newhirereviewreason.where(:newhire_id => params[:newhirereviewreason][:newhire_id], :course_id => params[:newhirereviewreason][:course_id])
@@ -312,6 +339,8 @@ class NewhiresController < ApplicationController
        end
 
     end
+
+     #render :layout => 'simple'
   end
 
 

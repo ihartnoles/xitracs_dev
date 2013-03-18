@@ -32,6 +32,10 @@ XitracsRoster::Application.routes.draw do
         post 'save_review'
         get  'save_signoff'
         post 'save_signoff'       
+        get  'delete_review'
+        post 'delete_review'
+        get  'delete_signoff'
+        post 'delete_signoff'
        end
   end
 
@@ -143,6 +147,8 @@ XitracsRoster::Application.routes.draw do
   get  "/newhires/review_dialog"
   post "/newhires/save_review"
   post "/newhires/save_signoff"
+  post "/newhires/delete_signoff"
+  post "/newhires/delete_review"
   
   post "/newhires/savename"
   
@@ -190,7 +196,9 @@ XitracsRoster::Application.routes.draw do
   match '/newhires/schools', to: 'newhires#schools' , :as => :newhire_schools
   match '/newhires/save_signoff', to: 'newhires#save_signoff' , :as => :newhire_save_signoff
   match '/newhiredocuments/save_verified_doc', to: 'newhiredocuments#save_verified_doc' , :as => :newhiredocuments_save_verified_doc
-  
+  match '/newhires/delete_review', to: 'newhires#delete_review' , :as => :newhire_delete_review
+  match '/newhires/delete_signoff', to: 'newhires#delete_signoff' , :as => :newhire_delete_signoff
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -4,7 +4,7 @@
             <fieldset class="round">
               <h4><%= link_to image_tag('/assets/Add_16x16.png'),
                         {:controller => 'newhires', :action => 'review_dialog',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
-                            :onClick=>"window.open(this.href,'Review Team Review','height=500, width=700'); return false;" ,
+                            :onClick=>"window.open(this.href,'Review Team Review','scrollbars=1,height=500, width=700'); return false;" ,
                               :title => 'Review Team Review', :rel => 'tooltip'%>
                               Review Comments:
               </h4>  
@@ -13,7 +13,8 @@
                     <th>Review Status</th>
                     <th>Comment</th>
                     <th>Reviewed By</th>
-                    <th>Reviewed On</th>                
+                    <th>Reviewed On</th>       
+                    <th>Actions</th>         
                     <% @newhire_reasons_added.each do |nhr| %>
                         <tr
 
@@ -24,10 +25,26 @@
 
                         >
                           <td><%= nhr.review_state_name(nhr.review_state) %></td>
-                          <td><%= nhr.review_comments.html_safe %></td>           
+                          <td>
+                              <% if !nhr.review_comments.blank? %>
+                                <%= nhr.review_comments.html_safe %>
+                              <% else %>
+                                N/A
+                              <% end %>
+                          </td>           
                           <td><%= nhr.reviewer_name(nhr.reviewer_id) %></td>
 
-                          <td><%= nhr.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
+                          <td>
+                            <% if nhr.created_at %>
+                              <%= nhr.created_at.strftime('%m/%d/%Y %l:%M %P') %>
+                            <% else %>
+                              N/A
+                            <% end %>
+                          </td>
+                          <td>
+                              <%= link_to image_tag('/assets/Delete_16x16.png'), newhire_delete_review_path(:id => nhr,:newhire_id => params[:newhire_id], :course_id => params[:id]), :method => :delete_review, :class => "destroy", :confirm => "Are you sure you want to delete this review comment?",:title => 'Delete review comment', :rel => 'tooltip'
+                                    %>
+                          </td>
                         </tr> 
                       <% end %>
                  <% else %>

@@ -10,6 +10,16 @@
   <body>
     <div class="container">
       <section class="round">
+        
+        <div align="center">
+          <% if flash[:alert] %>
+            <p class="alert alert-error"><%= flash[:alert] %></p>
+          <% end %>
+          <% if flash[:notice] %>
+            <p class="alert alert-info"><%= flash[:notice] %></p>
+          <% end %>
+        </div>
+
         <%= yield %>
       </section>
        <%= debug(session) %>

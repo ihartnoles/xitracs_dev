@@ -29,14 +29,8 @@
 						  	<td><%= newhire.dept_name %></td>
 						    <td><%= newhire.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
 						  	<td>
-						  		<%#= link_to '[Edit]', edit_newhire_path(newhire) %>
-						  		<%#= link_to '[View]', newhiredetails_path(newhire) %>
-						  		<%#= link_to image_tag('/assets/Edit_16x16.png'), newhiredetails_path(newhire) %>
 						  		<%= link_to image_tag('/assets/Preview_16x16.png'), newhireshowcourses_path(newhire), :title => 'See details ', :rel => 'tooltip' %>
-						  		<%#= link_to image_tag('/assets/Send_16x16.png'), newhireshowcourses_path(newhire) %>
-						  		<%#= link_to image_tag('/assets/Send_16x16.png'), newhire_send_review_email_path(:newhire_id => newhire.id), confirm: 'Are you sure you would like to notify the review team about this new instructor?', %>
-
-						  	</td>
+						   </td>
 						  </tr>
 					  <% end %>
 				</table>  

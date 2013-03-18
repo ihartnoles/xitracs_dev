@@ -27,9 +27,41 @@
 							<br>
 							Click <%= f.submit 'Add', :id => "Add" , :class => 'btn btn-small btn-primary' %> to save this course.</p>
 							
-						
+							   <br>
+								Click <%= submit_tag 'Done', :id => "Done", :class => 'btn btn-small btn-warning' %> to finish this section.
 					<% end %>
 				</fieldset>
+
+		<br>
+
+	
+	    <% if @newhire_courses_added.count > 0 %>
+						<br>
+							<div id="content">
+								<fieldset class="round">
+									<legend>Courses Added:</legend>
+										<table  class="no-zebra no-hover">
+											<th>Course Prefix and Number:</th>
+											<th>Course title:</th>
+											<th>Brief Course Description:</th>
+
+												<% @newhire_courses_added.each do |ca| %>
+									    			<tr>
+									    				<td><%=  ca.name %> </td>
+									    				<td><%=  ca.title.humanize %></td>
+									    				<td><%=  ca.description.humanize %></td>
+									    			</tr>
+									 			<% end %>
+
+
+										</table>
+							   </fieldset>
+
+							</div>
+					<% end %>
+
+
+    </div>
 		</div>
   	</div>
 </div>

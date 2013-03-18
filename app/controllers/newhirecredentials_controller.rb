@@ -56,8 +56,8 @@ class NewhirecredentialsController < ApplicationController
   # POST /newhirecredentials.json
   def create
     if ( params[:qualificationreason_id].blank? || params[:qualification_explanation].blank?) 
-          flash[:notice] = 'Please fill out all fields'
-          redirect_to newhirecredentials_path
+          flash[:alert] = 'Please fill out all fields'
+          redirect_to new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
     else 
           @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_id], 
                                                      :qualification_explanation => params[:qualification_explanation], 
@@ -78,7 +78,7 @@ class NewhirecredentialsController < ApplicationController
             end
            
           else
-             flash[:notice] = "A problem occurred saving the credential."
+             flash[:alert] = "A problem occurred saving the credential."
          
           end
       end
@@ -94,7 +94,7 @@ class NewhirecredentialsController < ApplicationController
       if @newhirecredential.update_attributes(params[:newhirecredential])
          flash[:notice] = "Credential successfully updated."
       else
-        flash[:notice] = "There was a problem updating the credential."
+        flash[:alert] = "There was a problem updating the credential."
       end
     
       redirect_to newhiredetails_path(params[:newhire_id])

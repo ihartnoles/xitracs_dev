@@ -42,7 +42,7 @@ class NewhirecreditsController < ApplicationController
       if @newhirecredits.update_attributes(params[:newhirecredit])
          flash[:notice] = "Coursework successfully updated."
       	else
-         flash[:notice] = "There was a problem updating the coursework."
+         flash[:alert] = "There was a problem updating the coursework."
       	end
     
       	#redirect_to newhiredetails_path(params[:newhire_id])
@@ -84,7 +84,7 @@ class NewhirecreditsController < ApplicationController
 	    			 params[:newhirecredit][:newhireinstitution_id].blank? ||
 	    			 params[:newhirecredit][:course_credits].blank?
 	    			)
-	    			 flash[:notice] = 'Please fill out all fields'
+	    			 flash[:alert] = 'Please fill out all fields'
 	    			 
 	    			  #if (params.has_key?(:source))
 					  #	redirect_to new_newhirecredit_path(:newhire_id => params[:id])
@@ -93,6 +93,7 @@ class NewhirecreditsController < ApplicationController
 					  #end
 
 					redirect_to newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id]) 
+          #render :action => 'index', :newhire_id => params[:newhire_id], :course_id => params[:course_id]
 
 	    		else
 	    	 	  @newhirecredit   = Newhirecredit.new(params[:newhirecredit])
@@ -104,7 +105,7 @@ class NewhirecreditsController < ApplicationController
 				    #@newhirecredits_added = Newhirecredit.where(:newhire_id => session[:newhire_id])
 				    flash[:notice] = "Relevant course added."
 				  else
-				   	flash[:notice] = "There was a problem saving the relevant coursework."		    
+				   	flash[:alert] = "There was a problem saving the relevant coursework."		    
 				  end
 
 				  if (params.has_key?(:source))

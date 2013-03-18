@@ -2,7 +2,7 @@
   <div class="row-fluid">
     <div class="span3">
       <!--Sidebar content-->
-      <a href="javascript:history.back();" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> Go Back
+      <a href="javascript:window.location = '/newhires/<%= params[:newhire_id]%>/showcourses';" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> Go Back
           <div class="well sidebar-nav" style="background-color:#fcf8e3;">
             <ul class="nav nav-list">
               <li class="nav-header" >Instructor Info:</li>
@@ -238,7 +238,9 @@
                   <br>
             <% end %>
 
+          <!--
            <%= render 'notification_messages' %>
+         -->
            <br>
 
            <%# if session[:review] && session[:group_name] == "admin" %>
