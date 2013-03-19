@@ -3,7 +3,7 @@
        
             <fieldset class="round">
               <legend >New Review Comments:</legend>  
-               <%= form_for @newhirereason, :url => '/newhires/save_review' do |f| %>
+               <%= form_for :newhirereviewreason, :url => '/newhires/send_review_msg' do |f| %>
    
                 <%= hidden_field_tag 'newhirereviewreason[newhire_id]', params[:newhire_id] %>
                 <%= hidden_field_tag 'newhirereviewreason[course_id]', params[:course_id] %>

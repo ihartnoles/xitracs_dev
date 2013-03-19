@@ -72,7 +72,10 @@
                 </div>-->
                   <table class="table table-condensed table-striped">
                     <% if @newhiredocuments.count > 0 %>
-                      <th>Verified</th>
+                      
+                      <% if current_user.group.name == "admin" %>
+                        <th>Verified</th>
+                      <% end %>
                       <th>Name</th>
                       <th>Location</th>
                       <th>Type</th>
@@ -88,18 +91,15 @@
 
                       <% @newhiredocuments.each do |d| %>
                           <tr>
-                            <td><%#= check_box_tag "verify[#{d.id}]", '1' %>
-
-                              <% if d.verified == "1" %>
-                                <%= check_box_tag "#{d.id}", '1', true , { :class => 'verify' } %>
-                              <% else %>
-                                 <%= check_box_tag "#{d.id}", '1', false , { :class => 'verify' } %>
-                              <% end %>
-                              <!--
-                              <input class="verify" name="#{d.id}" type="checkbox" value="1">
-                              -->
-
-                            </td>
+                            <% if current_user.group.name == "admin" %>
+                              <td>
+                                <% if d.verified == "1" %>
+                                  <%= check_box_tag "#{d.id}", '1', true , { :class => 'verify' } %>
+                                <% else %>
+                                   <%= check_box_tag "#{d.id}", '1', false , { :class => 'verify' } %>
+                                <% end %>                            
+                              </td>
+                            <% end %>
                             <td><%= d.name %></td>  
                             <td><%= d.location %></td>  
                             <td><%= d.newhiredoctype.name %></td> 
@@ -244,8 +244,10 @@
            <br>
 
            <%# if session[:review] && session[:group_name] == "admin" %>
+            <% if current_user.group.name == "admin" %>  
              <%= render 'review_comments' %>
              <br>
+            <% end %>
            <%# end %>
 
            <%= render 'signoff_info' %>

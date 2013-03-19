@@ -18,6 +18,7 @@ XitracsRoster::Application.routes.draw do
         get  'list'
         get  'departments'
         post 'departments'
+        get  'list_pending'
         get  'list_by_dept'
         get  'list_by_school'
         get  'send_review_msg'
@@ -36,6 +37,8 @@ XitracsRoster::Application.routes.draw do
         post 'delete_review'
         get  'delete_signoff'
         post 'delete_signoff'
+        get  'delete_newhire'
+        post 'delete_newhire'
        end
   end
 
@@ -131,6 +134,8 @@ XitracsRoster::Application.routes.draw do
   put "/newhires/approve_course"
 
   get  "newhires/list"
+  
+  get   "newhires/list_pending"
 
   get   "newhires/list_by_dept"
 
@@ -147,9 +152,11 @@ XitracsRoster::Application.routes.draw do
   get  "/newhires/review_dialog"
   post "/newhires/save_review"
   post "/newhires/save_signoff"
+  post "newhires/send_review_msg"
   post "/newhires/delete_signoff"
   post "/newhires/delete_review"
-  
+  post "/newhires/delete_newhire"
+
   post "/newhires/savename"
   
   get  "/newhiredocuments/uploadform"
@@ -189,6 +196,7 @@ XitracsRoster::Application.routes.draw do
   match "/newhires/review_course" => 'newhires#review_course', :as => :newhire_review_course
   match "/newhires/departments" => 'newhires#departments', :as => :newhire_showdepartments
   match "/newhires/:id/showcourses" => 'newhires#showcourses', :as => :newhireshowcourses
+  match "/newhires/list_pending" => 'newhires#list_pending' , :as => :newhire_listpending
   match "/newhires/list_by_dept" => 'newhires#list_by_dept' , :as => :newhire_listbydept
   match "/newhires/list_by_school" => 'newhires#list_by_school' , :as => :newhire_listbyschool
   match '/newhires/send_review_msg', to: 'newhires#send_review_msg' , :as => :newhire_send_review_msg
@@ -198,7 +206,7 @@ XitracsRoster::Application.routes.draw do
   match '/newhiredocuments/save_verified_doc', to: 'newhiredocuments#save_verified_doc' , :as => :newhiredocuments_save_verified_doc
   match '/newhires/delete_review', to: 'newhires#delete_review' , :as => :newhire_delete_review
   match '/newhires/delete_signoff', to: 'newhires#delete_signoff' , :as => :newhire_delete_signoff
-
+  match '/newhires/delete_newhire', to: 'newhires#delete_newhire' , :as => :newhire_delete_newhire
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

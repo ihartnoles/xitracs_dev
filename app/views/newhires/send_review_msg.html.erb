@@ -1,0 +1,23 @@
+<div align="center">
+
+
+<div class="error round">
+	This window will close momentarily.
+</div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	
+	setTimeout( function () { 
+        
+		window.opener.location.reload(true);
+
+       self.close();
+
+    }, 2000 // milliseconds delay
+);
+
+});
+</script>

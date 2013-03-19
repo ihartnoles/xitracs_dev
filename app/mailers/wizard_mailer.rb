@@ -11,7 +11,7 @@ class WizardMailer < ActionMailer::Base
     mail(:from => '#{@username}@fau.edu', :to => 'ihartstein@fau.edu', :subject => "Failed Login: #{@username}")
   end
 
-  def send_review_msg(newhire,subject,msg,sendto)
+  def send_msg(newhire,subject,msg,sendto)
   	@newhire = newhire
     @subject = subject
     @msg = msg

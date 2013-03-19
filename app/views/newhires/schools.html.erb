@@ -2,19 +2,21 @@
 
 <div class="row-fluid">
      <div class="span4">
-     	<h4><a href="/precredentialing" title="Precredentialing main menu" rel="tooltip"><i class="icon-arrow-left"></i></a> Colleges</h4>
+     	<h4>Colleges</h4>
      </div><!--/span-->
 </div>
 
 <% @schools.each do |school| %>
 <div class="row-fluid">
             <div class="span4">
-	            	<div class="well sidebar-nav" style="background-color:#fcf8e3;">
+	            <div class="well sidebar-nav" style="background-color:#fcf8e3; margin:5px;">
 	              <h5><%= school.description %></h5>
+	                <p><%= school.count_by_school(school.id) %></p>
 	              <!--
 	              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
 	          -->
 	              <p><div class="btn" onclick="window.location.href='<%= url_for :action => 'departments' , :school_id => school.id %>'">View departments &raquo;</div></p>
 	            </div><!--/span-->
 	         </div>
+
 <% end %>
