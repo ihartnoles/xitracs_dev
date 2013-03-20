@@ -14,10 +14,11 @@ class NewhirecommentController < ApplicationController
   		@comment = Newhirecomment.new(params[:newhirecomment])
   		@comment.newhire_id = params[:newhire_id]
   		@comment.user_id = current_user.id
+      @comment.course_id = params[:course_id]
 
 	  	 if @comment.save
 	  	 	flash[:notice] = "Comment added"
-        flash[:notice] = "You will need to upload documents for each course!"
+        #flash[:notice] = "You will need to upload documents for each course!"
 	  	 	#redirect_to newhires_show_path
 	  	 else
 	  	 	flash[:notice] = "There was a problem saving the comments."
@@ -27,8 +28,9 @@ class NewhirecommentController < ApplicationController
        if (params.has_key?(:source))
           redirect_to newhiredetails_path(params[:newhire_id])
        else
-          #redirect_to newhires_list_path
-          redirect_to newhiredetails_path(:id => params[:newhire_id])
+          
+          #redirect_to newhiredetails_path(:id => params[:newhire_id])
+          redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
        end
 
 
@@ -51,19 +53,17 @@ class NewhirecommentController < ApplicationController
 
   def destroy
     @comment = Newhirecomment.find(params[:id])
-    @comment.destroy
+    @comment.destroy    
 
-    #respond_to do |format|
-    #  format.html { redirect_to newhirecredentials_url }
-    #  format.json { head :ok }
-    #end
-
-    redirect_to newhiredetails_path(params[:newhire_id])
+    #redirect_to newhiredetails_path(params[:newhire_id])
+    redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 
   def edit
     @newhire = Newhire.find(params[:id])
     @comment = Newhirecomment.find(params[:id])
+    @newhire_dept = Department.find(@newhire.department_id) 
+    @newhire_course_to_review = Newhirecourse.find(params[:course_id])
   end
 
 
@@ -75,6 +75,8 @@ class NewhirecommentController < ApplicationController
      else
      	flash[:notice] = "There was a problem updating the comment."
      end
-     redirect_to newhiredetails_path(params[:newhire_id])
+     
+     #redirect_to newhiredetails_path(params[:newhire_id])
+      redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 end

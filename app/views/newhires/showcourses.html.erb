@@ -20,7 +20,7 @@
 								<th>Title</th>
 								<th>Description</th>
 								<th>Reviewed</th>
-								<th>Provost Signed off</th>
+								<th>Provost Approved</th>
 								<th width="10%">Action</th>
 									
 										<% @newhirecourses.each do |ca| %>
@@ -33,14 +33,14 @@
 							 						<% if ca.reviewed_by_reviewteam(ca, params[:id]) >= 2 %>
 							 							<%= image_tag('/assets/Check_16x16.png') %>
 							 						<% else %>
-							 							<%= image_tag('/assets/Remove_16x16.png') %>
+							 							<%= image_tag('/assets/Cancel_16x16.png') %>
 							 						<% end %>
 							 					</td>
 							 					<td>
 							 						<% if ca.signed_off_by_provost(ca, params[:id]) > 0 %>
 							 							<%= image_tag('/assets/Check_16x16.png') %>
 							 						<% else %>
-							 							<%= image_tag('/assets/Remove_16x16.png') %>
+							 							<%= image_tag('/assets/Cancel_16x16.png') %>
 							 						<% end %>
 							 					</td>
 							 					<td>

@@ -4,10 +4,25 @@
 
 
 <div class="error round">
-	please close this window!<br>
-	<input type="button" name="close" value="Close"  onclick="window.opener.location.reload(true); window.close();">
+	This window will close in a moment!
 </div>
 
 
 
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	
+	setTimeout( function () { 
+        
+		window.opener.location.reload(true);
+
+       self.close();
+
+    }, 2000 // milliseconds delay
+);
+
+});
+</script>
 </div>

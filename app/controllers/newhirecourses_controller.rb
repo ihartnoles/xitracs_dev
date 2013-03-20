@@ -64,7 +64,7 @@ class NewhirecoursesController < ApplicationController
       	      if (params.has_key?(:source))
       			  	redirect_to new_newhirecourse_path(params[:newhire_id])
       			  else
-      			  	redirect_to newhirecourses_path
+      			  	redirect_to newhirecourses_path(params[:newhire_id])
       			  end
 
         else 	
@@ -75,7 +75,7 @@ class NewhirecoursesController < ApplicationController
     		  	   if @newhirecourse.save
       			    #session[:newhire_id] = @newhire.id
       			    #redirect_to next_wizard_path
-      			    @newhireinfo = Newhire.where(:newhire_id => session[:newhire_id])
+      			    @newhireinfo = Newhire.where(:newhire_id => params[:newhire_id])
       			    flash[:notice] = "Course to teach successfully created."
     			     else
     			   	   flash[:notice] = "There was a problem saving the course to teach."		    
@@ -86,7 +86,7 @@ class NewhirecoursesController < ApplicationController
         			  	redirect_to newhiredetails_path(params[:newhire_id])
         			 else
         			  	#this was changed to bypass documents                  
-                  redirect_to newhirecourses_path                  
+                  redirect_to newhirecourses_path(:newhire_id => params[:newhire_id])                 
         			 end
     		end
 

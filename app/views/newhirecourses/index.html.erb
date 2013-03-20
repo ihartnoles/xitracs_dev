@@ -19,73 +19,53 @@
       <!--Body content-->
      			<%= form_for @newhirecourse do |f| %>
 				<%= hidden_field_tag 'newhire_id', @newhire.id %>
-      	<fieldset class="round">
-								<legend>To Teach:</legend>
-								<table  class="no-zebra no-hover">
-								
-									<tr>
-										<td><strong>Course Prefix and Number:</strong></td>
-										<td> <%= text_field_tag 'course_name' %></td>
-									</tr>
+      				<fieldset class="round">
+							<legend>To Teach:</legend>
+							<label>Course Prefix and Number:</label>
+							 <%= text_field_tag 'course_name' %>
+							
 
-									<tr>
-										<td><strong>Course title:</strong> </td>
-										<td><%= text_field_tag 'course_title' %></td>
-									</tr>
+							<label>Course title:</label>
+								<%= text_field_tag 'course_title' %>
 
 
-									<tr>
-										<td><strong>Brief Course Description:</strong></td>
-										<td><%= text_area_tag 'course_description' %></td>
-									</tr>
+							<label>Brief Course Description:</label>
+							<%= text_area_tag 'course_description', '' , :class => 'ckeditor' %>
 
-									<tr>
-										<td colspan="2">
-											&nbsp;
-										</td>
-									</tr>	
-									<tr>
-										<td colspan="2">
-										Click <%= f.submit 'Add', :id => "Add" , :disabled => current_user.ro, :class => 'btn btn-small btn-primary' %> to save this course.</p>
-									</tr>
-									<!--
-									<tr>
-										<td colspan="2">
-											Click <%= f.submit 'Continue', :id => "Continue" , :class => 'btn btn-small btn-primary' %> to finish this section and continue precredentialing.
-										</td>
-									</tr>
-									-->
-								</table>
-							</fieldset>
+							<br>
+							Click <%= f.submit 'Add', :id => "Add" , :class => 'btn btn-small btn-primary' %> to save this course.</p>
+							
+							   <br>
+								Click <%= submit_tag 'Done', :id => "Done", :class => 'btn btn-small btn-warning' %> to finish this section.
+					</fieldset>
      <% end %>
 
      <br>
 
-     <% if @newhire_courses_added.count > 0 %>
-						<br>
-							<div id="content">
-								<fieldset class="round">
-									<legend>Courses Added:</legend>
-										<table  class="no-zebra no-hover">
-											<th>Course Prefix and Number:</th>
-											<th>Course title:</th>
-											<th>Brief Course Description:</th>
+				<% if @newhire_courses_added.count > 0 %>
+				<br>
+					
+						<fieldset class="round">
+							<h4>Courses Added:</h4>
+								<table  class="table">
+									<th>Course</th>
+									<th>Title</th>
+									<th>Description</th>
 
-												<% @newhire_courses_added.each do |ca| %>
-									    			<tr>
-									    				<td><%=  ca.name %> </td>
-									    				<td><%=  ca.title.humanize %></td>
-									    				<td><%=  ca.description.humanize %></td>
-									    			</tr>
-									 			<% end %>
+										<% @newhire_courses_added.each do |ca| %>
+							    			<tr>
+							    				<td><%=  ca.name %> </td>
+							    				<td><%=  ca.title.humanize %></td>
+							    				<td><%=  ca.description.humanize.html_safe %></td>
+							    			</tr>
+							 			<% end %>
 
 
-										</table>
-							   </fieldset>
+								</table>
+					   </fieldset>
 
-								Click <%= f.submit 'Continue', :id => "Continue" %> to finish this section and continue precredentialing.
-							</div>
-					<% end %>
+					
+			<% end %>
 
 
     </div>

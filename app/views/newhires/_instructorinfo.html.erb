@@ -1,49 +1,11 @@
-<div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;">
-			<fieldset class="round" >
-			<legend >Instructor Info:</legend>
-				<table class="profile no-zebra">					
-	    			<tr>
-	    				<td><strong>Firstname:</strong></td> 
-	    				<td><%= @newhire.first_name %></td>
-	    			</tr>
-	    			
-	    			<% if !@newhire.middle_name.blank? %>
-		    			<tr>
-		    				<td><strong>Middlename:</strong></td>
-		    				<td><%= @newhire.middle_name %></td>
-		    			</tr>
-	    			<% end %>
-	    			<tr>
-	    				<td><strong>Lastname:</strong></td>
-	    				<td><%= @newhire.last_name %></td>
-	    			</tr>
-	    			<tr>
-	 					<td><strong>School:</strong></td> 	 
-	 					<td><%= @newhire_dept.school.description %></td>					
-	 				</tr>
-	    			<tr>	
-	 					<td><strong>Department:</strong></td>
-	 					<td><%= @newhire_dept.name %></td>
-	 				</tr>	
-	 				<tr>
-	 					<td><strong>Course:</strong></td>
-	 					<td><%= @newhire.course_name(@newhire_course_to_review.id) %></td>
-	 				</tr>
-	 				</tr>
-	 				<!--
-	 				<tr>
-	 					<td><strong>Status:</strong></td> 	 
-	 					<td><%#=  @newhirereason.review_state_name(@newhire_review_state) %></td>					
-	 				</tr>
-	 				-->			 			
-	 				<tr>
-	 					<td colspan="2">Send a Notification 
-	 						<%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => @newhire_course_to_review.id), :title => 'Send a system notification ', :rel => 'tooltip'  %>
-	 					</td>
-	 				</tr>
-				</table>
-			</fieldset>
-		</div><!-- .sidebar#sideLeft -->
+<div class="well sidebar-nav" style="background-color:#fcf8e3;">
+            <ul class="nav nav-list">
+              <li class="nav-header">Instructor Info:</li>
+              <!--<li class="active"><a href="#">Link</a></li>-->
+              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+              <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+              <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
+              <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
+              <li><strong>Course:</strong> <%= @newhire.course_name(@newhire_course_to_review.id) %></li>
+            </ul>
+ </div>

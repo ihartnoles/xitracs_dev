@@ -5,6 +5,19 @@ class NewhiresController < ApplicationController
     	@newhire = Newhire.new    
   end
 
+  def update
+      @newhire = Newhire.find(params[:id])
+
+     if @newhire.update_attributes(params[:newhire])
+        flash[:notice] = "New hire name updated."
+     else
+        flash[:notice] = "There was a problem updating the new hire name."
+     end
+     
+     #redirect_to newhiredetails_path(params[:newhire_id])
+      redirect_to newhires_list_path
+  end
+
   def list  
 
      if  current_user.group.name == "chair"
@@ -47,7 +60,13 @@ class NewhiresController < ApplicationController
 
      flash[:notice] = "New hire deleted!"
 
-     redirect_to  newhires_list_by_dept_path(:department_id => params[:dept_id])
+     if current_user.group.name == "chair" 
+      redirect_to '/newhires/list'
+     else 
+      redirect_to '/newhires/list'
+      #redirect_to  newhires_list_by_dept_path(:department_id => params[:dept_id])
+     end 
+
   end
 
   def list_pending
@@ -135,7 +154,11 @@ class NewhiresController < ApplicationController
   end
 
   def schools
-    @schools = School.where(:enabled => 1)
+    if current_user.group.name == "dean"
+       @schools = School.where(:enabled => 1, :id => session[:school_id] )
+    else
+       @schools = School.where(:enabled => 1)
+    end
   end
 
 
@@ -297,7 +320,9 @@ class NewhiresController < ApplicationController
       signoff.user_id = current_user.id
       signoff.signed_off = params[:newhiresignoff][:signed_off]
       signoff.comment = params[:newhiresignoff][:comment]
-      
+      signoff.user_type = current_user.group_id
+      #signoff.user_type = Group.find(user.group_id).name.humanize
+
       if params[:newhiresignoff][:signed_off] == "1"
         @subject = "New Hire Signoff"
         signoff.sentto_id = params[:send_to][:notify]

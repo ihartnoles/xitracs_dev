@@ -10,30 +10,29 @@
                   <td>
                 <!-- TO DO: add a status value to DB and change these fieldnames -->
                  <%= f.radio_button :signed_off , "1"%> Signoff and notify 
-                  
-                  <% if session[:group_name] == "chair" %>          
+                 
+                 <% if current_user.group.name == "chair" %>          
                    Dean's office
                   <% end %>
-                  <% if session[:group_name] == "dean" %>          
+                  <% if current_user.group.name == "dean" %>          
                    Provost's office
                   <% end %>
-                  <% if session[:group_name] == "admin" %>          
+                  <% if current_user.group.name == "admin" %>          
                    Provost's office
                   <% end %>
 
                   <br>
 
                   <%= f.radio_button :signed_off , "0" %> Return to
-                  <% if session[:group_name] == "chair" %>          
+                  <% if current_user.group.name == "chair" %>          
                    Department
                   <% end %>
-                  <% if session[:group_name] == "dean" %>          
+                  <% if current_user.group.name == "dean" %>          
                    Department Chair
                   <% end %>
-                  <% if session[:group_name] == "admin" %>          
+                  <% if current_user.group.name == "admin" %>          
                    Dean's office
                   <% end %>
-
                   for corrections
                 </td>
                 </tr>         

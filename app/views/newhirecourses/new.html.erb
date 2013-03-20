@@ -41,17 +41,17 @@
 								<fieldset class="round">
 									<legend>Courses Added:</legend>
 										<table  class="no-zebra no-hover">
-											<th>Course Prefix and Number:</th>
-											<th>Course title:</th>
-											<th>Brief Course Description:</th>
+											<th>Course:</th>
+									<th>Title:</th>
+									<th>Description:</th>
 
-												<% @newhire_courses_added.each do |ca| %>
-									    			<tr>
-									    				<td><%=  ca.name %> </td>
-									    				<td><%=  ca.title.humanize %></td>
-									    				<td><%=  ca.description.humanize %></td>
-									    			</tr>
-									 			<% end %>
+										<% @newhire_courses_added.each do |ca| %>
+							    			<tr>
+							    				<td><%=  ca.name %> </td>
+							    				<td><%=  ca.title.humanize %></td>
+							    				<td><%=  ca.description.humanize.html_safe %></td>
+							    			</tr>
+							 			<% end %>
 
 
 										</table>

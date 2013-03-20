@@ -1,29 +1,24 @@
-<%#= @newhire.details %>
+<div class="container-fluid">
+  <div class="row-fluid">
 
-<div id="wrapper">
-  <div id="middle">
-    <div id="container">
+  		 <div class="span3">
+	         <!--Sidebar content-->
+	         <a href="javascript:history.back();" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> Go Back
+	         <%= render 'newhires/instructorinfo' %>
+      	</div>
 
-	    	<div id="content">
+	    <div class="span9">
+        <!--Body content-->
 	    		<fieldset class="round">
                 <legend>Additional Comments:</legend>
-				<%= form_for @comment  do |f| %>
-							<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
-							<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications" %> 	
-							<br/>
-							Click <%= f.submit  "Save", :disabled => current_user.ro %> to save this Qualification/Comment
-				<% end %>
-			</fieldset>
-			</div>
-
-		</div><!-- #container-->
-
-	 <div class="sidebar" id="sideLeft" style=" -moz-border-radius: 20px;
-	    -webkit-border-radius: 20px;
-	    -khtml-border-radius: 20px;
-	    border-radius: 20px;">
-	        <%= @newhire.details %>
-      </div>
-
-  </div><!-- #middle-->
-</div><!-- #wrapper -->
+					<%= form_for @comment  do |f| %>
+								<%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+								<%= hidden_field_tag :course_id, params[:course_id] %>
+								<%= f.text_area :comment, :placeholder =>  "Additional Comments or other Justification such as Research or Professional Certifications",  :class => "ckeditor" %> 	
+								<br/>
+								Click <%= f.submit  "Save", :disabled => current_user.ro %> to save this Qualification/Comment
+					<% end %>
+				</fieldset>
+		</div>
+	</div>
+</div>

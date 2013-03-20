@@ -21,10 +21,10 @@
 					 						<td><%=  dt.name.humanize %></td>
 					 						<td>
 					 							<% if dt.id != 1 %>
-						 							<%= link_to image_tag('/assets/Upload_16x16.png'),
+						 							<%= link_to image_tag('/assets/Stock Index Up_24x24.png'),
 							 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id, :newhire_id => params[:newhire_id], :course_id => params[:course_id]}, 
 				        							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" ,
-				        							:title => 'Upload', :rel => 'tooltip'%>
+				        							:title => 'Upload', :rel => 'tooltip'%> [Upload]
 				        						<% end %>
 			        						</td>
 					 					</tr>
