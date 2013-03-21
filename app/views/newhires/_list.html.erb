@@ -30,12 +30,12 @@
 						  	<td><%= newhire.dept_name %></td>
 						    <td><%= newhire.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
 						  	<td>
-						  		<%= link_to image_tag('/assets/Preview_16x16.png'), newhireshowcourses_path(newhire), :title => 'See details ', :rel => 'tooltip' %>
+						  		<%= link_to image_tag('/assets/Preview_16x16.png'), newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :title => 'See details ', :rel => 'tooltip' %>
 
-						  		<%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhire_path(:id => newhire, :dept_id => params[:department_id]),:title => 'Delete new hire', :rel => 'tooltip'
+						  		<%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhire_path(:id => newhire, :dept_id => newhire.department_id),:title => 'Edit new hire', :rel => 'tooltip'
                                     %>
 
-						  		<%= link_to image_tag('/assets/Delete_16x16.png'), newhire_delete_newhire_path(:id => newhire, :dept_id => params[:department_id]), :method => :delete_newhire, :class => "destroy", :confirm => "Are you sure you want to delete this new hire entry?",:title => 'Delete new hire', :rel => 'tooltip'
+						  		<%= link_to image_tag('/assets/Delete_16x16.png'), newhire_delete_newhire_path(:id => newhire, :dept_id => newhire.department_id), :method => :delete_newhire, :class => "destroy", :confirm => "Are you sure you want to delete this new hire entry?",:title => 'Delete new hire', :rel => 'tooltip'
                                     %>
 						   </td>
 						  </tr>

@@ -8,11 +8,12 @@ class NewhirecreditsController < ApplicationController
       @newhireinstitutions = Newhireinstitution.all
       @newhire_credits_added  = Newhirecredit.where(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
       
+      
       #Tally total credis
       @total_credits=0.0
        if @newhire_credits_added.count > 0
          @newhire_credits_added.each do |idx|
-            if idx.semester_credits
+            if idx.semester_credits == 1
               #calculate semester hours
               @total_credits = @total_credits + idx.course_credits.to_f
             else

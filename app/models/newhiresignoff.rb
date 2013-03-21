@@ -7,13 +7,13 @@ class Newhiresignoff < ActiveRecord::Base
 		#usertype = Group.find(user.group_id).name.humanize
 
 		#return "#{username} - <i>#{usertype}</i>".html_safe
-		return username
+		return "#{username}"
 	end
 
 	def status(val,user_type)
 
 	 	case user_type           
-            when  1 then display = 'Admin'
+            when  1 then display = 'Admin/Provost'
             when  2 then display = 'Dean'
             when  3 then display = 'Chair'           
         end 

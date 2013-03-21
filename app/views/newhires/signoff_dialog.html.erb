@@ -11,8 +11,9 @@
 
               <tr>
                 <td>
-                  <%= f.radio_button :signed_off , "1"%> Signoff and notify 
-                  
+                  <%= f.radio_button :signed_off , "1"%> Signoff 
+                 
+                 <% if false %> 
                   <% current_user.group.name %>
 
                   <% if current_user.group.name == "chair" %>          
@@ -26,18 +27,20 @@
                   <% end %>
 
                   <br>
+                <% end %>
 
-                  <%= f.radio_button :signed_off , "0" %> Return to
-                  <% if current_user.group.name == "chair" %>          
-                   Department
+                  <%= f.radio_button :signed_off , "0" %> Return
+                 <% if false %>
+                    <% if current_user.group.name == "chair" %>          
+                     Department
+                    <% end %>
+                    <% if current_user.group.name == "dean" %>          
+                     Department Chair
+                    <% end %>
+                    <% if current_user.group.name == "admin" %>          
+                     Dean's office
+                    <% end %>
                   <% end %>
-                  <% if current_user.group.name == "dean" %>          
-                   Department Chair
-                  <% end %>
-                  <% if current_user.group.name == "admin" %>          
-                   Dean's office
-                  <% end %>
-
                   for corrections
                 </td>               
               </tr>

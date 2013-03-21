@@ -26,8 +26,8 @@ class NewhirecoursesController < ApplicationController
          flash[:notice] = "There was a problem updating the course."
       	end
 
-      	 redirect_to newhiredetails_path(params[:newhire_id])
-       
+      	#redirect_to newhiredetails_path(params[:newhire_id])
+        redirect_to newhireshowcourses_path(params[:newhire_id])
   end
 
   def new
@@ -92,7 +92,8 @@ class NewhirecoursesController < ApplicationController
 
   	else
   		#redirect_to newhirecredentials_path(:newhire_id => params[:newhire_id])
-      redirect_to newhiredetails_path(params[:newhire_id])
+      #redirect_to newhiredetails_path(params[:newhire_id])
+      redirect_to newhireshowcourses_path(params[:newhire_id])
   	end		
   end 
 

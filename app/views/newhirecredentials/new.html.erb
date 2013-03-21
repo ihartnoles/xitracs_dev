@@ -17,11 +17,14 @@
                   
 
                               <% @qualificationreasons.each do |qr| %>
+                               <% if qr.id != 7 %>
                                   <br><%= radio_button_tag  'qualificationreason_id',  qr.id, {:onclick => "do_inst();"}, :class => "radio" %>
-                                <%=  qr.name.humanize %>
+                                <%=  qr.name.humanize %> 
+                                <% end %>
                               <% end %> 
                         <br />
                         <br />
+                         TO DO: required textbox for MAJOR
                         <p>
                         <strong>Explanation of instructor's qualifications:</strong><br>
                              <%= text_area_tag 'qualification_explanation', '', :class => 'ckeditor' %>        
