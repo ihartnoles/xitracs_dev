@@ -40,14 +40,26 @@ class NewhirecreditsController < ApplicationController
     def update
       @newhirecredits = Newhirecredit.find(params[:id])
 
-      if @newhirecredits.update_attributes(params[:newhirecredit])
-         flash[:notice] = "Coursework successfully updated."
-      	else
-         flash[:alert] = "There was a problem updating the coursework."
-      	end
-    
-      	#redirect_to newhiredetails_path(params[:newhire_id])
-      	 redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+      if ( params[:newhirecredit][:course_name].blank? ||
+             params[:newhirecredit][:course_description].blank? ||
+             params[:newhirecredit][:course_year].blank? ||
+             params[:newhirecredit][:newhireinstitution_id].blank? ||
+             params[:newhirecredit][:course_credits].blank? ||
+             params[:newhirecredit][:semester].blank?
+            )
+      
+          flash[:alert] = 'Please fill out all fields'
+          redirect_to newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id]) 
+      else
+          if @newhirecredits.update_attributes(params[:newhirecredit])
+           flash[:notice] = "Coursework successfully updated."
+        	else
+           flash[:alert] = "There was a problem updating the coursework."
+        	end
+
+          redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+      end
+      	
     end 
 
     def new
@@ -83,7 +95,8 @@ class NewhirecreditsController < ApplicationController
 	    			 params[:newhirecredit][:course_description].blank? ||
 	    			 params[:newhirecredit][:course_year].blank? ||
 	    			 params[:newhirecredit][:newhireinstitution_id].blank? ||
-	    			 params[:newhirecredit][:course_credits].blank?
+	    			 params[:newhirecredit][:course_credits].blank? ||
+             params[:newhirecredit][:semester].blank?
 	    			)
 	    			 flash[:alert] = 'Please fill out all fields'
 	    			 
@@ -98,8 +111,8 @@ class NewhirecreditsController < ApplicationController
 
 	    		else
 	    	 	  @newhirecredit   = Newhirecredit.new(params[:newhirecredit])
-			 	  @newhirecredit.newhire_id =  params[:newhire_id]
-			 	  @newhirecredit.course_id = params[:course_id]
+  			 	  @newhirecredit.newhire_id =  params[:newhire_id]
+  			 	  @newhirecredit.course_id = params[:course_id]
 
 			  	  if @newhirecredit.save
 				    

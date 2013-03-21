@@ -13,7 +13,7 @@
                    <%= hidden_field_tag 'course_id', params[:course_id] %>
           <fieldset class="round">
                   <legend>Instructor Credentials:</legend>
-                  <br><strong>The instructor is credentialed to teach:</strong><br>
+                  <br><strong>The instructor is credentialed to teach based on:</strong><br>
                   
 
                               <% @qualificationreasons.each do |qr| %>
@@ -24,7 +24,9 @@
                               <% end %> 
                         <br />
                         <br />
-                         TO DO: required textbox for MAJOR
+                         <strong>Major:</strong><br>
+                         <%= text_field_tag 'qualification_major', '',  :placeholder => 'Enter major here...' %>        
+
                         <p>
                         <strong>Explanation of instructor's qualifications:</strong><br>
                              <%= text_area_tag 'qualification_explanation', '', :class => 'ckeditor' %>        

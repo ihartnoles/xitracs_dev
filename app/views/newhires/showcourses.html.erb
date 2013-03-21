@@ -14,7 +14,7 @@
 					<h4> <%= link_to image_tag('/assets/Add_16x16.png'), new_newhirecourse_path(:newhire_id => params[:id]), :title => 'Add a course', :rel => 'tooltip'  %> Courses To Teach:</h4>
 						
 						<% if @newhirecourses.count > 0 %>
-							<table class="table table-condensed table-striped">
+							<table class="table table-condensed table-hover">
 								
 								<th>Prefix & Number</th>
 								<th>Title</th>

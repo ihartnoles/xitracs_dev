@@ -15,21 +15,26 @@
             </div><!--/.well -->
       </div>
       <div class="span9">
-         <%= form_for @newhirecredential do |c| %>
+        <%= form_for(@newhirecredential) do |c| %>
         <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
+        <%= hidden_field_tag :course_id, params[:course_id] %>
         <fieldset class="round">
                 <legend>Instructor Credentials:</legend>
                 <br><strong>The instructor is credentialed to teach:</strong><br>
                
                             <% @qualificationreasons.each do |qr| %>
                                 <br><%= radio_button_tag  'newhirecredential[qualificationreason_id]',  qr.id, @newhirecredential.qualificationreason_id == qr.id %>
-                              <%=  qr.name.humanize %>
+                                  <%=  qr.name.humanize %>
                             <% end %> 
                       <br />
                       <br />
+                       <p>
+                      <strong>Major:</strong><br>
+                         <%= c.text_field :major %>            
+                      </p>
                       <p>
                       <strong>Explanation of instructor's qualifications:</strong><br>
-                           <%= c.text_area :qualification_explanation %>          
+                           <%= c.text_area :qualification_explanation, :class => 'ckeditor' %>          
                       </p>
                       <p>
                        Click <%= c.submit "Save & Continue", :class => 'btn btn-small btn-primary' %> to finish this section and continue precredentialing.

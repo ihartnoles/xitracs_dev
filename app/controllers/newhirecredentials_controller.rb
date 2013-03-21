@@ -55,18 +55,19 @@ class NewhirecredentialsController < ApplicationController
   # POST /newhirecredentials
   # POST /newhirecredentials.json
   def create
-    if ( params[:qualificationreason_id].blank? || params[:qualification_explanation].blank?) 
-          flash[:alert] = 'Please fill out all fields'
+    if ( params[:qualificationreason_id].blank? ||  params[:qualification_major].blank?) 
+          flash[:alert] = 'Please select a credential and enter a major'
           redirect_to new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
     else 
           @newhirecredential = Newhirecredential.new(:qualificationreason_id => params[:qualificationreason_id], 
                                                      :qualification_explanation => params[:qualification_explanation], 
+                                                     :major => params[:qualification_major],
                                                      :newhire_id => params[:newhire_id],
                                                      :course_id => params[:course_id])
           #@newhirecredential.save
 
           if @newhirecredential.save
-            
+             flash[:notice] = "Credential Saved!"
             # Force Relevant Coursework entries if (a) for all options except: “Terminal degree in teaching discipline” & “Other terminal degree – credential by research/experience/creative activity
             if ( params[:qualificationreason_id] == "1" || params[:qualificationreason_id] == "2")
               
@@ -87,17 +88,23 @@ class NewhirecredentialsController < ApplicationController
   # PUT /newhirecredentials/1
   # PUT /newhirecredentials/1.json
   def update
-    @newhirecredential = Newhirecredential.find(params[:id])
+     if ( params[:newhirecredential][:qualificationreason_id].blank? ||  params[:newhirecredential][:major].blank?) 
+          flash[:alert] = 'Please select a credential and enter a major'
+          redirect_to edit_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:course_id])
+     else 
 
-    #@newhirecredential.qualificationreason_id =
-    
-      if @newhirecredential.update_attributes(params[:newhirecredential])
-         flash[:notice] = "Credential successfully updated."
-      else
-        flash[:alert] = "There was a problem updating the credential."
-      end
-    
-      redirect_to newhiredetails_path(params[:newhire_id])
+        @newhirecredential = Newhirecredential.find(params[:id])
+
+        
+      
+        if @newhirecredential.update_attributes(params[:newhirecredential])
+           flash[:notice] = "Credential successfully updated."
+        else
+          flash[:alert] = "There was a problem updating the credential."
+        end
+      
+        redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+    end
   end
 
   # DELETE /newhirecredentials/1
@@ -106,9 +113,8 @@ class NewhirecredentialsController < ApplicationController
     @newhirecredential = Newhirecredential.find(params[:id])
     @newhirecredential.destroy
 
-    respond_to do |format|
-      format.html { redirect_to newhirecredentials_url }
-      format.json { head :ok }
-    end
+    flash[:notice] = "Credential deleted!"
+
+    redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
 end

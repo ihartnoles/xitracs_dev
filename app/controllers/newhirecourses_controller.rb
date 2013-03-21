@@ -69,23 +69,31 @@ class NewhirecoursesController < ApplicationController
 
         else 	
 
-               
-
-
-            	@newhire_course  = Newhirecourse.where(:newhire_id => params[:newhire_id]).count   
+              @newhire_course  = Newhirecourse.where(:newhire_id => params[:newhire_id]).count   
             	@newhirecourse = Newhirecourse.new(:name => params[:course_name], :title => params[:course_title], :description => params[:course_description], :newhire_id => params[:newhire_id])
     		
     		  	   if @newhirecourse.save
       			    
                #create stub for transcript
-               d = Newhiredocument.new
-               d.newhiredoctype_id = 1
-               d.newhire_id = params[:newhire_id]
-               d.course_id = @newhirecourse.id
-               d.verified = 0
-               d.name = 'N/A'
-               d.location = 'N/A'
-               d.save
+               t = Newhiredocument.new
+               t.newhiredoctype_id = 1
+               t.newhire_id = params[:newhire_id]
+               t.course_id = @newhirecourse.id
+               t.verified = 0
+               t.name = 'transcript'
+               t.location = 'N/A'
+               t.save
+
+               #create stub for Evaluation of non-us docs
+               e = Newhiredocument.new
+               e.newhiredoctype_id = 2
+               e.newhire_id = params[:newhire_id]
+               e.course_id = @newhirecourse.id
+               e.verified = 0
+               e.name = 'evaluation'
+               e.location = 'N/A'
+               e.save
+
 
                 @newhireinfo = Newhire.where(:newhire_id => params[:newhire_id])
       			    flash[:notice] = "Course to teach successfully created."

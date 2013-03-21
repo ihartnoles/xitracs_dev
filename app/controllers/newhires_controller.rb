@@ -62,9 +62,9 @@ class NewhiresController < ApplicationController
      flash[:notice] = "New hire deleted!"
 
      if current_user.group.name == "chair" 
-      redirect_to '/newhires/list'
+      redirect_to '/newhires/list_pending'
      else 
-      redirect_to '/newhires/list'
+      redirect_to '/newhires/list_pending'
       #redirect_to  newhires_list_by_dept_path(:department_id => params[:dept_id])
      end 
 

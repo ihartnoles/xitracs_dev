@@ -18,12 +18,7 @@
      <% if false %>
            <div class="well sidebar-nav" style="background-color:#fcf8e3;">
             <ul class="nav nav-list">
-              <li class="nav-header" >Reviewed by:</li>
-              <!--<li class="active"><a href="#">Link</a></li>-->
-                           <!--
-              <li><strong>Send Notification:</strong> <%= link_to image_tag('/assets/Send_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id) %></li>
-               -->
-              
+              <li class="nav-header" >Reviewed by:</li>                           
             </ul>
           </div><!--/.well -->
 
@@ -41,15 +36,9 @@
     <div class="span9">
       <!--Body content-->
       <form id="docs">
-              <!--<fieldset>
-                <legend class="heading">Documents submitted to Provost:</legend>-->
-               
-              <!--  </fieldset>
-            </form> -->
             <br>
             <form>
               <fieldset>
-               <!-- <legend class="heading">Instructor Credentialed to Teach Based On:</legend> -->
                   <h4> 
                     <% if @newhirecredentials.count == 0 %>
                         <%= link_to image_tag('/assets/Add_16x16.png'),  new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:id]),:title => 'Add credentials', :rel => 'tooltip'  %>
@@ -57,16 +46,22 @@
                     Instructor Credentialed to Teach Based On:
                   </h4>
                       
-                        <table  class="table table-condensed table-striped">
+                        <table  class="table table-condensed table-hover">
                           <% if @newhirecredentials.count > 0 %>
                             <th>Reason</th>
+                            <th>Major</th>
                             <th>Explanation</th>
-                            
+                            <th>Actions</th>
                             <% @newhirecredentials.each do |c| %>
                                 <tr>
-                                  <td><%= c.qualificationreason.name %></td>  
+                                <td><%= c.qualificationreason.name %></td> 
+                                <td><%= c.major %></td> 
                                 <td><%=  c.qualification_explanation.html_safe %></td> 
-                                
+                                <td width="10%"><%= link_to image_tag('/assets/Delete_16x16.png'), newhirecredential_path(c , :newhire_id => params[:newhire_id], :course_id => params[:id]), :method => :delete ,:title => 'Delete', :rel => 'tooltip'  %>
+
+                                <%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhirecredential_path(c , :newhire_id => params[:newhire_id], :course_id => params[:id]), :title => 'Edit comment', :rel => 'tooltip'  %>
+
+                            </td>     
                               </tr>
                             <% end %>
                            
@@ -91,7 +86,7 @@
                       Relevant Coursework:                      
                     </h4>                         
                              
-                      <table  class="table table-condensed table-striped">
+                      <table  class="table table-condensed table-hover">
                         <% if @newhire_credits_added.count > 0 %>
                           <th>Course ID</th>
                           <th>Course Name</th>
@@ -158,7 +153,7 @@
                             Documents submitted to Provost:
                 </h4>
              
-                  <table class="table table-condensed table-striped">
+                  <table class="table table-condensed table-hover">
                     <% if @newhiredocuments.count > 0 %>
                       
                       <% if current_user.group.name == "admin" %>
@@ -171,10 +166,9 @@
 
                       
 
-                      <% Newhiredoctype.all.each do |dt| %>                          
-                         <tr>
-                       
+                      <% Newhiredoctype.all.each do |dt| %> 
                              <% if @newhiredocuments.map(&:newhiredoctype_id).include?(dt.id) %>
+                                <tr>
                                   <% @newhiredocuments.each do |d| %>
                                      <% if dt.id == d.newhiredoctype_id %>
                                         <td>
@@ -192,7 +186,7 @@
                                         </td>
 
                                         <td>   
-                                          <% if dt.id == 1 %>
+                                          <% if dt.id <= 2 %>
                                                 N/A
                                           <% else %>
                                              <%= link_to image_tag('/assets/Stock Index Down_16x16.png'), 
@@ -207,24 +201,27 @@
                                         </td>
                                     <% end %>
                                   <% end %>
+                                </tr>
                              <% else %>
-                              <td>
-                                  <%= check_box_tag "", '1', false , { :disabled => true, :class => 'verify' } %>
-                              </td>
-                              <td>
-                                &nbsp;
-                              </td>
-                              <td>
-                                  <%#= dt.id %>
-                                  <%= dt.name %>
-                              </td>
-                              <td>
-                                  <% if dt.id == 1 %>
-                                    N/A
-                                  <% else %>
-                                    Please upload doc
-                                  <% end %>
-                              </td>                              
+                              <tr  class="alert">
+                                <td>
+                                    <%= check_box_tag "", '1', false , { :disabled => true, :class => 'verify' } %>
+                                </td>
+                                <td>
+                                  &nbsp;
+                                </td>
+                                <td>
+                                   <%= dt.name %>
+                                </td>
+                                <td>
+                                  
+                                    <% if dt.id <= 2 %>
+                                      N/A
+                                    <% else %>
+                                      Please upload doc
+                                    <% end %>
+                                </td>          
+                              </tr>                    
                              <% end %>             
                          
                         </tr>
@@ -244,7 +241,7 @@
             <% if @newhire_comments_added.count > 0 %>
                <fieldset class="round">
                  <h4>Coursework Comments:</h4>
-                    <table  class="table table-condensed table-striped">                     
+                    <table  class="table table-condensed table-hover">                     
                         <th>Comment</th>
                         <th>Created By:</th>
                         <th>Created On:</th>

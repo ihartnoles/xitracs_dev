@@ -10,19 +10,26 @@
         	<%= hidden_field_tag 'course_id', params[:course_id] %>
 		    	<fieldset class="round">
 							<legend>
-								Add Relevant Coursework: 
+								Add Relevant Coursework 3: 
 							</legend>
 							
-									<table class="table table-striped">
+									<table class="table table-hover">
 					<tr>	
-						<th>Course ID (ex: CDA 6031)</th>
-						<th>Course Name (ex: Data Mining)</th>
-						<th>Course Year (ex: 1995)</th>
+						<td><strong>Course ID (ex: CDA 6031)</strong></td>
+						<td><strong>Course Name (ex: Data Mining)</strong></td>
+						<td><strong>Course Semester</strong></td>
+						<td><strong>Course Year (ex: 1995)</strong></td>
 						
 					</tr>
 					<tr>
 						<td><%= f.text_field :course_name, :class => "text" %></td>
 						<td><%= f.text_field :course_description,  :class => "text"  %></td>
+						<td>
+								<%= f.select :semester, 
+											   options_for_select([["Fall", "Fall"], ["Spring", "Spring"], ["Summer", "Summer"]]),
+											   {:prompt => "--select semester--"} %>
+
+						</td>
 						<td><%= f.text_field :course_year,  :class => "text"  %></td>
 						
 						
@@ -39,15 +46,14 @@
 							<%= f.radio_button :semester_credits, "1" %> Semester<br/>
 							<%= f.radio_button :semester_credits, "0" %> Quarter<br/>
 						</td>
-						<td>
+						<td colspan="2">
 							<strong>Institution:</strong><br>
-							<%= collection_select(:newhirecredit,
-												   :newhireinstitution_id,		   
+							<%= f.collection_select :newhireinstitution_id,		   
 												   @newhireinstitutions,
 												   :id,
 												   :name,
-												    {:selected => @newhirecredits.newhireinstitution_id}
-													)%> 
+												    :prompt => "--select institution--"
+													%> 
 						</td>
 					</tr>
 					<tr>
