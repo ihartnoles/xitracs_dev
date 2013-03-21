@@ -14,30 +14,40 @@
 			</h4>
 			
 				<table  class="table table-condensed">
-					<th>Prefix & Number</th>
-					<th>Title</th>
-					<th>Description</th>
-					<th width="10%">Action</th>
-						<% @newhirecourses.each do |ca| %>
-			    			<tr>
-			    				<td><%=  ca.name %></td> 
-			 					<td><%=  ca.title.humanize %></td>
-			 					<td><%=  ca.description.humanize.html_safe %></td> 	
-			 					<td>
+					<% if @newhirecourses.count > 0 %>
+						<th>Prefix & Number</th>
+						<th>Title</th>
+						<th>Description</th>
+						<th width="10%">Action</th>
+							<% @newhirecourses.each do |ca| %>
+				    			<tr>
+				    				<td><%=  ca.name %></td> 
+				 					<td><%=  ca.title.humanize %></td>
+				 					<td><%=  ca.description.humanize.html_safe %></td> 	
+				 					<td>
 
-			 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]),  :title => 'More details', :rel => 'tooltip' %>
+				 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]),  :title => 'More details', :rel => 'tooltip' %>
 
-			 						<%= link_to image_tag('/assets/Edit_16x16.png'),  edit_newhirecourse_path(ca , :newhire_id => params[:id]) , :title => 'Edit course', :rel => 'tooltip' %>
+				 						<%= link_to image_tag('/assets/Edit_16x16.png'),  edit_newhirecourse_path(ca , :newhire_id => params[:id]) , :title => 'Edit course', :rel => 'tooltip' %>
 
-			 						<%#= link_to image_tag('/assets/Delete_16x16.png'), @newhirecourse, :method => :delete, :confirm => "Are you sure ?" %>
+				 						<%#= link_to image_tag('/assets/Delete_16x16.png'), @newhirecourse, :method => :delete, :confirm => "Are you sure ?" %>
 
-			 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecourse_path(ca , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this course?" , :title => 'Delete course', :rel => 'tooltip'
-			 						%>
-			 						<%#= button_to "delete", {:controller => :newhirecourses, :action => 'destroy' }, :method => :delete %>
-	 						
-			 					</td> 					
-			 				</tr>
-			 			<% end %>
+				 						<%= link_to image_tag('/assets/Delete_16x16.png'), newhirecourse_path(ca , :newhire_id => params[:id]), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this course?" , :title => 'Delete course', :rel => 'tooltip'
+				 						%>
+				 						<%#= button_to "delete", {:controller => :newhirecourses, :action => 'destroy' }, :method => :delete %>
+		 						
+				 					</td> 					
+				 				</tr>
+				 			<% end %>
+				 	<% else %>
+				 		 <div class="alert alert-error">
+                               <div align="center">
+                                      Please add a course to teach
+                               </div>
+                         </div>
+
+				 	<% end %>
+
 				</table>
 			</fieldset>
 				

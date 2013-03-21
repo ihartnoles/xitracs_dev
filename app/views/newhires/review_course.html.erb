@@ -169,39 +169,67 @@
                       <th>Type</th>
                       <th>Action</th>
 
-                      <tr>
-                        <% if current_user.group.name == "admin" %>
-                          <td>&nbsp;</td>
-                        <% end %>
-                        <td>N/A</td>
-                        <td>Official transcript</td>
-                        <td>&nbsp;</td>
-                      </tr>
+                      
 
-                      <% @newhiredocuments.each do |d| %>
-                          <tr>
-                            <% if current_user.group.name == "admin" %>
+                      <% Newhiredoctype.all.each do |dt| %>                          
+                         <tr>
+                       
+                             <% if @newhiredocuments.map(&:newhiredoctype_id).include?(dt.id) %>
+                                  <% @newhiredocuments.each do |d| %>
+                                     <% if dt.id == d.newhiredoctype_id %>
+                                        <td>
+                                           <% if d.verified == "1" %>
+                                            <%= check_box_tag "#{d.id}", '1', true , { :class => 'verify' } %>
+                                          <% else %>
+                                             <%= check_box_tag "#{d.id}", '1', false , { :class => 'verify' } %>
+                                          <% end %> 
+                                        </td>
+                                        <td>
+                                          &nbsp;
+                                        </td>
+                                        <td>                                          
+                                          <%= d.newhiredoctype.name %>
+                                        </td>
+
+                                        <td>   
+                                          <% if dt.id == 1 %>
+                                                N/A
+                                          <% else %>
+                                             <%= link_to image_tag('/assets/Stock Index Down_16x16.png'), 
+                                                {:controller => 'newhiredocuments', 
+                                                  :action => 'file_download', 
+                                                  :doc_id => d.id,
+                                                  :newhire_id => params[:id], 
+                                                  :doc_type =>  d.newhiredoctype_id,
+                                                  :source => 'detailscreen'},
+                                                  :title => 'Download document', :rel => 'tooltip'%> Download
+                                          <% end %>
+                                        </td>
+                                    <% end %>
+                                  <% end %>
+                             <% else %>
                               <td>
-                                <% if d.verified == "1" %>
-                                  <%= check_box_tag "#{d.id}", '1', true , { :class => 'verify' } %>
-                                <% else %>
-                                   <%= check_box_tag "#{d.id}", '1', false , { :class => 'verify' } %>
-                                <% end %>                            
+                                  <%= check_box_tag "", '1', false , { :disabled => true, :class => 'verify' } %>
                               </td>
-                            <% end %>
-                            <td><%= d.name %></td>  
-                            <!-- <td><%= d.location %></td>  -->
-                            <td><%= d.newhiredoctype.name %></td> 
-                            <td> <%= link_to image_tag('/assets/Stock Index Down_16x16.png'), 
-                              {:controller => 'newhiredocuments', 
-                                :action => 'file_download', 
-                                :doc_id => d.id,
-                                :newhire_id => params[:id], 
-                                :doc_type =>  d.newhiredoctype_id,
-                                :source => 'detailscreen'},
-                                :title => 'Download document', :rel => 'tooltip'%> Download</td>
+                              <td>
+                                &nbsp;
+                              </td>
+                              <td>
+                                  <%#= dt.id %>
+                                  <%= dt.name %>
+                              </td>
+                              <td>
+                                  <% if dt.id == 1 %>
+                                    N/A
+                                  <% else %>
+                                    Please upload doc
+                                  <% end %>
+                              </td>                              
+                             <% end %>             
+                         
                         </tr>
-                      <% end %> 
+                      <% end %>
+
                     <% else %>
                       
                           <div class="alert alert-error">

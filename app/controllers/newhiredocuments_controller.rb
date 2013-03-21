@@ -140,6 +140,7 @@ class NewhiredocumentsController < ApplicationController
         File.open(path, "wb") { |f| f.write(params[:file_upload][:filename].read) }
         
         if (params[:commit] == 'Upload')
+          
           d = Newhiredocument.new
            #d.doc_type = params[:doc_type]
           d.name = name

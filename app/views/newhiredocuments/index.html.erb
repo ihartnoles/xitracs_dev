@@ -20,23 +20,18 @@
 					    				<tr>
 					 						<td><%=  dt.name.humanize %></td>
 					 						<td>
-					 							<% if dt.id != 1 %>
+					 							<% if dt.id > 1%>
 						 							<%= link_to image_tag('/assets/Stock Index Up_24x24.png'),
 							 						{:controller => 'newhiredocuments', :action => 'uploadform', :doc_type => dt.id, :newhire_id => params[:newhire_id], :course_id => params[:course_id]}, 
 				        							:onClick=>"window.open(this.href,'Details','height=500, width=600'); return false;" ,
 				        							:title => 'Upload', :rel => 'tooltip'%> [Upload]
+				        						<% else %>
+				        						N/A
 				        						<% end %>
 			        						</td>
 					 					</tr>
 									<% end %>		
 
-								<!--
-								<tr>
-									<td colspan="2">Click
-			<input type="button" name="Continue" value="Contine"  onclick="window.location.href='newhirecredentials'">
-			to finish this section and continue precredentialing.</td>
-								</tr>
-							-->
 							</table>
 					</fieldset>
 			
