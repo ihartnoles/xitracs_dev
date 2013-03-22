@@ -90,6 +90,8 @@ class NewhiresController < ApplicationController
      @newhirecourses = Newhirecourse.where(:newhire_id => params[:id])   
      @newhire_dept = Department.find(@newhire.department_id)  
      @newhiredocuments = Newhiredocument.where(:newhire_id => params[:id])
+
+       
      #@reviewed_by_provost = Newhirereviewreason.where(:newhire_id => params[:id], :course_id =>  params[:course_id], :review_state => "1")
   end
 

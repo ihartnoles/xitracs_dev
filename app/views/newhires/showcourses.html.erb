@@ -19,8 +19,8 @@
 								<th>Prefix & Number</th>
 								<th>Title</th>
 								<th>Description</th>
-								<th>Reviewed</th>
-								<th>Provost Approved</th>
+								<th>Review Status</th>
+								<!-- <th>Provost Approved</th> -->
 								<th width="10%">Action</th>
 									
 										<% @newhirecourses.each do |ca| %>
@@ -30,19 +30,26 @@
 							 					<td><%=  ca.title.humanize %></td>
 							 					<td><%=  ca.description.humanize.html_safe %></td> 	
 							 					<td>
-							 						<% if ca.reviewed_by_reviewteam(ca, params[:id]) >= 2 %>
-							 							<%= image_tag('/assets/Check_16x16.png') %>
+							 						
+							 						<% if ca.reviewed_by_reviewteam(ca).count == 1 %>
+							 							1 of 2 approved
+							 						<% elsif ca.reviewed_by_reviewteam(ca).count >= 2 %>
+							 							<%= image_tag('/assets/Check_16x16.png')  %>
 							 						<% else %>
 							 							<%= image_tag('/assets/Cancel_16x16.png') %>
 							 						<% end %>
+							 						
 							 					</td>
+							 					<!--
 							 					<td>
+
 							 						<% if ca.signed_off_by_provost(ca, params[:id]) > 0 %>
 							 							<%= image_tag('/assets/Check_16x16.png') %>
 							 						<% else %>
 							 							<%= image_tag('/assets/Cancel_16x16.png') %>
 							 						<% end %>
 							 					</td>
+							 				-->
 							 					<td>
 
 							 						<%= link_to image_tag('/assets/Preview_16x16.png'), newhire_review_course_path(:id => ca , :newhire_id => params[:id]) , :title => 'See course details ', :rel => 'tooltip' %>	 	
