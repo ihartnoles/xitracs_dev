@@ -8,8 +8,8 @@ class School < ActiveRecord::Base
 	 "#{self.name} - #{self.description}"
 	end
 
-	def count_by_school(school_id)
-  		newhires_by_school_count = Newhire.where(:school_id => school_id).count
+	def count_by_school(school_id, semester_id)
+  		newhires_by_school_count = Newhire.where(:school_id => school_id, :semester_id => semester_id).count
 
 
 	  	if newhires_by_school_count > 0

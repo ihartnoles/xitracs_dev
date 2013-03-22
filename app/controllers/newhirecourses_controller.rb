@@ -70,7 +70,7 @@ class NewhirecoursesController < ApplicationController
         else 	
 
               @newhire_course  = Newhirecourse.where(:newhire_id => params[:newhire_id]).count   
-            	@newhirecourse = Newhirecourse.new(:name => params[:course_name], :title => params[:course_title], :description => params[:course_description], :newhire_id => params[:newhire_id])
+            	@newhirecourse = Newhirecourse.new(:name => params[:course_name], :title => params[:course_title], :description => params[:course_description], :semester_id => session[:semester_id],:newhire_id => params[:newhire_id])
     		
     		  	   if @newhirecourse.save
       			    

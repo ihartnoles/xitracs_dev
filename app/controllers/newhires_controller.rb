@@ -71,17 +71,17 @@ class NewhiresController < ApplicationController
   end
 
   def list_pending
-    @newhires = Newhire.all
+    @newhires = Newhire.where(:semester_id => session[:semester_id])
     @newhire_count = @newhires.count
   end
 
   def list_by_dept
-     @newhires = Newhire.where(:department_id => params[:department_id])
+     @newhires = Newhire.where(:department_id => params[:department_id], :semester_id => session[:semester_id])
      @newhire_count = @newhires.count
   end
 
   def list_by_school
-     @newhires = Newhire.where(:school_id => params[:school_id])
+     @newhires = Newhire.where(:school_id => params[:school_id], :semester_id => session[:semester_id])
      @newhire_count = @newhires.count
   end
 
@@ -120,7 +120,7 @@ class NewhiresController < ApplicationController
           flash[:notice] = 'Please provide both a firstname and a lastname'
           redirect_to newhires_path
       else
-          @newhire = Newhire.new(:first_name => params[:first_name], :middle_name => params[:middle_name],:last_name =>params[:last_name], :school_id => session[:school_id], :department_id => session[:department_id])
+          @newhire = Newhire.new(:first_name => params[:first_name], :middle_name => params[:middle_name],:last_name =>params[:last_name], :semester_id => session[:semester_id],:school_id => session[:school_id], :department_id => session[:department_id])
       
           if params[:middle_name].blank? 
              @newhire.middle_name = nil
