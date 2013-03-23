@@ -92,8 +92,12 @@ class NewhiredocumentsController < ApplicationController
 
      send_file("#{Rails.root}/#{download.location}")
 
-     #client = Client.find(params[:id])
      #send_data("#{RAILS_ROOT}/files/clients/#{client.id}.pdf", :filename => "#{client.name}.pdf", :type => "application/pdf")
+  end
+
+  #TO DO
+  def term_degree_download
+      send_file( "#{Rails.root}/public/data/Terminal Degrees by Department.pdf", :type => 'application/pdf', :disposition => 'inline' )
   end
 
   def file_upload

@@ -52,6 +52,7 @@ XitracsRoster::Application.routes.draw do
         get  'file_download'
         get  'save_verified_doc'
         post 'save_verified_doc'
+        get  'term_degree_download'
     end
   end
 
@@ -166,8 +167,8 @@ XitracsRoster::Application.routes.draw do
   post "/newhiredocuments/file_upload"
   put  "/newhiredocuments/file_upload"
 
-  get   "/newhiredocuments/file_download"
-  #post  "/newhiredocuments/file_download"
+  get  "/newhiredocuments/file_download"
+  get  "/newhiredocuments/term_degree_download"
 
   get  "/newhiredocuments/uploadstatus"
   post "/newhiredocuments/uploadstatus"

@@ -25,7 +25,16 @@
                         <br />
                         <br />
                          <strong>Major:</strong><br>
-                         <%= text_field_tag 'qualification_major', '',  :placeholder => 'Enter major here...' %>        
+                         <%= text_field_tag 'qualification_major', '',  :placeholder => 'Enter major here...' %>     
+
+                         <%= link_to 'List of Terminal Degrees by Dept.', 
+                                                {:controller => 'newhiredocuments', 
+                                                  :action => 'term_degree_download', 
+                                                  :source => 'detailscreen'},
+                                                  :onClick=>"window.open(this.href,'Terminal Degree List','scrollbars=1,height=500, width=700'); return false;" ,
+                                                  :title => 'Terminal Degree List', 
+                                                  :rel => 'tooltip'%>
+                       
 
                         <p>
                         <strong>Explanation of instructor's qualifications:</strong><br>

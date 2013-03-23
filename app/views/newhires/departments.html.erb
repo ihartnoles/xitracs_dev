@@ -12,7 +12,7 @@
             <div class="span4">
               <div class="well sidebar-nav"  style="background-color:#fcf8e3; margin:5px;">
               <h5><%= department.name %> </h5>
-              <p><%= department.count_by_dept(department.id) %></p>
+              <p><%= department.count_by_dept(department.id, session[:semester_id]) %></p>
               <p><a class="btn" href="#" onclick="window.location.href='<%= url_for :action => 'list_by_dept', :department_id => department.id %>'">View details &raquo;</a></p>
           		</div>
             </div><!--/span-->

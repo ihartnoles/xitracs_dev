@@ -13,8 +13,8 @@ class Department < ActiveRecord::Base
    "#{self.name} (#{self.school.name})"
   end
 
-  def count_by_dept(department_id)
-  	newhires_by_dept_count = Newhire.where(:department_id => department_id).count
+  def count_by_dept(department_id, semester_id)
+  	newhires_by_dept_count = Newhire.where(:department_id => department_id, :semester_id => semester_id).count
 
 
   	if newhires_by_dept_count > 0
