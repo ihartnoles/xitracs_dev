@@ -156,14 +156,14 @@
                   <table class="table table-condensed table-hover">
                     <% if @newhiredocuments.count > 0 %>
                       
-                      <% if current_user.group.name == "admin" %>
+                      <%# if current_user.group.name == "admin" %>
                         <th>Verified</th>
-                      <% end %>
+                      <%# end %>
                       <th>Name</th>
                       <!-- <th>Location</th> -->
                       <th>Type</th>
                       <th>Action</th>
-
+                      
                       
 
                       <% Newhiredoctype.all.each do |dt| %> 
@@ -172,14 +172,14 @@
                                   <% @newhiredocuments.each do |d| %>
                                      <% if dt.id == d.newhiredoctype_id %>
                                         <td>
-                                           <% if d.verified == "1" %>
-                                            <%= check_box_tag "#{d.id}", '1', true , { :class => 'verify' } %>
-                                          <% else %>
-                                             <%= check_box_tag "#{d.id}", '1', false , { :class => 'verify' } %>
-                                          <% end %> 
+                                            <% if d.verified == "1" %>
+                                              <%= check_box_tag "#{d.id}", '1', true , { :disabled =>  (current_user.group.name == "admin" ?  false : true), :class => 'verify' } %>
+                                            <% else %>
+                                               <%= check_box_tag "#{d.id}", '1', false , { :disabled =>  (current_user.group.name == "admin" ?  false : true), :class => 'verify' } %>
+                                            <% end %>                                          
                                         </td>
                                         <td>
-                                          &nbsp;
+                                          -
                                         </td>
                                         <td>                                          
                                           <%= d.newhiredoctype.name %>
@@ -199,6 +199,7 @@
                                                   :title => 'Download document', :rel => 'tooltip'%> Download
                                           <% end %>
                                         </td>
+
                                     <% end %>
                                   <% end %>
                                 </tr>

@@ -12,9 +12,7 @@
 	            <div class="well sidebar-nav" style="background-color:#fcf8e3; margin:5px;">
 	              <h5><%= school.description %></h5>
 	                <p><%= school.count_by_school(school.id, session[:semester_id]) %></p>
-	              <!--
-	              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-	          -->
+	            	
 	              <p><div class="btn" onclick="window.location.href='<%= url_for :action => 'departments' , :school_id => school.id %>'">View departments &raquo;</div></p>
 	            </div><!--/span-->
 	         </div>

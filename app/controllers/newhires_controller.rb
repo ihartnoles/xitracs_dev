@@ -329,13 +329,26 @@ class NewhiresController < ApplicationController
       signoff.user_type = current_user.group_id
       #signoff.user_type = Group.find(user.group_id).name.humanize
 
-      if params[:newhiresignoff][:signed_off] == "1"
-        @subject = "New Hire Signoff"
-        signoff.sentto_id = params[:send_to][:notify]
-      else
-        @subject = "Corrections Needed!"
-        signoff.sentto_id = params[:send_to][:correct]
-      end
+       if ([:final_approval])
+            @subject = "Final Approval"
+            #signoff.final_approval = params[:newhiresignoff][:final_approval]
+
+            #TO DO: update Newhirecourse.final_approval
+            save_final_approval = Newhirecourse.find(params[:course_id]).update_attribute(:final_approval, params[:final_approval])
+
+            #TO DO: change this
+            signoff.sentto_id = "14" #jcramer
+            flash[:notice] = "Final Approval processed!"
+       else
+          if params[:newhiresignoff][:signed_off] == "1"
+            @subject = "New Hire Signoff"
+            signoff.sentto_id = params[:send_to][:notify]
+          else
+            @subject = "Corrections Needed!"
+            signoff.sentto_id = params[:send_to][:correct]
+          end
+          flash[:notice] = "Signoff processed!"
+       end
 
       signoff.save
 
@@ -350,11 +363,12 @@ class NewhiresController < ApplicationController
       #pass argumetns to the send_review_msg mailer function
       WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
 
-      flash[:notice] = "Signoff processed!"
+      
       
        render :layout => 'simple'
       #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
   end
+
   def review_dialog
      @newhirereason = Newhirereviewreason.new
      @newhire_reasons_added = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]) 

@@ -19,8 +19,10 @@
                 <th>Created On</th>        
                 <th>Actions</th>         
                 <% @newhire_signoffs.each do |nhs| %>
-                  <tr  <% if nhs.signed_off == 1 %>class="success"<% else %>class="error"<% end %> >
-                    <td><%= nhs.status(nhs.signed_off, nhs.user_type) %></td>
+                  <tr  <% if nhs.signed_off == 1 || @newhire_course_to_review.final_approval == 1 %>class="success"<% else %>class="error"<% end %> >
+                    <td>
+                      <%= nhs.status(nhs.signed_off, nhs.user_type, @newhire_course_to_review.final_approval) %>
+                    </td>
                     <td><%= nhs.signed_off_by(nhs.sentto_id) %></td>
                     <td><%= nhs.signed_off_by(nhs.user_id) %></td>
                     <td><%= nhs.comment.html_safe %></td>

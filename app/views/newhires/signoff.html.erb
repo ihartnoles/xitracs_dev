@@ -8,7 +8,12 @@
                 
                 <tr>
                   <td>
-                <!-- TO DO: add a status value to DB and change these fieldnames -->
+                 
+                 <!--TO DO: This should only appear for mwalsh8 -->
+                 <% if current_user.group.name == "admin" %>  
+                  <%= check_box_tag(:final_approval) %> Final Approval <br><br>
+                 <% end %>
+
                  <%= f.radio_button :signed_off , "1"%> Signoff 
                 
                  <% if false %> 
