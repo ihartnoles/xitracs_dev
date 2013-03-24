@@ -24,4 +24,23 @@ class Department < ActiveRecord::Base
   		return "<div class='alert alert-info'>No new hires</div>".html_safe
   	end 
   end 
+
+  def not_completed(department_id, semester_id)
+    
+      notcompleted = Newhirecourse.find_by_sql([' SELECT DISTINCT
+                                newhirecourses.id           
+                              
+                          FROM
+                             newhires
+                               JOIN newhirecourses
+                                  ON (newhires.id = newhirecourses.newhire_id)
+
+                          WHERE newhires.department_id = :did 
+                          AND newhires.semester_id = :sem_id
+                          AND newhirecourses.final_approval = 0 ;', {:did => department_id, :sem_id => semester_id }]).count
+
+      return "<div class='alert alert-success'><em>#{notcompleted} Courses to Review</em></div>".html_safe
+
+    end
+
 end

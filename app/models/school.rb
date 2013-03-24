@@ -25,7 +25,7 @@ class School < ActiveRecord::Base
 	  def not_completed(school_id, semester_id)
 	  
 	  	notcompleted = Newhirecourse.find_by_sql([' SELECT DISTINCT
-													      newhires.id				    
+													      newhirecourses.id				    
 													    
 													FROM
 													   newhires
