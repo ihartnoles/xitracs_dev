@@ -21,7 +21,7 @@
 				  <th>School</th>
 				  <th>Department</th>
 				  <th >Added on</th>
-				  <th colspan="2">Actions</th>
+				  <th colspan="2" >Actions</th>
 				    <% @newhires.each do |newhire| %>
 						  <tr>
 						  	<td><%= newhire.last_name %></td>
@@ -32,16 +32,26 @@
 						  	<td>
 						  		<%#= link_to image_tag('/assets/Preview_16x16.png'), newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :title => 'See details ', :rel => 'tooltip' %>
 
-						  		<%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhire_path(:id => newhire, :dept_id => newhire.department_id),:title => 'Edit new hire', :rel => 'tooltip'
-                                    %>
+						  		<%  if newhire.assigned_to == current_user.id %>
+							  		<%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhire_path(:id => newhire, :dept_id => newhire.department_id),:title => 'Edit new hire', :rel => 'tooltip'
+	                                    %>
 
-						  		<%= link_to image_tag('/assets/Delete_16x16.png'),  newhire_delete_newhire_path(:id => newhire, :dept_id => newhire.department_id), :method => :delete_newhire, :class => "destroy", :confirm => "Are you sure you want to delete this new hire entry?",:title => 'Delete new hire', :rel => 'tooltip'
-                                    %>                               
+							  		<%= link_to image_tag('/assets/Delete_16x16.png'),  newhire_delete_newhire_path(:id => newhire, :dept_id => newhire.department_id), :method => :delete_newhire, :class => "destroy", :confirm => "Are you sure you want to delete this new hire entry?",:title => 'Delete new hire', :rel => 'tooltip'
+	                                    %>     
+	                            <% end %>   
+
 						   </td>
 						   <td>
 						   		 
+						   	<% if newhire.assigned_to == current_user.id %>
+						   	
+						   		 <%= button_to "Start", newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :class => "btn btn-mini btn-primary" ,:method => :post, :title => 'Start Pre-Credentialing ', :rel => 'tooltip' %>
 
-						   		 <%= button_to "Start", newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :class => "btn btn-mini btn-primary" ,:method => :get, :title => 'Start Pre-Credentialing ', :rel => 'tooltip' %>
+						   	<% else %>
+
+						   		<%= button_to "View", newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :class => "btn btn-mini btn-primary" ,:method => :get, :title => 'View details ', :rel => 'tooltip' %>
+
+						   	<% end %>
 						   </td>
 						  </tr>
 					  <% end %>

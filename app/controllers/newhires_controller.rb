@@ -23,7 +23,7 @@ class NewhiresController < ApplicationController
 
      if  current_user.group.name == "chair"
       #if chair show only listings for the specific department
-       @newhires = Newhire.where(:department_id => session[:department_id])
+       @newhires = Newhire.where(:department_id => session[:department_id], :semester_id => session[:semester_id])
        @newhire_count = @newhires.count
     
 
@@ -71,12 +71,32 @@ class NewhiresController < ApplicationController
   end
 
   def list_pending
-    @newhires = Newhire.where(:semester_id => session[:semester_id])
+    
+    #To Do: determine list type to display
+
+    if current_user.group.name == "admin" 
+      
+      if (params[:atm])
+        @newhires = Newhire.where(:semester_id => session[:semester_id], :assigned_to => current_user.id)
+      else
+        @newhires = Newhire.where(:semester_id => session[:semester_id])
+      end
+
+    elsif current_user.group.name == "dean"
+       if (params[:atm])
+          @newhires = Newhire.where(:semester_id => session[:semester_id], :school_id => session[:school_id] , :assigned_to => current_user.id )
+       else
+          @newhires = Newhire.where(:semester_id => session[:semester_id], :school_id => session[:school_id] )
+       end
+    else
+      @newhires = Newhire.where(:semester_id => session[:semester_id], :department_id => session[:department_id] ,:assigned_to => current_user.id)
+    end
+    
     @newhire_count = @newhires.count
   end
 
   def list_by_dept
-     @newhires = Newhire.where(:department_id => params[:department_id], :semester_id => session[:semester_id])
+     @newhires = Newhire.where(:department_id => params[:department_id], :semester_id => session[:semester_id], :assigned_to => current_user.id)
      @newhire_count = @newhires.count
   end
 
@@ -120,7 +140,13 @@ class NewhiresController < ApplicationController
           flash[:notice] = 'Please provide both a firstname and a lastname'
           redirect_to newhires_path
       else
-          @newhire = Newhire.new(:first_name => params[:first_name], :middle_name => params[:middle_name],:last_name =>params[:last_name], :semester_id => session[:semester_id],:school_id => session[:school_id], :department_id => session[:department_id])
+          @newhire = Newhire.new(:first_name => params[:first_name], 
+                                 :middle_name => params[:middle_name],
+                                 :last_name =>params[:last_name], 
+                                 :semester_id => session[:semester_id],
+                                 :school_id => session[:school_id], 
+                                 :department_id => session[:department_id],
+                                 :assigned_to => current_user.id)
       
           if params[:middle_name].blank? 
              @newhire.middle_name = nil
@@ -329,15 +355,17 @@ class NewhiresController < ApplicationController
       signoff.user_type = current_user.group_id
       #signoff.user_type = Group.find(user.group_id).name.humanize
 
-       if ([:final_approval])
+       if (params[:final_approval])
             @subject = "Final Approval"
             #signoff.final_approval = params[:newhiresignoff][:final_approval]
 
+             #TO DO: change this
+            signoff.sentto_id = params[:send_to][:notify]
+           
             #TO DO: update Newhirecourse.final_approval
             save_final_approval = Newhirecourse.find(params[:course_id]).update_attribute(:final_approval, params[:final_approval])
-
-            #TO DO: change this
-            signoff.sentto_id = "14" #jcramer
+            
+           
             flash[:notice] = "Final Approval processed!"
        else
           if params[:newhiresignoff][:signed_off] == "1"
@@ -355,6 +383,13 @@ class NewhiresController < ApplicationController
       #find the newhire
       @newhire = Newhire.find(params[:newhire_id])
 
+      #TO DO: Find our Newhire and update assigned_to => params
+      @newhire.assigned_to =  signoff.sentto_id
+      @newhire.save
+      
+      #save our assigned_to value for Newhirecourse
+      save_course_assigned_to = Newhirecourse.find(params[:course_id]).update_attribute(:assigned_to, signoff.sentto_id)
+
       #set the msg argument     
       @msg = signoff.comment
      
@@ -362,11 +397,8 @@ class NewhiresController < ApplicationController
 
       #pass argumetns to the send_review_msg mailer function
       WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
-
-      
-      
-       render :layout => 'simple'
-      #redirect_to newhire_review_course_path(:newhire_id => params[:newhire_id], :id => params[:course_id])
+     
+      render :layout => 'simple'
   end
 
   def review_dialog

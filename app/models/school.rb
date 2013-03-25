@@ -24,19 +24,58 @@ class School < ActiveRecord::Base
 	 
 	  def not_completed(school_id, semester_id)
 	  
-	  	notcompleted = Newhirecourse.find_by_sql([' SELECT DISTINCT
-													      newhirecourses.id				    
-													    
-													FROM
-													   newhires
-													     JOIN newhirecourses
-													        ON (newhires.id = newhirecourses.newhire_id)
+		   notcompleted = Newhirecourse.find_by_sql([' SELECT DISTINCT
+														      newhirecourses.id				    
+														    
+														FROM
+														   newhires
+														     JOIN newhirecourses
+														        ON (newhires.id = newhirecourses.newhire_id)
 
-													WHERE newhires.school_id = :sid 
-													AND newhires.semester_id = :sem_id
-													AND newhirecourses.final_approval = 0 ;', {:sid => school_id, :sem_id => semester_id }]).count
+														WHERE newhires.school_id = :sid 
+														AND newhires.semester_id = :sem_id
+														AND newhirecourses.final_approval = 0 ;', {:sid => school_id, :sem_id => semester_id }]).count
 
-	  	return "<div class='alert alert-success'><em>#{notcompleted} Courses to Review</em></div>".html_safe
+		  if notcompleted == 0
+	        message = "No courses to review"
+	        divclass = "error"
+	      elsif notcompleted == 1 
+	        message = "<em>One course to review</em>"
+	        divclass = "info"
+	      else
+	        message = "<em>#{notcompleted} courses to review</em>"
+	        divclass = "info"
+	      end
+	      
 
+
+	      return "<div class='alert alert-#{divclass}'>#{message}</div>".html_safe
+
+	  end
+
+	  def assigned_to_me(school_id, semester_id, current_user_id)
+	    	 
+	    	assigned_to_me = Newhirecourse.find_by_sql([' SELECT DISTINCT
+														      id				    
+												    
+														FROM
+														   newhires
+														     
+														WHERE newhires.school_id = :sid 
+														AND newhires.semester_id = :sem_id
+														AND newhires.assigned_to = :cu_id ;', {:sid => school_id, :sem_id => semester_id, :cu_id => current_user_id }]).count
+
+	  		if assigned_to_me == 0
+	  			message = "None assigned to me"
+	        	divclass = "error"
+	  		elsif assigned_to_me == 1
+				message = "<em>#{assigned_to_me} new hire assigned to me</em>"
+	        	divclass = "success"
+	  		else
+	  			message = "<em>#{assigned_to_me} new hires assigned to me</em>"
+	        	divclass = "success"
+	  		end
+
+	  	    return "<div class='alert alert-#{divclass}'>#{message}</div>".html_safe
 	  end
 end
