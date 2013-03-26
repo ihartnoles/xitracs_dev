@@ -1,34 +1,59 @@
 <fieldset class="round" >
-	<h4>
-			<!--
-			<% if current_user.group.name != "chair" %>
-				<a href="javascript:history.back();" title="Go Back" rel="tooltip"><i class="icon-arrow-left"></i></a> 
-			<% end %>
-		   -->
-			<%= @newhire_count %> New Hire<% if @newhires.count > 1 %>s<% end %>
-		
-	</h4>
+	<div class="row">
+	
+		  <% if @newhires.count > 0 %>
+			<div class="span4" align="left">
+				<h4><%= @newhire_count %> New Hire<% if @newhires.count > 1 %>s<% end %></h4>
+			</div>
+				<%#= button_to "Assign", '', :id => 'test',:class => "btn btn-mini btn-primary" ,:method => :post, :title => 'Start Pre-Credentialing ', :rel => 'tooltip' %>
+
+			 <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
+			  <div align="right">
+				<strong>Assign to:</strong>
+				 <%= select('send_to', 'notify',
+                          options_for_select(@send_to_notify.collect{ |u| [u.displayname, u.id]}), {:include_blank => 'None'})%>
+             </div>
+             <% end %>
+		  <% end %>
+	
+    </div>
 
 		<% if @newhires.nil? || @newhires.count == 0 %>
-			<div class="error round">
-		  			<center>No New Hires Available</center>
+			<div class="alert">
+		  			<center>No New Hires Assigned to Me</center>
 		  	</div>
 
 		<% else %>
 				<table class="table table-condensed table-hover" id="example">
-				  <th>Lastname</th>
+				  <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
+					<th>Assign</th>
+				  <% end %>
+				  <th>Last</th>
 				  <th>First</th>
 				  <th>School</th>
 				  <th>Department</th>
-				  <th >Added on</th>
-				  <th colspan="2" >Actions</th>
+				  <th>Added on</th>
+				  <th>Assigned to</th>
+				   <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
+				  	<th colspan="2" >Actions</th>
+				   <% else %>
+				   	<th colspan="2" >Actions</th>
+				  <% end %>
 				    <% @newhires.each do |newhire| %>
 						  <tr>
+
+						  	<% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
+						  		<td>
+							  		<%= check_box_tag 'newhire_ids', newhire.id, false,:class => 'assign' %>
+							  	</td>
+							<% end %>
+
 						  	<td><%= newhire.last_name %></td>
 						  	<td><%= newhire.first_name %></td>
 						  	<td><%= newhire.school_name %></td>
 						  	<td><%= newhire.dept_name %></td>
 						    <td><%= newhire.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
+						    <td><%= User.find(newhire.assigned_to).name%></td>
 						  	<td>
 						  		<%#= link_to image_tag('/assets/Preview_16x16.png'), newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :title => 'See details ', :rel => 'tooltip' %>
 
@@ -41,8 +66,7 @@
 	                            <% end %>   
 
 						   </td>
-						   <td>
-						   		 
+						   <td>						   		 
 						   	<% if newhire.assigned_to == current_user.id %>
 						   	
 						   		 <%= button_to "Start", newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :class => "btn btn-mini btn-primary" ,:method => :post, :title => 'Start Pre-Credentialing ', :rel => 'tooltip' %>
@@ -59,3 +83,28 @@
 		<% end %>
 
 </fieldset>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+      
+       jQuery('#send_to_notify').change(function(){
+          var allVals = [];
+          
+          jQuery('.assign:checked').each(function() {
+		       allVals.push(jQuery(this).val());		      
+		   });
+
+          //alert(allVals);
+       
+          var i;
+		  for (i = 0; i < allVals.length; ++i) {
+		   jQuery.post(
+		      '/newhires/assign_to', 
+		      {id:allVals[i], assigned_to:jQuery('#send_to_notify').val()});
+           } 
+		  //reload
+		  location.reload();
+       });
+      
+});
+</script>

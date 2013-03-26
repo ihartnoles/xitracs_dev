@@ -39,17 +39,21 @@
 
 				 <% if @newhire_docs_added.count > 0 %>				
 					 <fieldset class="round">
-						<h4>Documents provided:</h4>
+						<h4>Documents uploaded:</h4>
 							<table  class="table table-hover">
 								<th>Name</th>
 								<th>Type</th>
 								<% @newhire_docs_added.each do |d| %>
-					    			<tr>
-						    			<td><%=  d.name %></td>  
-					 					<td>
-					 						<%= d.newhiredoctype.name %>				 						
-					 					</td> 
-					 				</tr>
+					    			<% if d.newhiredoctype_id >= 3 %>
+						    			<tr>
+							    			<td><%=  d.name %></td>  
+						 					<td>
+						 						<%= d.newhiredoctype.name %>				 						
+						 					</td> 
+						 				</tr>
+					 				<% end %>
+
+
 					 			<% end %>	
 							</table>
 					</fieldset>								

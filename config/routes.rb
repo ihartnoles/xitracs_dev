@@ -39,6 +39,8 @@ XitracsRoster::Application.routes.draw do
         post 'delete_signoff'
         get  'delete_newhire'
         post 'delete_newhire'
+        get  'assign_to'
+        post 'assign_to'
        end
   end
 
@@ -157,6 +159,7 @@ XitracsRoster::Application.routes.draw do
   post "/newhires/delete_signoff"
   post "/newhires/delete_review"
   post "/newhires/delete_newhire"
+  post "/newhires/assign_to"
 
   post "/newhires/savename"
   
@@ -205,6 +208,7 @@ XitracsRoster::Application.routes.draw do
   match '/newhires/schools', to: 'newhires#schools' , :as => :newhire_schools
   match '/newhires/save_signoff', to: 'newhires#save_signoff' , :as => :newhire_save_signoff
   match '/newhiredocuments/save_verified_doc', to: 'newhiredocuments#save_verified_doc' , :as => :newhiredocuments_save_verified_doc
+  match '/newhires/assign_to', to: 'newhires#assign_to', :as => :newhire_assign_to
   match '/newhires/delete_review', to: 'newhires#delete_review' , :as => :newhire_delete_review
   match '/newhires/delete_signoff', to: 'newhires#delete_signoff' , :as => :newhire_delete_signoff
   match '/newhires/delete_newhire', to: 'newhires#delete_newhire' , :as => :newhire_delete_newhire

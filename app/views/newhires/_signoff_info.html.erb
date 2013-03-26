@@ -16,8 +16,10 @@
                 <th>Sent To</th>
                 <th>Sent By</th>
                 <th>Comment</th>
-                <th>Created On</th>        
-                <th>Actions</th>         
+                <th>Created On</th>  
+                <% if current_user.group.name == "admin" %>        
+                  <th>Actions</th> 
+                <% end %>        
                 <% @newhire_signoffs.each do |nhs| %>
                   <tr  <% if nhs.signed_off == 1 || @newhire_course_to_review.final_approval == 1 %>class="success"<% else %>class="error"<% end %> >
                     <td>
@@ -27,10 +29,12 @@
                     <td><%= nhs.signed_off_by(nhs.user_id) %></td>
                     <td><%= nhs.comment.html_safe %></td>
                     <td><%= nhs.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
-                    <td>
-                       <%= link_to image_tag('/assets/Delete_16x16.png'), newhire_delete_signoff_path(:id => nhs,:newhire_id => params[:newhire_id], :course_id => params[:id]), :method => :delete_signoff, :class => "destroy", :confirm => "Are you sure you want to delete this signoff entry?",:title => 'Delete signoff entry', :rel => 'tooltip'
-                                    %>
-                    </td>
+                     <% if current_user.group.name == "admin" %>  
+                      <td>
+                         <%= link_to image_tag('/assets/Delete_16x16.png'), newhire_delete_signoff_path(:id => nhs,:newhire_id => params[:newhire_id], :course_id => params[:id]), :method => :delete_signoff, :class => "destroy", :confirm => "Are you sure you want to delete this signoff entry?",:title => 'Delete signoff entry', :rel => 'tooltip'
+                                      %>
+                      </td>
+                    <% end %>
                   </tr> 
                 <% end %>          
          

@@ -10,52 +10,64 @@
                   <td>
                  
                  <!--TO DO: This should only appear for mwalsh8 -->
-                 <% if current_user.group.name == "admin" %>  
+                 <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" %>  
                   <%= check_box_tag(:final_approval) %> Final Approval <br><br>
                  <% end %>
 
-                 <%= f.radio_button :signed_off , "1"%> Signoff 
+                 <%= f.radio_button :signed_off , "1"%> 
                 
-                 <% if false %> 
+                 
                    <% if current_user.group.name == "chair" %>          
-                     Dean's office
+                      Signoff and send to Dean
                     <% end %>
                     <% if current_user.group.name == "dean" %>          
-                     Provost's office
+                      Signoff and send to Provost
                     <% end %>
                     <% if current_user.group.name == "admin" %>          
-                     Provost's office
+                      <% if current_user.name == 'kwrigh59' %>
+                        Signoff and send to Review Team
+                      <% else %>
+                        Signoff and notify
+                      <% end %>
                     <% end %>
-                   <% end %>
+                 
                   <br>
 
-                  <%= f.radio_button :signed_off , "0" %> Return
-                 <% if false %> 
+                  <%= f.radio_button :signed_off , "0" %> 
+                
                   <% if current_user.group.name == "chair" %>          
-                   Department
+                      Return to Department for corrections
                   <% end %>
                   <% if current_user.group.name == "dean" %>          
-                   Department Chair
+                      Return to Department Chair for corrections
                   <% end %>
-                  <% if current_user.group.name == "admin" %>          
-                   Dean's office
-                  <% end %>
-                <% end %>
-                  for corrections
+                  <% if current_user.group.name == "admin" %>       
+
+                     <% if current_user.name = 'mwalsh8' %>
+                        Return for corrections
+                      <% else %>
+                        Return to Dean for corrections
+                      <% end %>
+                  <% end %>             
+                  
                 </td>
                 </tr>         
                 <tr>
                   <td>
                     <div id="notify">
                       Send to:<br>
-                      <%= select('send_to', 'notify',
+                      <%#= select('send_to', 'notify',
                           options_for_select(@send_to_notify.collect{ |u| [u.displayname, u.id]}), {:include_blank => 'None'})%>
+                      <%= select('send_to', 'notify',
+                          options_for_select(@send_to_notify.collect{ |u| [u.displayname, u.id]}))%>
                     </div>
 
                     <div id="corrections" style="display:none">
                       Send to:<br>
-                      <%= select('send_to', 'correct',
+                      <%#= select('send_to', 'correct',
                           options_for_select(@send_to_correct.collect{ |u| [u.displayname, u.id]}), {:include_blank => 'None'})%>
+                      <%= select('send_to', 'correct',
+                          options_for_select(@send_to_correct.collect{ |u| [u.displayname, u.id]}))%>
                        
                     </div>
 
@@ -82,7 +94,7 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function(){
-    
+      
        $("#notify").hide();
        $("#corrections").hide();
 

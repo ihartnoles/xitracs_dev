@@ -76,6 +76,8 @@ class NewhiresController < ApplicationController
 
     if current_user.group.name == "admin" 
       
+       @send_to_notify=User.find_by_sql(["select id, concat(name,'@fau.edu') as displayname from users where name IN ('afradkin','jdiaka','pscarlat','koku','mwalsh8')"])
+
       if (params[:atm])
         @newhires = Newhire.where(:semester_id => session[:semester_id], :assigned_to => current_user.id)
       else
@@ -226,6 +228,16 @@ class NewhiresController < ApplicationController
       @newhire_review_reason = Newhirereason.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
   end
 
+  def assign_to
+     newhire = Newhire.find(params[:id])
+
+     newhire.update_attributes(:assigned_to => params[:assigned_to])
+
+     flash[:notice] = 'We be bumpin'
+
+     #redirect_to newhire_listpending_path
+  end
+
   def review_course
       @newhire = Newhire.find(params[:newhire_id])
       
@@ -236,7 +248,6 @@ class NewhiresController < ApplicationController
       @newhiredocuments = Newhiredocument.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
       
       @newhiredoctypes = Newhiredoctype.new
-
 
       @newhire_dept = Department.find(@newhire.department_id)
       
@@ -289,15 +300,30 @@ class NewhiresController < ApplicationController
 
       #1=admin 2=dean 3=chair    
      if current_user.group.name == "admin"
+
+        #provost_review = [ 'kwrigh59']
+        #review_team = ['afradkin','jdiaka','pscarlat','koku','mwalsh8']
+
+      if current_user.name == "kwrigh59"
+        #notify review team
+        @send_to_notify=User.find_by_sql(["select id, concat(name,'@fau.edu') as displayname from users where name IN ('afradkin','jdiaka','pscarlat','koku','mwalsh8')"])    
+         #send to dean for correction
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and group_id=2',{:sid => Newhire.find(params[:newhire_id]).school_id, :did => Newhire.find(params[:newhire_id]).department_id }])       
+      else
+        #you are an admin you can send to anybody
         @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
         @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
+      end
+
      elsif current_user.group.name == "dean"
         #notify provost (admin)          
-        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where group_id=1',{:sid => session[:school_id]}])
+        #@send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where group_id=1',{:sid => session[:school_id]}])
+        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where name = "kwrigh59"'])
 
         #chairs for each department
         @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and group_id=3',{:did => session[:department_id] }])       
      else
+        #you are a CHAIR or AUTHORIZED USER; Need list of chairs
         #deans for the school
         @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and group_id=2',{:sid => session[:school_id], :did => session[:department_id] }])       
         
@@ -334,7 +360,7 @@ class NewhiresController < ApplicationController
      #set the msg argument     
      @msg = @message.review_comments
 
-     @sendto = 'ihartstein'
+     @sendto = 'mwalsh8'
     
      #pass argumetns to the send_review_msg mailer function
      WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
@@ -346,58 +372,62 @@ class NewhiresController < ApplicationController
   end
 
   def save_signoff
-      signoff = Newhiresignoff.new
-      signoff.newhire_id = params[:newhire_id]
-      signoff.course_id = params[:course_id]
-      signoff.user_id = current_user.id
-      signoff.signed_off = params[:newhiresignoff][:signed_off]
-      signoff.comment = params[:newhiresignoff][:comment]
-      signoff.user_type = current_user.group_id
-      #signoff.user_type = Group.find(user.group_id).name.humanize
+      if !params[:newhiresignoff][:signed_off]
+               flash[:alert] = "Please choose to signoff or return for corrections"
+         else
+            signoff = Newhiresignoff.new
+            signoff.newhire_id = params[:newhire_id]
+            signoff.course_id = params[:course_id]
+            signoff.user_id = current_user.id
+            signoff.signed_off = params[:newhiresignoff][:signed_off]
+            signoff.comment = params[:newhiresignoff][:comment]
+            signoff.user_type = current_user.group_id
+            #signoff.user_type = Group.find(user.group_id).name.humanize
 
-       if (params[:final_approval])
-            @subject = "Final Approval"
-            #signoff.final_approval = params[:newhiresignoff][:final_approval]
+             if (params[:final_approval])
+                  @subject = "Final Approval"
+                  #signoff.final_approval = params[:newhiresignoff][:final_approval]
 
-             #TO DO: change this
-            signoff.sentto_id = params[:send_to][:notify]
-           
-            #TO DO: update Newhirecourse.final_approval
-            save_final_approval = Newhirecourse.find(params[:course_id]).update_attribute(:final_approval, params[:final_approval])
+                   #TO DO: change this
+                  signoff.sentto_id = params[:send_to][:notify]
+                 
+                  #TO DO: update Newhirecourse.final_approval
+                  save_final_approval = Newhirecourse.find(params[:course_id]).update_attribute(:final_approval, params[:final_approval])
+                  
+                 
+                  flash[:notice] = "Final Approval processed!"
+             else
+                if params[:newhiresignoff][:signed_off] == "1"
+                  @subject = "New Hire Signoff"
+                  signoff.sentto_id = params[:send_to][:notify]
+                else
+                  @subject = "Corrections Needed!"
+                  signoff.sentto_id = params[:send_to][:correct]
+                end
+                flash[:notice] = "Signoff processed!"
+             end
+
+            signoff.save
+
+            #find the newhire
+            @newhire = Newhire.find(params[:newhire_id])
+
+            #TO DO: Find our Newhire and update assigned_to => params
+            @newhire.assigned_to =  signoff.sentto_id
+            @newhire.save
             
+            #save our assigned_to value for Newhirecourse
+            save_course_assigned_to = Newhirecourse.find(params[:course_id]).update_attribute(:assigned_to, signoff.sentto_id)
+
+            #set the msg argument     
+            @msg = signoff.comment
            
-            flash[:notice] = "Final Approval processed!"
-       else
-          if params[:newhiresignoff][:signed_off] == "1"
-            @subject = "New Hire Signoff"
-            signoff.sentto_id = params[:send_to][:notify]
-          else
-            @subject = "Corrections Needed!"
-            signoff.sentto_id = params[:send_to][:correct]
-          end
-          flash[:notice] = "Signoff processed!"
-       end
+            @sendto = User.find(signoff.sentto_id).name
 
-      signoff.save
-
-      #find the newhire
-      @newhire = Newhire.find(params[:newhire_id])
-
-      #TO DO: Find our Newhire and update assigned_to => params
-      @newhire.assigned_to =  signoff.sentto_id
-      @newhire.save
-      
-      #save our assigned_to value for Newhirecourse
-      save_course_assigned_to = Newhirecourse.find(params[:course_id]).update_attribute(:assigned_to, signoff.sentto_id)
-
-      #set the msg argument     
-      @msg = signoff.comment
+            #pass argumetns to the send_review_msg mailer function
+            WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
      
-      @sendto = User.find(signoff.sentto_id).name
-
-      #pass argumetns to the send_review_msg mailer function
-      WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
-     
+      end 
       render :layout => 'simple'
   end
 
@@ -445,9 +475,7 @@ class NewhiresController < ApplicationController
      #render :layout => 'simple'
   end
 
-
-
-  def approve_course
+   def approve_course
     if (params[:commit] == 'Submit')
      
 
