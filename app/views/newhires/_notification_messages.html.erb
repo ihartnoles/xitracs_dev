@@ -1,7 +1,10 @@
 <fieldset class="round">
 	<h4>
-		<%= link_to image_tag('/assets/Add_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => params[:id]), 
-            :title => 'Send an Email Notification', :rel => 'tooltip' %> Notifications:
+		 <%if  @newhire_course_to_review.assigned_to == current_user.id %>
+			<%= link_to image_tag('/assets/Add_16x16.png'),  newhires_review_msg_path(:newhire_id => @newhire.id, :course_id => params[:id]), 
+	            :title => 'Send an Email Notification', :rel => 'tooltip' %>
+	     <% end %>
+	      Notifications:
 	</h4>
 
 		

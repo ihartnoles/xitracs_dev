@@ -1,4 +1,6 @@
 class NewhiresController < ApplicationController
+  protect_from_forgery :except => :assign_to
+
   layout "precredentialing"
 
   def index  	
@@ -23,7 +25,26 @@ class NewhiresController < ApplicationController
 
      if  current_user.group.name == "chair"
       #if chair show only listings for the specific department
-       @newhires = Newhire.where(:department_id => session[:department_id], :semester_id => session[:semester_id])
+       #@newhires = Newhire.where(:department_id => session[:department_id], :semester_id => session[:semester_id])
+       @newhires = Newhire.find_by_sql(["SELECT
+                                                  nh.id
+                                                , nh.first_name
+                                                , nh.middle_name
+                                                , nh.last_name
+                                                , nh.department_id
+                                                , nh.school_id
+                                                , nh.created_at
+                                                , nh.updated_at
+                                                , nhc.assigned_to
+                                                , nhc.id as course_id
+                                                , nhc.name
+                                                FROM
+                                                    newhires nh
+                                                    INNER JOIN newhirecourses nhc
+                                                        ON (nh.id = nhc.newhire_id)
+                                                 WHERE 
+                                                     nh.department_id = :did
+                                                 AND nhc.semester_id = :sem_id", {:did => session[:department_id]  , :sem_id => session[:semester_id] } ])
        @newhire_count = @newhires.count
     
 
@@ -79,9 +100,9 @@ class NewhiresController < ApplicationController
        @send_to_notify=User.find_by_sql(["select id, concat(name,'@fau.edu') as displayname from users where name IN ('afradkin','jdiaka','pscarlat','koku','mwalsh8')"])
 
       if (params[:atm])
-        #@newhires = Newhire.where(:semester_id => session[:semester_id], :assigned_to => current_user.id)
+        #ASSIGNED TO ME ADMIN
         @newhires = Newhire.find_by_sql(["SELECT
-                                                nh,id
+                                                nh.id
                                               , nh.first_name
                                               , nh.middle_name
                                               , nh.last_name
@@ -89,20 +110,38 @@ class NewhiresController < ApplicationController
                                               , nh.school_id
                                               , nh.created_at
                                               , nh.updated_at
+                                              , nhc.assigned_to
                                               , nhc.id as course_id
                                               , nhc.name
                                           FROM
                                               newhires nh
                                               INNER JOIN newhirecourses nhc
                                                   ON (nh.id = nhc.newhire_id)
-                                           WHERE nhc.assigned_to = :cid ", {:cid => current_user.id } ])
+                                           WHERE nhc.assigned_to = :cid 
+                                           AND nhc.semester_id = :sem_id", {:cid => current_user.id , :sem_id => session[:semester_id] } ])
       else
-        @newhires = Newhire.where(:semester_id => session[:semester_id])
+        @newhires =  Newhire.find_by_sql(["SELECT
+                                                nh.id
+                                              , nh.first_name
+                                              , nh.middle_name
+                                              , nh.last_name
+                                              , nh.department_id
+                                              , nh.school_id
+                                              , nh.created_at
+                                              , nh.updated_at
+                                              , nhc.assigned_to
+                                              , nhc.id as course_id
+                                              , nhc.name
+                                          FROM
+                                              newhires nh
+                                              INNER JOIN newhirecourses nhc
+                                                  ON (nh.id = nhc.newhire_id)
+                                           WHERE nhc.semester_id = :sem_id", {:sem_id => session[:semester_id] } ])
       end
 
     elsif current_user.group.name == "dean"
        if (params[:atm])
-          #@newhires = Newhire.where(:semester_id => session[:semester_id], :school_id => session[:school_id] , :assigned_to => current_user.id )
+             #ASSIGNED TO ME DEAN
               @newhires = Newhire.find_by_sql(["SELECT
                                                   nh.id
                                                 , nh.first_name
@@ -123,10 +162,28 @@ class NewhiresController < ApplicationController
                                                  AND nh.school_id = :schoolid
                                                  AND nhc.semester_id = :sem_id", {:cid => current_user.id , :schoolid => session[:school_id] , :sem_id => session[:semester_id] } ])
        else
-          @newhires = Newhire.where(:semester_id => session[:semester_id], :school_id => session[:school_id] )
+          @newhires = Newhire.find_by_sql(["SELECT
+                                                  nh.id
+                                                , nh.first_name
+                                                , nh.middle_name
+                                                , nh.last_name
+                                                , nh.department_id
+                                                , nh.school_id
+                                                , nh.created_at
+                                                , nh.updated_at
+                                                , nhc.assigned_to
+                                                , nhc.id as course_id
+                                                , nhc.name
+                                                FROM
+                                                    newhires nh
+                                                    INNER JOIN newhirecourses nhc
+                                                        ON (nh.id = nhc.newhire_id)
+                                                 WHERE 
+                                                     nh.school_id = :schoolid
+                                                 AND nhc.semester_id = :sem_id", {:schoolid => session[:school_id] , :sem_id => session[:semester_id] } ])
        end
     else
-      #@newhires = Newhire.where(:semester_id => session[:semester_id], :department_id => session[:department_id] ,:assigned_to => current_user.id)
+       #ASSIGNED TO CHAIRS/AUTHORIZED USERS
        @newhires = Newhire.find_by_sql(["SELECT
                                                   nh.id
                                                 , nh.first_name
@@ -283,14 +340,14 @@ class NewhiresController < ApplicationController
   end
 
   def assign_to
-     newhire = Newhire.find(params[:id])
+     newhirecourse = Newhirecourse.find(params[:id])
 
-     newhire.update_attributes(:assigned_to => params[:assigned_to])
+     newhirecourse.update_attributes(:assigned_to => params[:assigned_to])
 
      #flash[:notice] = 'We be bumpin'
 
      #redirect_to newhire_listpending_path
-     #render :layout  => true
+     render :nothing => true
   end
 
   def review_course
@@ -361,13 +418,21 @@ class NewhiresController < ApplicationController
 
       if current_user.name == "kwrigh59"
         #notify review team
-        @send_to_notify=User.find_by_sql(["select id, concat(name,'@fau.edu') as displayname from users where name IN ('afradkin','jdiaka','pscarlat','koku','mwalsh8')"])    
+        @send_to_notify=User.find_by_sql(["select id, concat(name,'@fau.edu') as displayname from users where name = 'mwalsh8'"])    
          #send to dean for correction
-        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and group_id=2',{:sid => Newhire.find(params[:newhire_id]).school_id, :did => Newhire.find(params[:newhire_id]).department_id }])       
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and permission_id=4',{:sid => Newhire.find(params[:newhire_id]).school_id, :did => Newhire.find(params[:newhire_id]).department_id }])       
       else
-        #you are an admin you can send to anybody
-        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
-        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
+       
+        if current_user.permission_id == 8
+          #you are a review team member you can only send to Mary
+          @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where name = "mwalsh8"'])
+          @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where name = "mwalsh8"'])
+        else
+           #you are an admin you can send to anybody
+          @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
+          @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users'])     
+        end
+       
       end
 
      elsif current_user.group.name == "dean"
@@ -376,14 +441,14 @@ class NewhiresController < ApplicationController
         @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where name = "kwrigh59"'])
 
         #chairs for each department
-        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and group_id=3',{:did => session[:department_id] }])       
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and permission_id=2',{:did => Newhire.find(params[:newhire_id]).department_id }])       
      else
-        #you are a CHAIR or AUTHORIZED USER; Need list of chairs
+        #you are a CHAIR or AUTHORIZED USER;
         #deans for the school
-        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and group_id=2',{:sid => session[:school_id], :did => session[:department_id] }])       
+        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and permission_id=4',{:sid => session[:school_id], :did => Newhire.find(params[:newhire_id]).department_id }])       
         
         #chairs for each department
-        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and group_id=3',{:did => session[:department_id] }])  
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and permission_id <= 2',{:did => Newhire.find(params[:newhire_id]).department_id }])  
      end 
    
      render :layout => 'simple'
@@ -419,6 +484,11 @@ class NewhiresController < ApplicationController
     
      #pass argumetns to the send_review_msg mailer function
      WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
+
+     #move the course over to Mary's queue
+     newhirecourse = Newhirecourse.find(params[:newhirereviewreason][:course_id])
+     newhirecourse.assigned_to = User.find_by_name('mwalsh8').id
+     newhirecourse.save
 
      flash[:notice] = "Notification Sent!"
 
@@ -465,6 +535,7 @@ class NewhiresController < ApplicationController
             signoff.save
 
             #find the newhire
+            @newhire = Newhire.find(params[:newhire_id])
             @newhirecourse = Newhirecourse.find(params[:course_id])
 
             #TO DO: Find our Newhire and update assigned_to => params

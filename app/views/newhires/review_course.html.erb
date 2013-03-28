@@ -40,7 +40,8 @@
             <form>
               <fieldset>
                   <h4> 
-                    <% if @newhirecredentials.count == 0 %>
+                    <%# if @newhirecredentials.count == 0 %>
+                    <%if  @newhire_course_to_review.assigned_to == current_user.id %>  
                         <%= link_to image_tag('/assets/Add_16x16.png'),  new_newhirecredential_path(:newhire_id => params[:newhire_id], :course_id => params[:id]),:title => 'Add credentials', :rel => 'tooltip'  %>
                     <% end %>
                     Instructor Credentialed to Teach Based On:
@@ -82,7 +83,10 @@
             <form>
                 <fieldset class="round">
                     <h4>
-                       <%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id]) ,:title => 'Add Relevant Coursework', :rel => 'tooltip'   %>
+                       <%if  @newhire_course_to_review.assigned_to == current_user.id %> 
+                        <%= link_to image_tag('/assets/Add_16x16.png'), newhirecredits_path(:newhire_id => params[:newhire_id], :course_id => params[:id]) ,:title => 'Add Relevant Coursework', :rel => 'tooltip'   %>
+                       <% end %>
+
                       Relevant Coursework:                      
                     </h4>                         
                              
@@ -139,15 +143,20 @@
                   </fieldset>
             </form>
             <br>
-             <h4 > <%= link_to image_tag('/assets/Add_16x16.png'), 
-                          {:controller => 'newhiredocuments', 
-                            :action => 'index', 
-                            :course_id => params[:id],
-                            :newhire_id => params[:newhire_id]
-                          },
-                          :title => 'Add documents', :rel => 'tooltip'
-                        
-                            %>
+             <h4 > 
+
+               <%if  @newhire_course_to_review.assigned_to == current_user.id %>
+                  <%= link_to image_tag('/assets/Add_16x16.png'), 
+                              {:controller => 'newhiredocuments', 
+                                :action => 'index', 
+                                :course_id => params[:id],
+                                :newhire_id => params[:newhire_id]
+                              },
+                              :title => 'Add documents', :rel => 'tooltip'
+                            
+                                %>
+                <% end %>
+                
                             Documents submitted to Provost:
                 </h4>
              

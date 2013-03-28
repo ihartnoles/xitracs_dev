@@ -2,10 +2,13 @@
         
          
             <fieldset class="round">
-              <h4><%= link_to image_tag('/assets/Add_16x16.png'),
-                        {:controller => 'newhires', :action => 'review_dialog',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
-                            :onClick=>"window.open(this.href,'Review Team Review','scrollbars=1,height=500, width=700'); return false;" ,
-                              :title => 'Review Team Review', :rel => 'tooltip'%>
+              <h4>
+                <%if  @newhire_course_to_review.assigned_to == current_user.id %>
+                  <%= link_to image_tag('/assets/Add_16x16.png'),
+                          {:controller => 'newhires', :action => 'review_dialog',:newhire_id => params[:newhire_id], :course_id => params[:id]}, 
+                              :onClick=>"window.open(this.href,'Review Team Review','scrollbars=1,height=500, width=700'); return false;" ,
+                                :title => 'Review Team Review', :rel => 'tooltip'%>
+                <% end %>
                               Review Comments:
               </h4>  
               <table  class="table table-condensed table-hover">

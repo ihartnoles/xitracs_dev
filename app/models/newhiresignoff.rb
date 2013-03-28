@@ -19,7 +19,7 @@ class Newhiresignoff < ActiveRecord::Base
         end 
 
         if final_approval == 1
-        	status = "Final Approval"
+        	  status = "Final Approval"
        	else
        		if val == 1 
        			status = "Approved by #{display}"

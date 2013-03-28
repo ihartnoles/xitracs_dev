@@ -34,6 +34,7 @@
 					  <% end %>
 					  <th>Last</th>
 					  <th>First</th>
+					  <th>Course</th>
 					  <th>School</th>
 					  <th>Department</th>
 					  <th>Added on</th>
@@ -48,16 +49,17 @@
 				  </thead>
 				  <tbody>
 				    <% @newhires.each do |newhire| %>
-						  <tr>
+						  <tr  <% if newhire.assigned_to == current_user.id %> class="success"<% end %> > 
 
 						  	<% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
 						  		<td>
-							  		<%= check_box_tag 'newhire_ids', newhire.id, false,:class => 'assign' %>
+							  		<%= check_box_tag 'newhire_ids', newhire.course_id, false,:class => 'assign' %>
 							  	</td>
 							<% end %>
 
 						  	<td><%= newhire.last_name %></td>
 						  	<td><%= newhire.first_name %></td>
+						  	<td><strong><%= newhire.name %></strong></td>
 						  	<td><%= newhire.school_name %></td>
 						  	<td><%= newhire.dept_name %></td>
 						    <td><%= newhire.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
@@ -70,34 +72,39 @@
 						    	
 						    </td>
 						  	<td>
-						  		<%#= link_to image_tag('/assets/Preview_16x16.png'), newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :title => 'See details ', :rel => 'tooltip' %>
+						  		
 
-						  		<%#  if newhire.assigned_to == current_user.id %>
+						  		<%  if newhire.assigned_to == current_user.id %>
 							  		<%= link_to image_tag('/assets/Edit_16x16.png'), edit_newhire_path(:id => newhire, :dept_id => newhire.department_id),:title => 'Edit new hire', :rel => 'tooltip'
 	                                    %>
 
-							  		<%= link_to image_tag('/assets/Delete_16x16.png'),  newhire_delete_newhire_path(:id => newhire, :dept_id => newhire.department_id), :method => :delete_newhire, :class => "destroy", :confirm => "Are you sure you want to delete this new hire entry?",:title => 'Delete new hire', :rel => 'tooltip'
+							  		<%#= link_to image_tag('/assets/Delete_16x16.png'),  newhire_delete_newhire_path(:id => newhire, :dept_id => newhire.department_id), :method => :delete_newhire, :class => "destroy", :confirm => "Are you sure you want to delete this new hire entry?",:title => 'Delete new hire', :rel => 'tooltip'
 	                                    %>     
-	                            <%# end %>   
+
+	                                <%= link_to image_tag('/assets/Delete_16x16.png'), newhirecourse_path(newhire.course_id , :newhire_id => newhire.id), :method => :delete, :class => "destroy", :confirm => "Are you sure you want to delete this course?", :title => 'Delete course ', :rel => 'tooltip' %>		
+	                            <% end %>   
 
 						   </td>
 						   <td>						   		 
-						   	<%# if newhire.assigned_to == current_user.id %>
+						   	<% if newhire.assigned_to == current_user.id %>
 						   	
 						   		 <%= button_to "Start", newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :class => "btn btn-mini btn-primary" ,:method => :post, :title => 'Start Pre-Credentialing ', :rel => 'tooltip' %>
 
-						   	<%# else %>
+						   	<% else %>
 
 						   		<%#= button_to "View", newhireshowcourses_path(:id => newhire, :dept_id => newhire.department_id), :class => "btn btn-mini btn-primary" ,:method => :get, :title => 'View details ', :rel => 'tooltip' %>
 
-						   	<%#end %>
+						   		<%= button_to "View", newhire_review_course_path(:id => newhire.course_id , :newhire_id => newhire.id) , :class => "btn btn-mini btn-warning" , :title => 'See course details ', :rel => 'tooltip' %>	 	
+
+						   	<%end %>
 						   </td>
 						  </tr>
 					  <% end %>
 
 					  </tbody> 
 				</table>  
-				
+			
+		  <% if @newhires.count > 0 %>	
 			<div id="pager" class="pager" align="center">
 				<form>
 					<img src="/assets/first.png" class="first"/>
@@ -106,13 +113,15 @@
 					<img src="/assets/next.png" class="next"/>
 					<img src="/assets/last.png" class="last"/>
 					<select class="pagesize">
-						<option selected="selected"  value="5">5</option>
-						<option value="10">10</option>
+						<option  value="<%=@newhires.count%>"  >All</option>
+						<option selected="selected"  value="10">10</option>
+						<option value="20">20</option>
 						<option value="30">30</option>
 						<option  value="40">40</option>
 					</select>
 				</form>
 			</div>
+		  <% end %>
 			
 		<% end %>
 
@@ -141,9 +150,9 @@ jQuery(document).ready(function(){
                     // assign the secound column (we start counting zero) 
                   
                   <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
-                     7: 
+                     8: 
                     <% else %>
-                     6:
+                     7:
                     <% end %>
                     { 
                         // disable it by setting the property sorter to false 
@@ -172,12 +181,19 @@ jQuery(document).ready(function(){
 			      '/newhires/assign_to', 
 			      {id:allVals[i], assigned_to:jQuery('#send_to_notify').val()});
 	           } 
+			  
 			  //reload
-			  location.reload();
+			  //location.reload();
+
+			  setTimeout( function () { 
+        
+						location.reload(true);
+
+				       
+				    }, 100 // milliseconds delay
+				);
 	      });
-
-
-      
+     
       
 });
 <% end %>

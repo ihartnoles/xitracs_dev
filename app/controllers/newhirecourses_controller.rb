@@ -20,7 +20,7 @@ class NewhirecoursesController < ApplicationController
   def update
 		@newhirecourse = Newhirecourse.find(params[:id])
 
-	  	if @newhirecourse.update_attributes(params[:newhirecourse])
+	  	if @newhirecourse.update_attributes(params[:newhirecourse], :assigned_to => current_user.id)
          flash[:notice] = "Course successfully updated."
       	else
          flash[:notice] = "There was a problem updating the course."
@@ -70,7 +70,12 @@ class NewhirecoursesController < ApplicationController
         else 	
 
               @newhire_course  = Newhirecourse.where(:newhire_id => params[:newhire_id]).count   
-            	@newhirecourse = Newhirecourse.new(:name => params[:course_name], :title => params[:course_title], :description => params[:course_description], :semester_id => session[:semester_id],:newhire_id => params[:newhire_id])
+            	@newhirecourse = Newhirecourse.new(:name => params[:course_name], 
+                                                 :title => params[:course_title], 
+                                                 :description => params[:course_description], 
+                                                 :semester_id => session[:semester_id],
+                                                 :newhire_id => params[:newhire_id],
+                                                 :assigned_to => current_user.id)
     		
     		  	   if @newhirecourse.save
       			    

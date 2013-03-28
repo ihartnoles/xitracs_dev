@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130325132010) do
+ActiveRecord::Schema.define(:version => 20130328164942) do
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(:version => 20130325132010) do
     t.string   "course_year"
     t.text     "semester"
     t.integer  "course_credits"
-    t.integer  "semester_credits"
+    t.integer  "semester_credits",      :limit => 1
     t.integer  "newhireinstitution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -458,6 +458,7 @@ ActiveRecord::Schema.define(:version => 20130325132010) do
     t.integer  "group_id"
     t.integer  "department_id"
     t.integer  "school_id"
+    t.integer  "permission_id",  :default => 0
     t.string   "remember_token"
     t.boolean  "ro"
     t.datetime "created_at"
