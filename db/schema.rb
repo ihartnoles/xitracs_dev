@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(:version => 20130325132010) do
     t.string   "course_year"
     t.text     "semester"
     t.integer  "course_credits"
-    t.integer  "semester_credits",      :limit => 1
+    t.integer  "semester_credits"
     t.integer  "newhireinstitution_id"
     t.datetime "created_at"
     t.datetime "updated_at"

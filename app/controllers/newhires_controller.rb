@@ -79,19 +79,73 @@ class NewhiresController < ApplicationController
        @send_to_notify=User.find_by_sql(["select id, concat(name,'@fau.edu') as displayname from users where name IN ('afradkin','jdiaka','pscarlat','koku','mwalsh8')"])
 
       if (params[:atm])
-        @newhires = Newhire.where(:semester_id => session[:semester_id], :assigned_to => current_user.id)
+        #@newhires = Newhire.where(:semester_id => session[:semester_id], :assigned_to => current_user.id)
+        @newhires = Newhire.find_by_sql(["SELECT
+                                                nh,id
+                                              , nh.first_name
+                                              , nh.middle_name
+                                              , nh.last_name
+                                              , nh.department_id
+                                              , nh.school_id
+                                              , nh.created_at
+                                              , nh.updated_at
+                                              , nhc.id as course_id
+                                              , nhc.name
+                                          FROM
+                                              newhires nh
+                                              INNER JOIN newhirecourses nhc
+                                                  ON (nh.id = nhc.newhire_id)
+                                           WHERE nhc.assigned_to = :cid ", {:cid => current_user.id } ])
       else
         @newhires = Newhire.where(:semester_id => session[:semester_id])
       end
 
     elsif current_user.group.name == "dean"
        if (params[:atm])
-          @newhires = Newhire.where(:semester_id => session[:semester_id], :school_id => session[:school_id] , :assigned_to => current_user.id )
+          #@newhires = Newhire.where(:semester_id => session[:semester_id], :school_id => session[:school_id] , :assigned_to => current_user.id )
+              @newhires = Newhire.find_by_sql(["SELECT
+                                                  nh.id
+                                                , nh.first_name
+                                                , nh.middle_name
+                                                , nh.last_name
+                                                , nh.department_id
+                                                , nh.school_id
+                                                , nh.created_at
+                                                , nh.updated_at
+                                                , nhc.assigned_to
+                                                , nhc.id as course_id
+                                                , nhc.name
+                                                FROM
+                                                    newhires nh
+                                                    INNER JOIN newhirecourses nhc
+                                                        ON (nh.id = nhc.newhire_id)
+                                                 WHERE nhc.assigned_to = :cid
+                                                 AND nh.school_id = :schoolid
+                                                 AND nhc.semester_id = :sem_id", {:cid => current_user.id , :schoolid => session[:school_id] , :sem_id => session[:semester_id] } ])
        else
           @newhires = Newhire.where(:semester_id => session[:semester_id], :school_id => session[:school_id] )
        end
     else
-      @newhires = Newhire.where(:semester_id => session[:semester_id], :department_id => session[:department_id] ,:assigned_to => current_user.id)
+      #@newhires = Newhire.where(:semester_id => session[:semester_id], :department_id => session[:department_id] ,:assigned_to => current_user.id)
+       @newhires = Newhire.find_by_sql(["SELECT
+                                                  nh.id
+                                                , nh.first_name
+                                                , nh.middle_name
+                                                , nh.last_name
+                                                , nh.department_id
+                                                , nh.school_id
+                                                , nh.created_at
+                                                , nh.updated_at
+                                                , nhc.assigned_to
+                                                , nhc.id as course_id
+                                                , nhc.name
+                                                FROM
+                                                    newhires nh
+                                                    INNER JOIN newhirecourses nhc
+                                                        ON (nh.id = nhc.newhire_id)
+                                                 WHERE nhc.assigned_to = :cid
+                                                 AND nh.department_id = :did
+                                                 AND nhc.semester_id = :sem_id", {:cid => current_user.id , :did => session[:department_id]  , :sem_id => session[:semester_id] } ])
     end
     
     @newhire_count = @newhires.count
@@ -233,9 +287,10 @@ class NewhiresController < ApplicationController
 
      newhire.update_attributes(:assigned_to => params[:assigned_to])
 
-     flash[:notice] = 'We be bumpin'
+     #flash[:notice] = 'We be bumpin'
 
      #redirect_to newhire_listpending_path
+     #render :layout  => true
   end
 
   def review_course
@@ -410,11 +465,11 @@ class NewhiresController < ApplicationController
             signoff.save
 
             #find the newhire
-            @newhire = Newhire.find(params[:newhire_id])
+            @newhirecourse = Newhirecourse.find(params[:course_id])
 
             #TO DO: Find our Newhire and update assigned_to => params
-            @newhire.assigned_to =  signoff.sentto_id
-            @newhire.save
+            @newhirecourse.assigned_to =  signoff.sentto_id
+            @newhirecourse.save
             
             #save our assigned_to value for Newhirecourse
             save_course_assigned_to = Newhirecourse.find(params[:course_id]).update_attribute(:assigned_to, signoff.sentto_id)

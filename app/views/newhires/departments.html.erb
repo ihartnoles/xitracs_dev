@@ -15,7 +15,7 @@
               <p><%= department.count_by_dept(department.id, session[:semester_id]) %></p>
                <p><%= department.not_completed(department.id, session[:semester_id]) %></p>
                <p><%= department.assigned_to_me(department.id, session[:semester_id], current_user.id) %></p>
-              <p><a class="btn" href="#" onclick="window.location.href='<%= url_for :action => 'list_by_dept', :department_id => department.id %>'">View details &raquo;</a></p>
+              <p><a class="btn" href="#" onclick="window.location.href='<%= url_for :action => 'list_pending', :department_id => department.id %>'">View details &raquo;</a></p>
           		</div>
             </div><!--/span-->
 <% end %>

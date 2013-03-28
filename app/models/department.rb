@@ -57,14 +57,17 @@ class Department < ActiveRecord::Base
 
     def assigned_to_me(department_id, semester_id, current_user_id)
          
-        assigned_to_me = Newhirecourse.find_by_sql([' SELECT DISTINCT
-                                                          id                                                            
-                                                    FROM
-                                                       newhires
-                                                        
-                                                    WHERE newhires.department_id = :did 
-                                                    AND newhires.semester_id = :sem_id
-                                                    AND newhires.assigned_to = :cu_id ;', {:did => department_id, :sem_id => semester_id, :cu_id => current_user_id }]).count
+        assigned_to_me = Newhirecourse.find_by_sql(['SELECT DISTINCT
+                                                                nh.id 
+
+                                                      FROM                                                          
+                                                       newhires nh
+                                                            INNER JOIN newhirecourses nhc
+                                                                ON (nh.id = nhc.newhire_id)
+                                                          
+                                                      WHERE nh.department_id = :did 
+                                                        AND nh.semester_id = :sem_id
+                                                        AND nhc.assigned_to = :cu_id ;', {:did => department_id, :sem_id => semester_id, :cu_id => current_user_id }]).count
 
         if assigned_to_me == 0
           message = "None assigned to me"

@@ -11,6 +11,7 @@ class NewhirecommentController < ApplicationController
 
   def create
   	if (params[:commit] == 'Save') 
+      
   		@comment = Newhirecomment.new(params[:newhirecomment])
   		@comment.newhire_id = params[:newhire_id]
   		@comment.user_id = current_user.id
@@ -60,7 +61,7 @@ class NewhirecommentController < ApplicationController
   end
 
   def edit
-    @newhire = Newhire.find(params[:id])
+    @newhire = Newhire.find(params[:newhire_id])
     @comment = Newhirecomment.find(params[:id])
     @newhire_dept = Department.find(@newhire.department_id) 
     @newhire_course_to_review = Newhirecourse.find(params[:course_id])
