@@ -91,8 +91,6 @@ class NewhiredocumentsController < ApplicationController
      #send_file("#{Rails.root}/public/data/John_Jimmy_9/transcript/LoremIpsum.txt")
 
      send_file("#{Rails.root}/#{download.location}")
-
-     #send_data("#{RAILS_ROOT}/files/clients/#{client.id}.pdf", :filename => "#{client.name}.pdf", :type => "application/pdf")
   end
 
   #TO DO

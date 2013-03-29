@@ -397,12 +397,8 @@ class NewhiresController < ApplicationController
       
       @newhiresignoff=Newhiresignoff.new
       @newhire_signoffs = Newhiresignoff.where(:newhire_id => params[:newhire_id], :course_id => params[:id])
-       #if ( @newhire_reasons_added.count > 0)
-       #   @newhirereason = Newhirereviewreason.where(:newhire_id => params[:newhire_id], :course_id => params[:id]).first
-          
-       #else
-       #@newhirereason = Newhirereviewreason.new 
-       #end        
+      
+      @review_team = ['afradkin','jdiaka','pscarlat','koku']    
      
   end
 

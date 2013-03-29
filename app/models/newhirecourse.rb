@@ -1,6 +1,6 @@
 class Newhirecourse < ActiveRecord::Base
 	has_many :newhireinstitutions
-
+	belongs_to :newhire
 
 	def reviewed_by_reviewteam(course_id)
 
