@@ -7,8 +7,7 @@ class Newhirecourse < ActiveRecord::Base
 		status = Newhirereviewreason.find_by_sql(['select distinct t1.reviewer_id
                                                           from newhirereviewreasons t1, newhirereviewreasons t2
                                                           where t1.course_id = t2.course_id
-                                                          and t1.course_id = :cid
-                                                          and t1.review_state = 1;' ,{:cid => course_id}]) 
+                                                          and t1.course_id = :cid ;' ,{:cid => course_id}]) 
 
 		return status
 	end

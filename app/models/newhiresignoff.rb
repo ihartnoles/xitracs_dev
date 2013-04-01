@@ -18,15 +18,15 @@ class Newhiresignoff < ActiveRecord::Base
             when  3 then display = 'Chair'           
         end 
 
-        if final_approval == 1
-        	  status = "Final Approval"
-       	else
+        #if final_approval == 1
+        # 	  status = "Final Approval"
+       	# else
        		if val == 1 
        			status = "Approved by #{display}"
        		else
        			status = "Returned by #{display}"
        		end
-        end
+        #end
 
 		return status
 	end

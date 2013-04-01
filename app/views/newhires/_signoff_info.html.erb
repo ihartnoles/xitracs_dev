@@ -9,7 +9,7 @@
                         :onClick=>"window.open(this.href,'Sign off','scrollbars=1, height=600, width=750'); return false;" ,
                           :title => 'Sign off', :rel => 'tooltip'%>
            <% end %>
-          Sign-off Status:
+          Sign-off:
        </h4>  
         <table  class="table table-condensed table-hover">
          <% if (@newhire_signoffs.count > 0) %>
@@ -25,7 +25,10 @@
                 <% @newhire_signoffs.each do |nhs| %>
                   <tr  <% if nhs.signed_off == 1 || @newhire_course_to_review.final_approval == 1 %>class="success"<% else %>class="error"<% end %> >
                     <td>
-                      <%= nhs.status(nhs.signed_off, nhs.user_type, @newhire_course_to_review.final_approval) %>
+
+                        <%= nhs.status(nhs.signed_off, nhs.user_type, @newhire_course_to_review.final_approval) %>
+                    
+
                     </td>
                     <td><%= nhs.signed_off_by(nhs.sentto_id) %></td>
                     <td><%= nhs.signed_off_by(nhs.user_id) %></td>

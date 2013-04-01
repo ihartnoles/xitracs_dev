@@ -183,8 +183,13 @@
                       <%# if current_user.group.name == "admin" %>
                         <th>Verified</th>
                       <%# end %>
+                     
+                      <!--
                       <th>Name</th>
-                      <!-- <th>Location</th> -->
+
+                      
+                      <th>Location</th> 
+                       -->
                       <th>Type</th>
                       <th>Action</th>
                       
@@ -202,16 +207,20 @@
                                                <%= check_box_tag "#{d.id}", '1', false , { :disabled =>  (current_user.permission_id == 16 ?  false : true), :class => 'verify' } %>
                                             <% end %>                                          
                                         </td>
+                                      
+                                       <!--
                                         <td>
                                           -
                                         </td>
+                                       -->
+                                      
                                         <td>                                          
                                           <%= d.newhiredoctype.name %>
                                         </td>
-
+                                     
                                         <td>   
                                           <% if dt.id <= 2 %>
-                                                N/A
+                                                Submit hard copy 
                                           <% else %>
                                              <%= link_to image_tag('/assets/Stock Index Down_16x16.png'), 
                                                 {:controller => 'newhiredocuments', 
@@ -223,13 +232,6 @@
                                                   :title => 'Download document', :rel => 'tooltip'%> Download
 
 
-                                            <%#= link_to 'List of Terminal Degrees by Dept.', 
-                                                {:controller => 'newhiredocuments', 
-                                                  :action => 'term_degree_download', 
-                                                  :source => 'detailscreen'},
-                                                  :onClick=>"window.open(this.href,'Terminal Degree List','scrollbars=1,height=500, width=700'); return false;" ,
-                                                  :title => 'Terminal Degree List', 
-                                                  :rel => 'tooltip'%>
                                           <% end %>
                                         </td>
 
@@ -241,16 +243,21 @@
                                 <td>
                                     <%= check_box_tag "", '1', false , { :disabled => true, :class => 'verify' } %>
                                 </td>
+                                
+                                <!--
                                 <td>
                                   &nbsp;
                                 </td>
+                                -->
+
                                 <td>
                                    <%= dt.name %>
                                 </td>
+                              
                                 <td>
                                   
                                     <% if dt.id <= 2 %>
-                                      N/A
+                                      Submit hard copy 
                                     <% else %>
                                       Please upload doc
                                     <% end %>
@@ -335,7 +342,5 @@ jQuery(document).ready(function(){
           });
 
        });
-
-
 });
 </script>

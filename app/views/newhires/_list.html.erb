@@ -79,12 +79,11 @@
 						    	<% @review_count = Newhirereviewreason.find_by_sql(['select distinct t1.reviewer_id
                                                           from newhirereviewreasons t1, newhirereviewreasons t2
                                                           where t1.course_id = t2.course_id
-                                                          and t1.course_id = :cid
-                                                          and t1.review_state = 1;' ,{:cid => newhire.course_id}]).count %>
+                                                          and t1.course_id = :cid;' ,{:cid => newhire.course_id}]).count %>
 
 
                                  <% if @review_count == 1 %>
-							 							1 of 2 approved
+							 			1 of 2 reviewed
 		 						<% elsif @review_count >= 2 %>
 		 							<%= image_tag('/assets/Check_16x16.png')  %>
 		 						<% else %>
