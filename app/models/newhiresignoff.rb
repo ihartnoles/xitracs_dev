@@ -10,7 +10,7 @@ class Newhiresignoff < ActiveRecord::Base
 		return "#{username}"
 	end
 
-	def status(val,user_type,final_approval)
+	def status(signoff,user_type,final_approval)
 
 	 	case user_type           
             when  1 then display = 'Admin/Provost'
@@ -21,7 +21,7 @@ class Newhiresignoff < ActiveRecord::Base
         #if final_approval == 1
         # 	  status = "Final Approval"
        	# else
-       		if val == 1 
+       		if signoff == 1 || final_approval == 1
        			status = "Approved by #{display}"
        		else
        			status = "Returned by #{display}"

@@ -16,9 +16,8 @@ class WizardMailer < ActionMailer::Base
     @subject = subject
     @msg = msg
     @sendto = sendto
-    @sentby = sentby
-    @body = body
-    
+    @bodymsg = body
+    @sentby = sentby   
 
     #TO DO: make TO and FROM dynamic to come from form
     mail(:from => "#{@sentby}@fau.edu", :to => "#{@sendto}@fau.edu", :subject => "#{@subject}")

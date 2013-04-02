@@ -102,9 +102,9 @@
 						   	 <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
 							   	<td>
 							   		<% if newhire.final_approval == 1 %>
-							   			APPROVED
+							   			<%= image_tag('/assets/Check_16x16.png')  %>
 							   		<% else %>
-							   			N/A
+							   			<%= image_tag('/assets/Cancel_16x16.png')  %>
 							   		<% end %>
 							   </td>
 							  <% end %>
