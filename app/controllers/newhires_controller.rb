@@ -17,8 +17,9 @@ class NewhiresController < ApplicationController
      end
      
      #redirect_to newhiredetails_path(params[:newhire_id])
-     # redirect_to newhires_list_path
-     redirect_to  newhire_listbydept_path(:department_id => params[:department_id])
+     #redirect_to newhires_list_path
+     #redirect_to  newhire_listbydept_path(:department_id => params[:department_id])
+     redirect_to '/newhires/list_pending'
   end
 
   def list  
