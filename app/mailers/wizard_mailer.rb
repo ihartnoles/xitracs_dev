@@ -8,18 +8,20 @@ class WizardMailer < ActionMailer::Base
   
   def login_failed_email(username)
     @username = username
-    mail(:from => '#{@username}@fau.edu', :to => 'ihartstein@fau.edu', :subject => "Failed Login: #{@username}")
+    mail(:from => "#{@username}@fau.edu", :to => 'ihartstein@fau.edu', :subject => "Failed Login: #{@username}")
   end
 
-  def send_msg(newhire,subject,msg,sendto)
+  def send_msg(newhire,subject,msg,sendto,body,sentby)
   	@newhire = newhire
     @subject = subject
     @msg = msg
     @sendto = sendto
+    @sentby = sentby
+    @body = body
     
 
     #TO DO: make TO and FROM dynamic to come from form
-    mail(:from => "provost@fau.edu", :to => "#{@sendto}@fau.edu", :subject => "#{@subject}")
+    mail(:from => "#{@sentby}@fau.edu", :to => "#{@sendto}@fau.edu", :subject => "#{@subject}")
   end
 
 end

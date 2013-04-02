@@ -38,6 +38,7 @@ class NewhiresController < ApplicationController
                                                 , nhc.assigned_to
                                                 , nhc.id as course_id
                                                 , nhc.name
+                                                , nhc.final_approval
                                                 FROM
                                                     newhires nh
                                                     INNER JOIN newhirecourses nhc
@@ -113,6 +114,7 @@ class NewhiresController < ApplicationController
                                               , nhc.assigned_to
                                               , nhc.id as course_id
                                               , nhc.name
+                                              , nhc.final_approval
                                           FROM
                                               newhires nh
                                               INNER JOIN newhirecourses nhc
@@ -132,6 +134,7 @@ class NewhiresController < ApplicationController
                                               , nhc.assigned_to
                                               , nhc.id as course_id
                                               , nhc.name
+                                              , nhc.final_approval
                                           FROM
                                               newhires nh
                                               INNER JOIN newhirecourses nhc
@@ -154,6 +157,7 @@ class NewhiresController < ApplicationController
                                                 , nhc.assigned_to
                                                 , nhc.id as course_id
                                                 , nhc.name
+                                                , nhc.final_approval
                                                 FROM
                                                     newhires nh
                                                     INNER JOIN newhirecourses nhc
@@ -174,6 +178,7 @@ class NewhiresController < ApplicationController
                                                 , nhc.assigned_to
                                                 , nhc.id as course_id
                                                 , nhc.name
+                                                , nhc.final_approval
                                                 FROM
                                                     newhires nh
                                                     INNER JOIN newhirecourses nhc
@@ -196,6 +201,7 @@ class NewhiresController < ApplicationController
                                                 , nhc.assigned_to
                                                 , nhc.id as course_id
                                                 , nhc.name
+                                                , nhc.final_approval
                                                 FROM
                                                     newhires nh
                                                     INNER JOIN newhirecourses nhc
@@ -471,15 +477,19 @@ class NewhiresController < ApplicationController
      @message.review_comments = params[:newhirereviewreason][:review_comments]
      @message.save
 
-     @subject = 'Review Status'
+     @subject = 'Credentialing Review Status'
 
      #set the msg argument     
      @msg = @message.review_comments
 
      @sendto = 'mwalsh8'
+     @sentby = User.find(current_user.id).name
+
+     @body = "A review has been entered for an instructor"
+           
     
      #pass argumetns to the send_review_msg mailer function
-     WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
+     WizardMailer.send_msg(@newhire,@subject,@msg,@sendto,@body,@sentby).deliver
 
      #move the course over to Mary's queue
      newhirecourse = Newhirecourse.find(params[:newhirereviewreason][:course_id])
@@ -493,8 +503,10 @@ class NewhiresController < ApplicationController
   end
 
   def save_signoff
-      if !params[:newhiresignoff][:signed_off]
-               flash[:alert] = "Please choose to signoff or return for corrections"
+          if !params[:newhiresignoff][:signed_off] && !params[:final_approval]
+              
+              flash[:alert] = "Please choose to signoff or return for corrections"
+
          else
             signoff = Newhiresignoff.new
             signoff.newhire_id = params[:newhire_id]
@@ -506,25 +518,35 @@ class NewhiresController < ApplicationController
             #signoff.user_type = Group.find(user.group_id).name.humanize
 
              if (params[:final_approval])
-                  @subject = "Final Approval"
+                  @subject = "Credentialing Completed"
                   #signoff.final_approval = params[:newhiresignoff][:final_approval]
-
-                   #TO DO: change this
-                  signoff.sentto_id = params[:send_to][:notify]
-                 
-                  #TO DO: update Newhirecourse.final_approval
+                  
                   save_final_approval = Newhirecourse.find(params[:course_id]).update_attribute(:final_approval, params[:final_approval])
                   
-                 
+                  #need to pull CHAIR here
+                  #@sendto = User.find(signoff.sentto_id).name
+                  @user = User.find_by_sql(['select id, name from users where department_id = :did and permission_id = 2 limit 1',{:did => Newhire.find(params[:newhire_id]).department_id }])  
+                  
+                  @user.each { |x|
+                       @sendto = x.name
+                       signoff.sentto_id = x.id
+                  }
+                               
+                  @body = "Credential has been met for a new instructor. You may proceed to hire."                    
+
                   flash[:notice] = "Final Approval processed!"
              else
                 if params[:newhiresignoff][:signed_off] == "1"
-                  @subject = "New Hire Signoff"
+                  @subject = "Credentialing Action Needed"
                   signoff.sentto_id = params[:send_to][:notify]
                 else
-                  @subject = "Corrections Needed!"
+                  @subject = "Credentialing Action Needed"
                   signoff.sentto_id = params[:send_to][:correct]
                 end
+
+                @sendto = User.find(signoff.sentto_id).name
+                @body = "Credentials for a new adjunct or GTA have been entered and are awaiting your signoff to proceed to the next stage of review.  Please log on to the wizard (sacs.eng.fau.edu), select 'First-time Adjunct & GTA Credentialing,' from the top menu bar and click on 'Listing' to see what is awaiting your action."
+           
                 flash[:notice] = "Signoff processed!"
              end
 
@@ -543,11 +565,11 @@ class NewhiresController < ApplicationController
 
             #set the msg argument     
             @msg = signoff.comment
-           
-            @sendto = User.find(signoff.sentto_id).name
+
+            @sentby = User.find(current_user.id).name
 
             #pass argumetns to the send_review_msg mailer function
-            WizardMailer.send_msg(@newhire,@subject,@msg,@sendto).deliver
+            WizardMailer.send_msg(@newhire,@subject,@msg,@sendto,@body,@sentby).deliver
      
       end 
       render :layout => 'simple'

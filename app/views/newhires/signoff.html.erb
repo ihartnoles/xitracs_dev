@@ -11,44 +11,46 @@
                  
                  <!--TO DO: This should only appear for mwalsh8 -->
                  <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" %>  
-                  <%= check_box_tag(:final_approval) %> Final Approval <br><br>
+                  <%= check_box_tag(:final_approval)  %> Final Approval <br><br>
                  <% end %>
 
-                 <%= f.radio_button :signed_off , "1"%> 
-                
-                 
-                   <% if current_user.group.name == "chair" %>          
-                      Signoff and send to Dean
+                 <div id="radios">
+                   <%= f.radio_button :signed_off , "1"%> 
+                                     
+                     <% if current_user.group.name == "chair" %>          
+                        Signoff and send to Dean
+                      <% end %>
+                      <% if current_user.group.name == "dean" %>          
+                        Signoff and send to Office of Provost
+                      <% end %>
+                      <% if current_user.group.name == "admin" %>          
+                        <% if current_user.name == 'kwrigh59' %>
+                          Signoff and send to Review Team
+                        <% else %>
+                          Signoff and notify
+                        <% end %>
+                      <% end %>
+                   
+                    <br>
+
+                    <%= f.radio_button :signed_off , "0" %> 
+                  
+                    <% if current_user.group.name == "chair" %>          
+                        Return to Department for corrections
                     <% end %>
                     <% if current_user.group.name == "dean" %>          
-                      Signoff and send to Office of Provost
+                        Return to Department Chair for corrections
                     <% end %>
-                    <% if current_user.group.name == "admin" %>          
-                      <% if current_user.name == 'kwrigh59' %>
-                        Signoff and send to Review Team
-                      <% else %>
-                        Signoff and notify
-                      <% end %>
-                    <% end %>
-                 
-                  <br>
+                    <% if current_user.group.name == "admin" %>       
 
-                  <%= f.radio_button :signed_off , "0" %> 
-                
-                  <% if current_user.group.name == "chair" %>          
-                      Return to Department for corrections
-                  <% end %>
-                  <% if current_user.group.name == "dean" %>          
-                      Return to Department Chair for corrections
-                  <% end %>
-                  <% if current_user.group.name == "admin" %>       
-
-                     <% if current_user.name = 'mwalsh8' %>
-                        Return for corrections
-                      <% else %>
-                        Return to Dean for corrections
-                      <% end %>
-                  <% end %>             
+                       <% if current_user.name = 'mwalsh8' %>
+                          Return for corrections
+                        <% else %>
+                          Return to Dean for corrections
+                        <% end %>
+                    <% end %>  
+                  
+                  </div>           
                   
                 </td>
                 </tr>         
@@ -97,6 +99,20 @@ jQuery(document).ready(function(){
       
        $("#notify").hide();
        $("#corrections").hide();
+
+        jQuery('#final_approval').change(function(){
+             
+              var isChecked = $('#final_approval:checked').val()?true:false;
+
+              if (isChecked) {
+                $("#radios").hide();   
+                $("#corrections").hide();
+                $("#notify").hide();
+              } else {
+                $("#radios").show();               
+              }
+                
+        });
 
          jQuery('#newhiresignoff_signed_off_1').change(function(){
               $("#corrections").hide();

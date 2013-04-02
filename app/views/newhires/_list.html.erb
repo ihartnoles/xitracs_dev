@@ -12,7 +12,7 @@
 			
 			 <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
 			  <div align="right">
-				<strong>Assign to:</strong>
+				Assign to:
 				 <%= select('send_to', 'notify',
                           options_for_select(@send_to_notify.collect{ |u| [u.displayname, u.id]}), {:include_blank => 'None'})%>
              </div>
@@ -27,25 +27,33 @@
 		  	</div>
 
 		<% else %>
-				<table class="table table-condensed table-hover tablesorter" id="example">
+				<!-- <table class="table table-condensed table-hover" id="example"> -->
+				<table cellpadding="0" cellspacing="0" border="0" class="table table-condensed bordered-table zebra-striped table-hover" id="example">
 				  <thead> 
+					  <tr>
 					  <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
 						<th>Assign</th>
 					  <% end %>
+
 					  <th>Last</th>
 					  <th>First</th>
 					  <th>Course</th>
 					  <th>School</th>
 					  <th>Department</th>
 					  <th>Added on</th>
-					  <th>Assigned to</th>
-					  <th>Review Status</th>
+					  <th nowrap>Assigned to</th>
+					  <th nowrap>Review Status</th>
+					  <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
+						<th>Approval</th>
+					  <% end %>
 
 				   <%# if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
-				  	<th colspan="2" align="center">Actions</th>
+				  	<th align="center">Actions</th>
+				  	<th>&nbsp;</th>
 				   <%# else %>
 				   	<!-- <th colspan="2" >Actions</th> -->
 				  <%# end %>
+				    </tr>
 				  </thead>
 				  <tbody>
 				    <% @newhires.each do |newhire| %>
@@ -59,14 +67,14 @@
 						  		<td>
 							  		<%= check_box_tag 'newhire_ids', newhire.course_id, false,:class => 'assign' %>
 							  	</td>
-							<% end %>
+							<%end %>
 
 						  	<td><%= newhire.last_name %></td>
 						  	<td><%= newhire.first_name %></td>
-						  	<td><strong><%= newhire.name %></strong></td>
-						  	<td><%= newhire.school_name %></td>
-						  	<td><%= newhire.dept_name %></td>
-						    <td><%= newhire.created_at.strftime('%m/%d/%Y %l:%M %P') %></td>
+						  	<td nowrap><strong><%= newhire.name %></strong></td>
+						  	<td ><%= newhire.school_name %></td>
+						  	<td ><%= newhire.dept_name %></td>
+						    <td><%= newhire.created_at.strftime('%m/%d/%Y') %></td>
 						    <td>
 						    	<% if newhire.assigned_to != 0 &&  newhire.assigned_to.to_s.length > 0 %>
 						    		<%= User.find(newhire.assigned_to).name%>
@@ -91,6 +99,15 @@
 		 						<% end %>
 
 						   	</td>
+						   	 <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
+							   	<td>
+							   		<% if newhire.final_approval == 1 %>
+							   			APPROVED
+							   		<% else %>
+							   			N/A
+							   		<% end %>
+							   </td>
+							  <% end %>
 						  	<td>
 						  		
 
@@ -102,6 +119,7 @@
 	                            <% end %>   
 
 						   </td>
+
 						   <td>						   		 
 						   	<% if newhire.assigned_to == current_user.id %>
 						   	
@@ -119,7 +137,8 @@
 
 					  </tbody> 
 				</table>  
-			
+		
+		<!--
 		  <% if @newhires.count > 0 %>	
 			<div id="pager" class="pager .text-center" align="center">
 				<form>
@@ -138,6 +157,7 @@
 				</form>
 			</div>
 		  <% end %>
+		-->
 			
 		<% end %>
 </fieldset>
@@ -147,45 +167,7 @@
 <%= javascript_tag do %>
 jQuery(document).ready(function(){
 	
-	  {
-      $("#example")
-          .tablesorter({ 
-                <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
-                sortList: [[5,0],[1,0]],
-                <% else %>
-                sortList: [[4,0],[0,0]],
-                <% end %>
-
-                // pass the headers argument and assing a object 
-                headers: { 
-                    // assign the secound column (we start counting zero) 
-                  
-                  <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
-                     9: 
-                    <% else %>
-                     8:
-                    <% end %>
-                    { 
-                        // disable it by setting the property sorter to false 
-                        sorter: false 
-                    }, 
-
-                    
-                    <% if current_user.name == "mwalsh8" || current_user.name == "ihartstein" ||  current_user.name == "jcramer" %>
-                     8: 
-                    <% else %>
-                     7:
-                    <% end %>
-                     { 
-                        // disable it by setting the property sorter to false 
-                        sorter: false 
-                    }, 
-
-               }
-           //})
-          }).tablesorterPager({container: $("#pager")});           
-
-        } 
+		$('#example').dataTable();
 
 
  		jQuery('#send_to_notify').change(function(){
