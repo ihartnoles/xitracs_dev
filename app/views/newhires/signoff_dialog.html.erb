@@ -16,7 +16,10 @@
                  <% if false %> 
                   <% current_user.group.name %>
 
-                  <% if current_user.group.name == "chair" %>          
+                   <% if current_user.permission_id == 2 %>          
+                   Dean's office
+                  <% end %>
+                  <% if current_user.permission_id == 2 %>          
                    Dean's office
                   <% end %>
                   <% if current_user.group.name == "dean" %>          

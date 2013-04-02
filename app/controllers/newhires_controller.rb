@@ -445,10 +445,14 @@ class NewhiresController < ApplicationController
         #chairs for each department
         @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and permission_id=2',{:did => Newhire.find(params[:newhire_id]).department_id }])       
      else
-        #you are a CHAIR or AUTHORIZED USER;
-        #deans for the school
-        @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and permission_id=4',{:sid => session[:school_id], :did => Newhire.find(params[:newhire_id]).department_id }])       
-        
+
+        if current_user.permission_id == 1
+          #you are an AUTHORIZED USER so find CHAIRS to NOTIFY
+          @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and permission_id=2',{:sid => session[:school_id], :did => Newhire.find(params[:newhire_id]).department_id }])       
+        else
+          #you are a CHAIR so find deans for the school
+          @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and permission_id=4',{:sid => session[:school_id], :did => Newhire.find(params[:newhire_id]).department_id }])       
+        end
         #chairs for each department
         @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and permission_id <= 2',{:did => Newhire.find(params[:newhire_id]).department_id }])  
      end 
@@ -477,7 +481,9 @@ class NewhiresController < ApplicationController
      @message.review_comments = params[:newhirereviewreason][:review_comments]
      @message.save
 
-     @subject = 'Credentialing Review Status'
+     @newhirename = @newhire.fullname
+
+     @subject = "Credentialing Review Status Updated for #{@newhirename}"
 
      #set the msg argument     
      @msg = @message.review_comments
@@ -485,7 +491,7 @@ class NewhiresController < ApplicationController
      @sendto = 'mwalsh8'
      @sentby = User.find(current_user.id).name
 
-     @body = "A review has been entered for an instructor"
+     @body = "A review has been entered for #{@newhirename}"
            
     
      #pass argumetns to the send_review_msg mailer function
@@ -516,9 +522,10 @@ class NewhiresController < ApplicationController
             signoff.comment = params[:newhiresignoff][:comment]
             signoff.user_type = current_user.group_id
             #signoff.user_type = Group.find(user.group_id).name.humanize
+            @newhirename = Newhire.find(params[:newhire_id]).fullname
 
              if (params[:final_approval])
-                  @subject = "Credentialing Completed"
+                  @subject = "Credentialing Completed for #{@newhirename}"
                   #signoff.final_approval = params[:newhiresignoff][:final_approval]
                   
                   save_final_approval = Newhirecourse.find(params[:course_id]).update_attribute(:final_approval, params[:final_approval])
@@ -532,20 +539,22 @@ class NewhiresController < ApplicationController
                        signoff.sentto_id = x.id
                   }
                                
-                  @body = "Credential has been met for a new instructor. You may proceed to hire."                    
+                  @body = "Credential has been met for  #{@newhirename}. You may proceed to hire."                    
 
                   flash[:notice] = "Final Approval processed!"
              else
+                
+
                 if params[:newhiresignoff][:signed_off] == "1"
-                  @subject = "Credentialing Action Needed"
+                  @subject = "Credentialing Action Needed for #{@newhirename}"
                   signoff.sentto_id = params[:send_to][:notify]
                 else
-                  @subject = "Credentialing Action Needed"
+                  @subject = "Credentialing Action Needed for #{@newhirename}"
                   signoff.sentto_id = params[:send_to][:correct]
                 end
 
                 @sendto = User.find(signoff.sentto_id).name
-                @body = "Credentials for a new adjunct or GTA have been entered and are awaiting your signoff to proceed to the next stage of review.  Please log on to the wizard (sacs.eng.fau.edu), select 'First-time Adjunct & GTA Credentialing,' from the top menu bar and click on 'Listing' to see what is awaiting your action."
+                @body = "Credentials for  #{@newhirename} have been entered and are awaiting your signoff to proceed to the next stage of review.  Please log on to the wizard (sacs.eng.fau.edu), select 'First-time Adjunct & GTA Credentialing,' from the top menu bar and click on 'Listing' to see what is awaiting your action."
            
                 flash[:notice] = "Signoff processed!"
              end

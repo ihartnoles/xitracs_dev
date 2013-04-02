@@ -16,11 +16,15 @@
 
                  <div id="radios">
                    <%= f.radio_button :signed_off , "1"%> 
-                                     
-                     <% if current_user.group.name == "chair" %>          
+                    
+                     <% if current_user.permission_id == 1 %>          
+                        Signoff and send to Chair
+                      <% end %>
+
+                     <% if current_user.permission_id == 2 %>          
                         Signoff and send to Dean
                       <% end %>
-                      <% if current_user.group.name == "dean" %>          
+                      <% if current_user.permission_id == 4 %>          
                         Signoff and send to Office of Provost
                       <% end %>
                       <% if current_user.group.name == "admin" %>          
@@ -35,10 +39,10 @@
 
                     <%= f.radio_button :signed_off , "0" %> 
                   
-                    <% if current_user.group.name == "chair" %>          
+                    <% if current_user.permission_id == 2 %>          
                         Return to Department for corrections
                     <% end %>
-                    <% if current_user.group.name == "dean" %>          
+                    <% if current_user.permission_id == 4 %>          
                         Return to Department Chair for corrections
                     <% end %>
                     <% if current_user.group.name == "admin" %>       
@@ -94,11 +98,15 @@
 
 
 
-<script type="text/javascript">
+<%= javascript_tag do %>
 jQuery(document).ready(function(){
       
        $("#notify").hide();
        $("#corrections").hide();
+
+       <% if current_user.permission_id == 1 %>
+         $("#newhiresignoff_signed_off_0").hide();
+       <% end %>
 
         jQuery('#final_approval').change(function(){
              
@@ -124,4 +132,4 @@ jQuery(document).ready(function(){
                $("#corrections").show();
         });
 });
-</script>
+<% end %>

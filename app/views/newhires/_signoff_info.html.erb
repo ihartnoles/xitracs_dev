@@ -26,7 +26,7 @@
                   <tr  <% if nhs.signed_off == 1 || @newhire_course_to_review.final_approval == 1 %>class="success"<% else %>class="error"<% end %> >
                     <td>
 
-                        <%= nhs.status(nhs.signed_off, nhs.user_type, @newhire_course_to_review.final_approval) %>
+                        <%= nhs.status(nhs.signed_off, User.find(nhs.user_id).permission_id, @newhire_course_to_review.final_approval) %>
                     
 
                     </td>

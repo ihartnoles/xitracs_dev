@@ -13,9 +13,11 @@ class Newhiresignoff < ActiveRecord::Base
 	def status(signoff,user_type,final_approval)
 
 	 	case user_type           
-            when  1 then display = 'Admin/Provost'
-            when  2 then display = 'Dean'
-            when  3 then display = 'Chair'           
+            when  1 then display = 'Authorized User'
+            when  2 then display = 'Chair'
+            when  4 then display = 'Dean' 
+            when  8 then display = 'Review Team'          
+            when  16 then display = 'Admin/Provost'
         end 
 
         #if final_approval == 1

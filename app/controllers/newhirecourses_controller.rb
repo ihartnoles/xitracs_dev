@@ -111,9 +111,7 @@ class NewhirecoursesController < ApplicationController
     		end
 
   	else
-  		#redirect_to newhirecredentials_path(:newhire_id => params[:newhire_id])
-      #redirect_to newhiredetails_path(params[:newhire_id])
-      redirect_to newhireshowcourses_path(params[:newhire_id])
+  	    redirect_to newhireshowcourses_path(params[:newhire_id])
   	end		
   end 
 
