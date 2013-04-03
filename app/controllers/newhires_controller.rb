@@ -449,13 +449,15 @@ class NewhiresController < ApplicationController
 
         if current_user.permission_id == 1
           #you are an AUTHORIZED USER so find CHAIRS to NOTIFY
-          @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and permission_id=2',{:sid => session[:school_id], :did => Newhire.find(params[:newhire_id]).department_id }])       
+          @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and permission_id=2',{:did => Newhire.find(params[:newhire_id]).department_id }])       
         else
           #you are a CHAIR so find deans for the school
           @send_to_notify=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where school_id = :sid and permission_id=4',{:sid => session[:school_id], :did => Newhire.find(params[:newhire_id]).department_id }])       
+          
         end
         #chairs for each department
-        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and permission_id <= 2',{:did => Newhire.find(params[:newhire_id]).department_id }])  
+        @send_to_correct=User.find_by_sql(['select id, concat(name,"@fau.edu") as displayname from users where department_id = :did and permission_id = 1',{:did => Newhire.find(params[:newhire_id]).department_id }])  
+        
      end 
    
      render :layout => 'simple'
