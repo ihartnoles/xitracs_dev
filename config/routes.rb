@@ -117,14 +117,14 @@ XitracsRoster::Application.routes.draw do
 
   get "users/new"
 
-  get "/precredentialing/credentialsform"
-  get "/precredentialing/name"
-   get "/precredentialing/courses"
+  #get "/precredentialing/credentialsform"
+  #get "/precredentialing/name"
+  #get "/precredentialing/courses"
 
-  post "/precredentialing/savecomments"
-  put "/precredentialing/savecomments"
-  post "/precredentialing/file_upload"
-  put "/precredentialing/file_upload"
+  #post "/precredentialing/savecomments"
+  #put "/precredentialing/savecomments"
+  #post "/precredentialing/file_upload"
+  #put "/precredentialing/file_upload"
   
   post "newhires/courses"
   post "newhires/create"
@@ -188,7 +188,7 @@ XitracsRoster::Application.routes.draw do
   match '/start', to: 'static_pages#start'
   match '/reports', to: 'report#index'
   match '/quick', to: 'quick#index'
-  match '/precredentialing', to: 'static_pages#precredentialing'
+  #match '/precredentialing', to: 'static_pages#precredentialing'
 
   match '/register', to: 'static_pages#register'
 
