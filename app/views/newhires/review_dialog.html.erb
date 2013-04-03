@@ -16,11 +16,11 @@
                 <tr>
                   <td>
                    
-                    <%= f.radio_button :review_state, Reason.review_passed, {:onclick => "do_passed();"} %> Passed
-                    <%= f.radio_button :review_state, Reason.review_failed, {:onclick => "comments_alert();"} %> Not Passed <br><br>
+                    <%= f.radio_button :review_state, Reason.review_passed %> Passed
+                    <%= f.radio_button :review_state, Reason.review_failed %> Not Passed <br><br>
                     <strong> Comments: </strong>
                     <%= f.text_area :review_comments, :class => 'ckeditor' %><br/>
-                   <%= f.submit  "Submit", :id => "Submit",:class => 'btn btn-small btn-primary' %>
+                    <%= f.submit  "Submit", :id => "Submit" ,:class => 'btn btn-small btn-primary' %>
                  </td>
                 </tr>
               </table>
