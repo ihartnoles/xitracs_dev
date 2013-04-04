@@ -22,7 +22,9 @@ class NewhiresController < ApplicationController
      redirect_to '/newhires/list_pending'
   end
 
-  def list  
+  def list      
+
+      #@newhirecourses = Newhirecourse.where(:newhire_id => params[:id])
 
      if  current_user.group.name == "chair"
       #if chair show only listings for the specific department
@@ -48,7 +50,8 @@ class NewhiresController < ApplicationController
                                                      nh.department_id = :did
                                                  AND nhc.semester_id = :sem_id", {:did => session[:department_id]  , :sem_id => session[:semester_id] } ])
        @newhire_count = @newhires.count
-    
+      
+       ##@newhires_without_course = Newhire.where(:assigned_to => current_user.id, :semester_id => session[:semester_id] )
 
      elsif current_user.group.name == "admin"
 
@@ -101,6 +104,8 @@ class NewhiresController < ApplicationController
       
        @send_to_notify=User.find_by_sql(["select id, concat(name,'@fau.edu') as displayname from users where name IN ('afradkin','jdiaka','pscarlat','koku','mwalsh8')"])
 
+       #@newhires_without_course = Newhire.where(:semester_id => session[:semester_id] )
+
       if (params[:atm])
         #ASSIGNED TO ME ADMIN
         @newhires = Newhire.find_by_sql(["SELECT
@@ -144,9 +149,12 @@ class NewhiresController < ApplicationController
       end
 
     elsif current_user.group.name == "dean"
+       
+       #@newhires_without_course = Newhire.where(:schoolid => session[:school_id] , :semester_id => session[:semester_id] )
+
        if (params[:atm])
-             #ASSIGNED TO ME DEAN
-              @newhires = Newhire.find_by_sql(["SELECT
+          #ASSIGNED TO ME DEAN
+          @newhires = Newhire.find_by_sql(["SELECT
                                                   nh.id
                                                 , nh.first_name
                                                 , nh.middle_name
@@ -189,6 +197,9 @@ class NewhiresController < ApplicationController
                                                  AND nhc.semester_id = :sem_id", {:schoolid => session[:school_id] , :sem_id => session[:semester_id] } ])
        end
     else
+      
+       #@newhires_without_course = Newhire.where(:department_id => session[:department_id] , :semester_id => session[:semester_id] )
+
        #ASSIGNED TO CHAIRS/AUTHORIZED USERS
        @newhires = Newhire.find_by_sql(["SELECT
                                                   nh.id
@@ -210,7 +221,13 @@ class NewhiresController < ApplicationController
                                                  WHERE nhc.assigned_to = :cid
                                                  AND nh.department_id = :did
                                                  AND nhc.semester_id = :sem_id", {:cid => current_user.id , :did => session[:department_id]  , :sem_id => session[:semester_id] } ])
+
+      
+      #if newhire record count == 0 then query assignments from newhires only
+
     end
+
+   
     
     @newhire_count = @newhires.count
   end

@@ -102,12 +102,14 @@ class NewhirecoursesController < ApplicationController
     			     end
 
                #redirects
-        			 if (params.has_key?(:source))
-        			  	redirect_to newhiredetails_path(params[:newhire_id])
-        			 else
-        			  	#this was changed to bypass documents                  
-                  redirect_to newhirecourses_path(:newhire_id => params[:newhire_id])                 
-        			 end
+        			 #if (params.has_key?(:source))
+        			  	#redirect_to newhiredetails_path(params[:newhire_id])
+
+        			 #else
+        			  	#redirect_to newhirecourses_path(:newhire_id => params[:newhire_id])                 
+        			 #end
+               redirect_to newhireshowcourses_path(params[:newhire_id])
+
     		end
 
   	else
