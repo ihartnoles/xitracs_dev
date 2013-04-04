@@ -7,7 +7,7 @@ class CreateNewhirecredits < ActiveRecord::Migration
       t.string :course_year
       t.integer :course_credits
       t.integer :semester_credits
-      t.integer :newhire_institution_id
+      t.integer :newhireinstitution_id
 
       t.timestamps
     end

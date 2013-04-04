@@ -25,15 +25,22 @@
 				 <%= form_for(@newhirecourse) do |f| %>
 				 <%= hidden_field_tag :newhire_id, params[:newhire_id] %>
 				
-				
-						<label>Course Prefix and Number:</label>
-						<%= f.text_field :name %>
+				  <div class="control-group">
+						<label><font color="red">*</font> Course Prefix and Number:</label>
+						<%= f.text_field :name %> <div class="help-block"></div>
+          </div>
 					
-						<label>Course title:</label>
+           <div class="control-group">
+						<label><font color="red">*</font> Course title:</label>
 						<%= f.text_field :title %>
+            <div class="help-block"></div>
+          </div>
 					
-						<label>Description:</label>
+           <div class="control-group">
+						<label><font color="red">*</font> Description:</label>
 						<%= f.text_area :description, :class => 'ckeditor' %>
+            <div class="help-block"></div>
+          </div>
 						
 						<br>
 						Click <%= f.submit 'Save', :id => "Save" , :disabled => current_user.ro , :class => 'btn btn-small btn-primary'%> to save this course.
@@ -45,3 +52,41 @@
  	</div>
   </div>
 </div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){ 
+
+    jQuery('.edit_newhirecourse').validate(
+       {
+        rules: {
+          "newhirecourse[name]": {
+            minlength: 2,
+            required: true
+          },
+          "newhirecourse[title]": {
+            required: true          
+          },
+          "newhirecourse[description]": {
+            required: true
+          }
+        },
+         messages: {
+          "newhirecourse[name]": "Please enter a course name",
+          "newhirecourse[title]": "Please enter a course title",
+          "newhirecourse[description]": "Please enter a course description"
+        },  
+          highlight: function (element, errorClass, validClass) {
+               $(element).closest('.control-group').removeClass('success').addClass('error');
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $(element).closest('.control-group').removeClass('error').addClass('success');
+          },
+          success: function (label) {
+              $(label).closest('form').find('.valid').removeClass("invalid");
+          },
+          errorPlacement: function (error, element) {
+              element.closest('.control-group').find('.help-block').html(error.text());
+          }
+       }); 
+});
+</script>

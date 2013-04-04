@@ -1,49 +1,64 @@
+
+
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3">
       <!--Sidebar content-->
-      	 <%= render 'newhires/instructorinfo_basic' %>
+      	 <div class="well sidebar-nav"  style="background-color:#fcf8e3;">
+            <ul class="nav nav-list">
+              <li class="nav-header">Instructor Info:</li>
+              <!--<li class="active"><a href="#">Link</a></li>-->
+              <li><strong>Firstname:</strong> <%= @newhire.first_name %> </li>
+              <li><strong>Lastname:</strong> <%= @newhire.last_name %></li>
+              <li><strong>School:</strong> <%= @newhire_dept.school.description %></li>
+              <li><strong>Department:</strong> <%= @newhire_dept.name %></li>
+
+            </ul>
+          </div><!--/.well -->
     </div>
-    <div class="span9">    	
-				<fieldset class="round">
-					<legend>To Teach:</legend>
-					<%= form_for(@newhirecourse) do |f| %>
-			
-						 <%= hidden_field_tag 'source', 'New' %>
-						 <%= hidden_field_tag 'newhire_id', params[:newhire_id] %>
+    <div class="span9">
+      <!--Body content-->
+     			<%= form_for @newhirecourse do |f| %>
+				<%= hidden_field_tag 'newhire_id', @newhire.id %>
+      				<fieldset class="round">
+							<legend>To Teach:</legend>
 
-						
-							<label>Course Prefix and Number:</label>
+							<div class="control-group">
+								<label><font color="red">*</font> Course Prefix and Number:</label>
 								 <%= text_field_tag 'course_name' %>
-							
+								 <div class="help-block"></div>
 
-							<label>Course title:</label>
-								<%= text_field_tag 'course_title' %>
+							<div class="control-group">
+								<label><font color="red">*</font> Course title:</label>
+									<%= text_field_tag 'course_title' %>
+									<div class="help-block"></div>
+						    </div>
 
+						    <div class="control-group">
+								<label><font color="red">*</font> Brief Course Description:</label>
+								<%= text_area_tag 'course_description', '' , :class => 'ckeditor' %>
+								<div class="help-block"></div>
+							</div>
 
-							<label>Brief Course Description:</label>
-							<%= text_area_tag 'course_description', '' , :class => 'ckeditor' %>
-							
 							<br>
 							Click <%= f.submit 'Add', :id => "Add" , :class => 'btn btn-small btn-primary' %> to save this course.</p>
 							
 							   <br>
 								Click <%= submit_tag 'Done', :id => "Done", :class => 'btn btn-small btn-warning' %> to finish this section.
-					<% end %>
-				</fieldset>
+					</fieldset>
+     <% end %>
 
-		<br>
+     <br>
 
-	
-	    <% if @newhire_courses_added.count > 0 %>
-						<br>
-							<div id="content">
-								<fieldset class="round">
-									<legend>Courses Added:</legend>
-										<table  class="no-zebra no-hover">
-											<th>Course:</th>
-									<th>Title:</th>
-									<th>Description:</th>
+				<% if @newhire_courses_added.count > 0 %>
+				<br>
+					
+						<fieldset class="round">
+							<h4>Courses Added:</h4>
+								<table  class="table">
+									<th>Course</th>
+									<th>Title</th>
+									<th>Description</th>
 
 										<% @newhire_courses_added.each do |ca| %>
 							    			<tr>
@@ -54,14 +69,56 @@
 							 			<% end %>
 
 
-										</table>
-							   </fieldset>
+								</table>
+					   </fieldset>
 
-							</div>
-					<% end %>
+					
+			<% end %>
 
 
     </div>
-		</div>
-  	</div>
+  </div>
 </div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	
+	//CKEDITOR.instances.course_description.updateElement();
+
+	jQuery("#Add").click(function(){
+
+		jQuery('.new_newhirecourse').validate(
+			 {
+			  rules: {
+			    course_name: {
+			      minlength: 2,
+			      required: true
+			    },
+			    course_title: {
+			      required: true		      
+			    },
+			    course_description: {
+			      required: true
+			    }
+			  },
+			   messages: {
+			   	course_name: "Please enter a course name",
+	        	course_title: "Please enter a course title",
+	        	course_description: "Please enter a course description"
+			  }, 	
+			    highlight: function (element, errorClass, validClass) {
+	       			 $(element).closest('.control-group').removeClass('success').addClass('error');
+			    },
+			    unhighlight: function (element, errorClass, validClass) {
+			        $(element).closest('.control-group').removeClass('error').addClass('success');
+			    },
+			    success: function (label) {
+			        $(label).closest('form').find('.valid').removeClass("invalid");
+			    },
+			    errorPlacement: function (error, element) {
+			        element.closest('.control-group').find('.help-block').html(error.text());
+			    }
+			 });
+	});
+});
+</script>

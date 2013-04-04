@@ -29,8 +29,11 @@
                       <br />
                       <br />
                        <p>
+                      <div class="control-group">
                       <strong>Major:</strong><br>
-                         <%= c.text_field :major %>            
+                         <%= c.text_field :major %>      
+                         <div class="help-block"></div>      
+                      </div>
                       </p>
                       <p>
                       <strong>Explanation of instructor's qualifications:</strong><br>
@@ -48,3 +51,34 @@
 
   </div>
 </div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+  
+    jQuery('.edit_newhirecredential').validate(
+       {
+        rules: {
+          "newhirecredential[major]": {
+            required: true
+          }
+        },
+         messages: {
+         "newhirecredential[major]": "Please enter a major",
+          
+        },  
+          highlight: function (element, errorClass, validClass) {
+               $(element).closest('.control-group').removeClass('success').addClass('error');
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $(element).closest('.control-group').removeClass('error').addClass('success');
+          },
+          success: function (label) {
+              $(label).closest('form').find('.valid').removeClass("invalid");
+          },
+          errorPlacement: function (error, element) {
+              element.closest('.control-group').find('.help-block').html(error.text());
+          }
+       });
+ 
+});
+</script>

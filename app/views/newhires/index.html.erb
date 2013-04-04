@@ -5,27 +5,37 @@
 			<div class="content">
 					<fieldset class="round">
 						<h4>New Hire Name:</h4>
-							<table class="profile no-zebra no-hover">
+							
 									<%= form_for @newhire, :url => "/newhires/savename" do |f| %>
-									<tr>
-										<td width="10%"><strong>First:</strong></td>
-										<td><%= text_field_tag 'first_name'%></td>
-									</tr>
+									
+									
 
-									<tr>
-										<td><strong>Middle:</strong></td>
-										<td><%= text_field_tag 'middle_name'%></td>
-									</tr>
+									<div class="control-group">
+										<label><font color="red">*</font> First:</label>
+										 <%= text_field_tag 'first_name' %>
+										 <div class="help-block"></div>
+									</div>
 
-									<tr>
-										<td><strong>Last:</strong> </td>
-										<td><%= text_field_tag 'last_name'%></td>
-									</tr>
-									<tr>
-										<td colspan="2"><%= f.submit "Save & Continue" , :class => 'btn btn-small btn-primary' %></td>
-									</tr>
+
+
+									<div class="control-group">
+										<label>Middle:</label>
+										 <%= text_field_tag 'middle_name' %>
+										 <div class="help-block"></div>
+									</div>
+
+
+									<div class="control-group">
+										<label><font color="red">*</font> Last:</label>
+										 <%= text_field_tag 'last_name' %>
+										 <div class="help-block"></div>
+									</div>
+
+								
+									<br>
+									<%= f.submit "Save & Continue" , :class => 'btn btn-small btn-primary' %>
 								<% end %>
-							</table>
+						
 								
 							
 					</fieldset>
@@ -34,3 +44,37 @@
 	</div><!-- #middle -->
 </div><!-- #wrapper -->
 	
+<script type="text/javascript">
+jQuery(document).ready(function(){
+
+	jQuery('.new_newhire').validate(
+		 {
+		  rules: {
+		    first_name: {
+		      required: true
+		    },
+		    last_name: {
+		      required: true		      
+		    }
+		  },
+		   messages: {
+		   	first_name: "Please enter a first name",
+        	last_name: "Please enter a last name"
+		  }, 	
+		    highlight: function (element, errorClass, validClass) {
+       			 $(element).closest('.control-group').removeClass('success').addClass('error');
+		    },
+		    unhighlight: function (element, errorClass, validClass) {
+		        $(element).closest('.control-group').removeClass('error').addClass('success');
+		    },
+		    success: function (label) {
+		        $(label).closest('form').find('.valid').removeClass("invalid");
+		    },
+		    errorPlacement: function (error, element) {
+		        element.closest('.control-group').find('.help-block').html(error.text());
+		    }
+		 });
+
+
+});
+</script>

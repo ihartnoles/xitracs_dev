@@ -15,45 +15,49 @@
                  <% end %>
 
                  <div id="radios">
+                  <div class="control-group">
                    <%= f.radio_button :signed_off , "1"%> 
                     
-                     <% if current_user.permission_id == 1 %>          
-                        Signoff and send to Chair
-                      <% end %>
+                       <% if current_user.permission_id == 1 %>          
+                          Signoff and send to Chair
+                        <% end %>
 
-                     <% if current_user.permission_id == 2 %>          
-                        Signoff and send to Dean
+                       <% if current_user.permission_id == 2 %>          
+                          Signoff and send to Dean
+                        <% end %>
+                        <% if current_user.permission_id == 4 %>          
+                          Signoff and send to Office of Provost
+                        <% end %>
+                        <% if current_user.group.name == "admin" %>          
+                          <% if current_user.name == 'kwrigh59' %>
+                            Signoff and send to Review Team
+                          <% else %>
+                            Signoff and notify
+                          <% end %>
+                        <% end %>
+                     
+                      <br>
+
+                      <%= f.radio_button :signed_off , "0" %> 
+                    
+                      <% if current_user.permission_id == 2 %>          
+                          Return to Department for corrections
                       <% end %>
                       <% if current_user.permission_id == 4 %>          
-                        Signoff and send to Office of Provost
+                          Return to Department Chair for corrections
                       <% end %>
-                      <% if current_user.group.name == "admin" %>          
-                        <% if current_user.name == 'kwrigh59' %>
-                          Signoff and send to Review Team
-                        <% else %>
-                          Signoff and notify
-                        <% end %>
-                      <% end %>
-                   
-                    <br>
+                      <% if current_user.group.name == "admin" %>       
 
-                    <%= f.radio_button :signed_off , "0" %> 
-                  
-                    <% if current_user.permission_id == 2 %>          
-                        Return to Department for corrections
-                    <% end %>
-                    <% if current_user.permission_id == 4 %>          
-                        Return to Department Chair for corrections
-                    <% end %>
-                    <% if current_user.group.name == "admin" %>       
+                         <% if current_user.name = 'mwalsh8' %>
+                            Return for corrections
+                          <% else %>
+                            Return to Dean for corrections
+                          <% end %>
+                      <% end %>  
+                       <div class="help-block"></div>  
+                   </div>
 
-                       <% if current_user.name = 'mwalsh8' %>
-                          Return for corrections
-                        <% else %>
-                          Return to Dean for corrections
-                        <% end %>
-                    <% end %>  
-                  
+
                   </div>           
                   
                 </td>
@@ -131,5 +135,30 @@ jQuery(document).ready(function(){
                $("#notify").hide();
                $("#corrections").show();
         });
+
+       jQuery('.new_newhiresignoff').validate(
+       {
+        rules: {
+          "newhiresignoff[signed_off]": {
+            required: true
+          }
+        },
+         messages: {
+         "newhiresignoff[signed_off]": "Please select an option",
+          
+        },  
+          highlight: function (element, errorClass, validClass) {
+               $(element).closest('.control-group').removeClass('success').addClass('error');
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $(element).closest('.control-group').removeClass('error').addClass('success');
+          },
+          success: function (label) {
+              $(label).closest('form').find('.valid').removeClass("invalid");
+          },
+          errorPlacement: function (error, element) {
+              element.closest('.control-group').find('.help-block').html(error.text());
+          }
+       });
 });
 <% end %>

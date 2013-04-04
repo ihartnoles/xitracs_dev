@@ -45,7 +45,7 @@ class NewhirecoursesController < ApplicationController
     @newhirecourse = Newhirecourse.find(params[:id])
     @newhirecourse.destroy
 
-    redirect_to newhiredetails_path(params[:newhire_id])
+    redirect_to newhireshowcourses_path(params[:newhire_id])
   end
 
 

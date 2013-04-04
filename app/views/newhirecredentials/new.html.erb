@@ -24,17 +24,19 @@
                               <% end %> 
                         <br />
                         <br />
+                         <div class="control-group">
                          <strong>Major:</strong><br>
-                         <%= text_field_tag 'qualification_major', '',  :placeholder => 'Enter major here...' %>     
+                           <%= text_field_tag 'qualification_major', '',  :placeholder => 'Enter major here...' %>     
 
-                         <%= link_to 'List of Terminal Degrees by Dept.', 
-                                                {:controller => 'newhiredocuments', 
-                                                  :action => 'term_degree_download', 
-                                                  :source => 'detailscreen'},
-                                                  :onClick=>"window.open(this.href,'Terminal Degree List','scrollbars=1,height=500, width=700'); return false;" ,
-                                                  :title => 'Terminal Degree List', 
-                                                  :rel => 'tooltip'%>
-                       
+                           <%= link_to 'List of Terminal Degrees by Dept.', 
+                                                  {:controller => 'newhiredocuments', 
+                                                    :action => 'term_degree_download', 
+                                                    :source => 'detailscreen'},
+                                                    :onClick=>"window.open(this.href,'Terminal Degree List','scrollbars=1,height=500, width=700'); return false;" ,
+                                                    :title => 'Terminal Degree List', 
+                                                    :rel => 'tooltip'%>
+                            <div class="help-block"></div>
+                          </div>
 
                         <p>
                         <strong>Explanation of instructor's qualifications:</strong><br>
@@ -53,3 +55,35 @@
       </div>
   </div>
 </div>
+
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+  
+    jQuery('.new_newhirecredential').validate(
+       {
+        rules: {
+          qualification_major: {
+            required: true
+          }
+        },
+         messages: {
+          qualification_major: "Please enter a major",
+          
+        },  
+          highlight: function (element, errorClass, validClass) {
+               $(element).closest('.control-group').removeClass('success').addClass('error');
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $(element).closest('.control-group').removeClass('error').addClass('success');
+          },
+          success: function (label) {
+              $(label).closest('form').find('.valid').removeClass("invalid");
+          },
+          errorPlacement: function (error, element) {
+              element.closest('.control-group').find('.help-block').html(error.text());
+          }
+       });
+ 
+});
+</script>

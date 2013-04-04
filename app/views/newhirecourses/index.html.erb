@@ -22,22 +22,30 @@
 				<%= hidden_field_tag 'newhire_id', @newhire.id %>
       				<fieldset class="round">
 							<legend>To Teach:</legend>
-							<label>Course Prefix and Number:</label>
-							 <%= text_field_tag 'course_name' %>
-							
 
-							<label>Course title:</label>
-								<%= text_field_tag 'course_title' %>
+							<div class="control-group">
+								<label><font color="red">*</font> Course Prefix and Number:</label>
+								 <%= text_field_tag 'course_name' %>
+								<div class="help-block"></div>
+							</div>
 
+							<div class="control-group">
+								<label><font color="red">*</font> Course title:</label>
+									<%= text_field_tag 'course_title' %>
+									<div class="help-block"></div>
+						    </div>
 
-							<label>Brief Course Description:</label>
-							<%= text_area_tag 'course_description', '' , :class => 'ckeditor' %>
+						    <div class="control-group">
+								<label><font color="red">*</font> Brief Course Description:</label>
+								<%= text_area_tag 'course_description', '' , :class => 'ckeditor' %>
+								<div class="help-block"></div>
+							</div>
 
 							<br>
 							Click <%= f.submit 'Add', :id => "Add" , :class => 'btn btn-small btn-primary' %> to save this course.</p>
 							
-							   <br>
-								Click <%= submit_tag 'Done', :id => "Done", :class => 'btn btn-small btn-warning' %> to finish this section.
+						   <br>
+							Click <%= submit_tag 'Done', :id => "Done", :class => 'btn btn-small btn-warning' %> to finish this section.
 					</fieldset>
      <% end %>
 
@@ -75,29 +83,43 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function(){
-	jQuery('.new_newhirecourse').validate(
-		 {
-		  rules: {
-		    course_name: {
-		      minlength: 2,
-		      required: true
-		    },
-		    course_title: {
-		      required: true		      
-		    },
-		    course_description: {
-		      minlength: 2,
-		      required: true
-		    }
-		  },
-		  highlight: function(element) {
-		    jQuery(element).closest('.control-group').removeClass('success').addClass('error');
-		  },
-		  success: function(element) {
-		    element
-		    .text('OK!').addClass('valid')
-		    .closest('.control-group').removeClass('error').addClass('success');
-		  }
-		 });
+	
+	//CKEDITOR.instances.course_description.updateElement();
+
+	jQuery("#Add").click(function(){
+
+		jQuery('.new_newhirecourse').validate(
+			 {
+			  rules: {
+			    course_name: {
+			      minlength: 2,
+			      required: true
+			    },
+			    course_title: {
+			      required: true		      
+			    },
+			    course_description: {
+			      required: true
+			    }
+			  },
+			   messages: {
+			   	course_name: "Please enter a course name",
+	        	course_title: "Please enter a course title",
+	        	course_description: "Please enter a course description"
+			  }, 	
+			    highlight: function (element, errorClass, validClass) {
+	       			 $(element).closest('.control-group').removeClass('success').addClass('error');
+			    },
+			    unhighlight: function (element, errorClass, validClass) {
+			        $(element).closest('.control-group').removeClass('error').addClass('success');
+			    },
+			    success: function (label) {
+			        $(label).closest('form').find('.valid').removeClass("invalid");
+			    },
+			    errorPlacement: function (error, element) {
+			        element.closest('.control-group').find('.help-block').html(error.text());
+			    }
+			 });
+	});
 });
 </script>

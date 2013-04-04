@@ -1,5 +1,5 @@
 class NewhiredocumentsController < ApplicationController
-
+  protect_from_forgery :except => :save_verified_doc
   layout "precredentialing"
 
   def index

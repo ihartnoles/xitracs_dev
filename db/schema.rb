@@ -183,8 +183,8 @@ ActiveRecord::Schema.define(:version => 20130328164942) do
     t.string   "course_year"
     t.text     "semester"
     t.integer  "course_credits"
-    t.integer  "semester_credits",      :limit => 1
-    t.integer  "newhireinstitution_id"
+    t.integer  "semester_credits"
+    t.integer  "newhire_institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
@@ -209,37 +209,6 @@ ActiveRecord::Schema.define(:version => 20130328164942) do
 
   create_table "newhireinstitutions", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "newhirereasons", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "newhire_id"
-    t.integer  "course_id"
-    t.text     "qualificationreason_id"
-    t.text     "comments"
-    t.integer  "reviewer_id"
-    t.text     "review_comments"
-    t.integer  "review_state"
-    t.integer  "dean_id"
-    t.text     "dean_comments"
-    t.integer  "dean_signoff"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "newhirereasons_newhirereviewreasons", :id => false, :force => true do |t|
-    t.integer "newhirereason_id"
-    t.integer "newhirereviewreason_id"
-  end
-
-  create_table "newhirereviewmessages", :force => true do |t|
-    t.integer  "newhire_id"
-    t.integer  "course_id"
-    t.string   "from"
-    t.string   "to"
-    t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
